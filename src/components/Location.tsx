@@ -1,12 +1,11 @@
 import { useState } from 'react'
 import { Box, Typography, CircularProgress } from '@mui/material'
 import { useLocation } from 'react-router'
-import { User } from 'components/UserLists/types'
 import { useViewports } from 'helpers/viewports'
 
 const LocationTab = () => {
   const [isMapLoaded, setIsMapLoaded] = useState(false)
-  const data: User = useLocation().state
+  const data = useLocation().state
   const { isMobile } = useViewports()
   const { street, city, state, country } = data.location
   const embedUrl = `https://www.google.com/maps/embed/v1/place?q=${

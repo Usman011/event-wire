@@ -8,7 +8,6 @@ import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { Form, Link, useNavigate } from 'react-router-dom'
 import { countries } from 'countries-list'
-import omit from 'lodash/omit'
 import * as Yup from 'yup'
 import { SelectField } from 'components/SelectField'
 import { signupUserApi } from 'api/userApi'
@@ -69,7 +68,12 @@ const Signup = () => {
   })
 
   const handleSubmit = async (values: SignupProps) => {
-    const formData = omit(values, 'confirmPassword')
+    const formData = {
+      name: values.name,
+      email: values.email,
+      password: values.password,
+      address: values.address
+    }
     setLoading(true)
     try {
       const response = await signupUserApi(formData)

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import  { useEffect, useState } from 'react'
 import Box from '@mui/material/Box'
 import IconButton from '@mui/material/IconButton'
 import Typography from '@mui/material/Typography'
@@ -38,8 +38,8 @@ export const Navbar = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const { isMobile } = useViewports()
-  const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null)
-  const [profileAnchorEl, setProfileAnchorEl] = React.useState<null | HTMLElement>(null)
+  const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null)
+  const [profileAnchorEl, setProfileAnchorEl] = useState<null | HTMLElement>(null)
   const open = Boolean(profileAnchorEl)
   const [activeTab, setActiveTab] = useState(-1)
   const [categories, setCategories] = useState<Category[]>([])

@@ -1,6 +1,5 @@
 import { Box, styled, Theme, Typography } from '@mui/material'
 import { useViewports } from 'helpers/viewports'
-import React from 'react'
 
 type BadgeColor = 'APPROVED' | 'REJECTED' | 'PENDING' | 'NOT_SUBMITTED' | ''
 interface BadgeProps {

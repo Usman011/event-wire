@@ -1,13 +1,9 @@
 import { Box, CircularProgress, Container, Grid, Typography, styled } from '@mui/material'
-import { Centered, Flex } from 'components/design'
+import { Centered } from 'components/design'
 import { useViewports } from 'helpers/viewports'
 import { useParams } from 'react-router'
-import NetworkCheckIcon from '@mui/icons-material/NetworkCheck'
-import DoorFrontIcon from '@mui/icons-material/DoorFront'
-import InsertEmoticonIcon from '@mui/icons-material/InsertEmoticon'
 import { useEffect, useState } from 'react'
 import { ServiceProps } from 'pages/ServiceList'
-import LocationTab from 'components/Location'
 
 const demoServiceData: ServiceProps = {
   id: 1,
