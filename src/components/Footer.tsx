@@ -10,7 +10,7 @@ import EmailIcon from '@mui/icons-material/Email'
 
 const Footer = () => {
   return (
-    <Box mt={5}>
+    <Box mt={5} maxWidth='100vw'>
       <Divider />
       <Box pt={3}>
         <Container component='footer' maxWidth='lg'>

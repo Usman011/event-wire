@@ -1,4 +1,4 @@
-import  { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import Box from '@mui/material/Box'
 import IconButton from '@mui/material/IconButton'
 import Typography from '@mui/material/Typography'
@@ -17,7 +17,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { getAllCategoriesApi, logoutUserApi } from 'api/userApi'
 import { RootState } from 'store'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle'
-import { Divider } from '@mui/material'
+import { Button, Divider, Stack } from '@mui/material'
 
 const gap = {
   mobile: 2,
@@ -60,12 +60,9 @@ export const Navbar = () => {
   }
 
   const handleLogout = async () => {
-    try {
-      await logoutUserApi()
-      dispatch(logout())
-    } catch (error) {
-      console.log(error)
-    }
+    setProfileAnchorEl(null)
+    logoutUserApi()
+    dispatch(logout())
   }
 
   const getCategories = async () => {
@@ -73,7 +70,9 @@ export const Navbar = () => {
       const response = await getAllCategoriesApi({})
       setCategories(response.data.categories)
       console.log('response', response)
-    } catch (error) {}
+    } catch (error) {
+      /* empty */
+    }
   }
 
   useEffect(() => {
@@ -81,7 +80,7 @@ export const Navbar = () => {
   }, [])
 
   return (
-    <Box>
+    <Box maxWidth='100%'>
       <Wrapper>
         <Container maxWidth='lg'>
           <ContentBox>
@@ -161,10 +160,22 @@ export const Navbar = () => {
                       'aria-labelledby': 'basic-button'
                     }}
                   >
+                    {auth.role === 'vendor' && (
+                      <>
+                        <MenuItem onClick={handleClose}>
+                          <StyledLink to='/vendor-services'>
+                            <Typography textAlign='center'>My Services</Typography>
+                          </StyledLink>
+                        </MenuItem>
+                        <MenuItem onClick={handleClose}>
+                          <StyledLink to='/create-service'>
+                            <Typography textAlign='center'>Add New Service</Typography>
+                          </StyledLink>
+                        </MenuItem>
+                      </>
+                    )}
                     <MenuItem onClick={handleClose}>
-                      <Typography textAlign='center' onClick={() => {}}>
-                        Account Setting
-                      </Typography>
+                      <Typography textAlign='center'>Account Setting</Typography>
                     </MenuItem>
                     <MenuItem onClick={handleLogout}>
                       <Typography textAlign='center'>Logout </Typography>
@@ -191,22 +202,37 @@ export const Navbar = () => {
                       })}
                     </Flex>
                   </Box>
-                  <Flex alignItems='center' gap={2}>
-                    <Box onClick={handleClick}>
-                      <AccountCircleIcon
-                        sx={{
-                          color: '#000å',
-                          fontSize: '35px',
-                          cursor: 'pointer',
-                          marginTop: '8px'
-                        }}
-                      />
-                    </Box>
+                  {auth.isAuthenticated ? (
+                    <Flex alignItems='center' gap={2}>
+                      <Box onClick={handleClick}>
+                        <AccountCircleIcon
+                          sx={{
+                            color: '#000å',
+                            fontSize: '35px',
+                            cursor: 'pointer',
+                            marginTop: '8px'
+                          }}
+                        />
+                      </Box>
 
-                    <Typography variant='body1' color='#000'>
-                      {auth.name}
-                    </Typography>
-                  </Flex>
+                      <Typography variant='body1' color='#000'>
+                        {auth.name}
+                      </Typography>
+                    </Flex>
+                  ) : (
+                    <Stack
+                      direction='row'
+                      divider={<Divider orientation='vertical' flexItem />}
+                      spacing={2}
+                    >
+                      <StyledLink to='/login'>
+                        <Button variant='outlined'>Login</Button>
+                      </StyledLink>
+                      <StyledLink to='/signup'>
+                        <Button variant='outlined'>Signup</Button>
+                      </StyledLink>
+                    </Stack>
+                  )}
                 </>
               </Flex>
             </Box>
@@ -240,7 +266,6 @@ export const StyledLink = styled(Link)(() => ({
 
 const Wrapper = styled(Box)(() => ({
   zIndex: 999,
-  width: '100vw',
   padding: '0rem .5rem'
 }))
 

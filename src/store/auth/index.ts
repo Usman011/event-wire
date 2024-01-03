@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { string } from 'yup'
 
 type UserRole = 'buyer' | 'vendor' | ''
 
@@ -25,6 +26,7 @@ export interface AuthState {
   id: string
   token: string
   isAuthenticated: boolean
+  phone: string
 }
 
 interface AuthData {
@@ -43,7 +45,8 @@ const initialState: AuthState = {
   status: '',
   id: '',
   token: '',
-  isAuthenticated: false
+  isAuthenticated: false,
+  phone: ''
 }
 
 const authSlice = createSlice({
@@ -60,6 +63,8 @@ const authSlice = createSlice({
       state.role = user.role
       state.status = status
       state.isAuthenticated = true
+      state.phone = user.role === 'vendor' ? user.phone : ''
+
     },
     logout: state => {
       state.id = ''

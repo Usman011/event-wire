@@ -27,6 +27,8 @@ export interface SignupProps {
     country: string
     city: string
   }
+  role: string
+  phone: string
 }
 const Signup = () => {
   const { isLaptop } = useViewports()
@@ -40,7 +42,9 @@ const Signup = () => {
     address: {
       country: '',
       city: ''
-    }
+    },
+    phone: '',
+    role: 'buyer'
   }
   console.log('countries', countries)
 
@@ -64,7 +68,8 @@ const Signup = () => {
     address: Yup.object().shape({
       country: Yup.string().required('Country is required'),
       city: Yup.string().required('City is required')
-    })
+    }),
+    role: Yup.string().required('Role is required'),
   })
 
   const handleSubmit = async (values: SignupProps) => {
@@ -72,7 +77,9 @@ const Signup = () => {
       name: values.name,
       email: values.email,
       password: values.password,
-      address: values.address
+      address: values.address,
+      role: values.role,
+      phone: values.phone
     }
     setLoading(true)
     try {
@@ -122,7 +129,7 @@ const Signup = () => {
                     onSubmit={handleSubmit}
                     validationSchema={loginValidationSchema}
                   >
-                    {({ submitForm }) => {
+                    {({ submitForm, values }) => {
                       return (
                         <Form>
                           <Flex flexDirection='column' gap={2}>
@@ -142,6 +149,18 @@ const Signup = () => {
                               type='password'
                               label={'Confirm Password'}
                             />
+
+                            <SelectField
+                              name='role'
+                              options={[
+                                { title: 'Buyer', key: 'buyer' },
+                                { title: 'Vendor', key: 'vendor' }
+                              ]}
+                              label='Role'
+                            />
+                            {values.role === 'vendor' && (
+                              <InputField name='phone' label={'Phone Number'} />
+                            )}
                           </Flex>
                           <Box mt={4}>
                             <Button fullWidth size='large' variant='contained' onClick={submitForm}>

@@ -1,9 +1,9 @@
-import { Box, CircularProgress, Container, Divider, Grid, Typography, styled } from '@mui/material'
+import { Box, Button, Container, Divider, Grid, Typography, styled } from '@mui/material'
 import { useViewports } from 'helpers/viewports'
-import CardImg from 'assets/Card.webp'
-import { Flex } from 'components/design'
 import { useEffect, useState } from 'react'
 import { getAllCategoriesApi } from 'api/userApi'
+import { Flex } from 'components/design'
+import { Link } from 'react-router-dom'
 
 interface Category {
   name: string
@@ -14,7 +14,6 @@ interface Category {
   id: string
 }
 const Home = () => {
-  const [loading, setLoading] = useState(false)
   const [categories, setCategories] = useState<Category[]>([])
 
   const getCategories = async () => {
@@ -22,7 +21,9 @@ const Home = () => {
       const response = await getAllCategoriesApi({ sub: true })
       setCategories(response.data.categories)
       console.log('getAllCategoriesApi', response)
-    } catch (error) {}
+    } catch (error) {
+      /* empty */
+    }
   }
 
   useEffect(() => {
@@ -57,7 +58,7 @@ const Home = () => {
         </Grid>
       </Container>
       <BorderBox />
-      <Container>
+      <Container maxWidth='lg'>
         <Box>
           <Typography variant='h4' fontWeight='bold' mt={4}>
             Find every vendor you need
@@ -65,49 +66,44 @@ const Home = () => {
           <Typography variant={isLaptop ? 'body1' : 'body2'} fontWeight='400' mt={2}>
             Connect with seasoned wedding pros to help bring your day to life.
           </Typography>
-          <Flex
-            gap={2}
-            sx={{ overflow: 'scroll', paddingBottom: '1rem' }}
-            justifyContent='space-between'
-          >
-            <Grid container spacing={2} p={2}>
-              {loading ? (
-                <CircularProgress />
-              ) : (
-                categories.map(item => {
-                  return (
-                    <Grid item xs={12} sm={6} md={4} lg={3}>
+          <Box pb={4}>
+            <Grid container spacing={2} p={2} my={2}>
+              {categories.map(item => {
+                return (
+                  <Grid item xs={12} sm={6} md={4} lg={3} flex={1}>
+                    <StyledLink to={`services/${item.slug}`}>
                       <CardBox>
                         <Box position='relative'>
                           <StyledImg src={item.icon} alt='card img' />
                         </Box>
 
-                        <Typography variant='subtitle1' fontWeight='bold' textAlign='center' mt={3}>
+                        <Typography variant='subtitle2' fontWeight='bold' mt={3} pb={2}>
                           {item.name}
                         </Typography>
                         <Typography
                           variant={isLaptop ? 'body2' : 'body1'}
                           color='secondary'
                           fontWeight='400'
-                          textAlign='center'
                         >
                           {item.description}
                         </Typography>
                       </CardBox>
-                    </Grid>
-                  )
-                })
-              )}
+                    </StyledLink>
+                  </Grid>
+                )
+              })}
             </Grid>
-          </Flex>
-        </Box>
-        <Box>
-          {/* <Typography variant='h4' fontWeight='bold' mt={4}>
-            Find every vendor you need
-          </Typography>
-          <Typography variant={isLaptop ? 'body1' : 'body2'} fontWeight='400' mt={2}>
-            Connect with seasoned wedding pros to help bring your day to life.
-          </Typography> */}
+            <Flex flexWrap='wrap'>
+              {categories.map(item => (
+                <StyledLink to={`services/${item.slug}`}>
+                  <CategoryBlocks variant='body2'>{item.name}</CategoryBlocks>
+                </StyledLink>
+              ))}
+              <StyledLink to={`services/all`}>
+                <CategoryBlocks variant='body2'>View All</CategoryBlocks>
+              </StyledLink>
+            </Flex>
+          </Box>
         </Box>
       </Container>
     </Box>
@@ -121,7 +117,7 @@ const ImageBackground = styled('img')(({ isLaptop }: { isLaptop: boolean }) => (
   height: !isLaptop ? '200px' : '400px',
   position: 'relative',
 
-  width: !isLaptop ? '100%' : '50vw',
+  width: !isLaptop ? '100%' : '49.5vw',
   backgroundRepeat: 'no-repeat',
   backgroundSize: 'cover',
   clipPath: !isLaptop
@@ -134,23 +130,14 @@ export const CardBox = styled(Box)(() => ({
   border: '1px solid #fff',
   boxShadow: 'rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px',
   borderRadius: '5px',
-  marginTop: '2rem'
+  height: '100%',
+  cursor: 'pointer'
 }))
 
 export const StyledImg = styled('img')(() => ({
   height: '200px',
   width: '100%',
   borderRadius: '5px'
-}))
-
-export const StyledIcon = styled('img')(() => ({
-  height: '50px',
-  width: '50px',
-  position: 'absolute',
-  bottom: '-15px',
-  right: '100px',
-  borderRadius: '50%',
-  border: '4px solid #fff'
 }))
 
 const StyledBox = styled(Box)(({ isLaptop }: { isLaptop: boolean }) => ({
@@ -165,4 +152,18 @@ const StyledBox = styled(Box)(({ isLaptop }: { isLaptop: boolean }) => ({
 const BorderBox = styled(Divider)(() => ({
   position: 'relative',
   top: '-6.5px'
+}))
+
+const CategoryBlocks = styled(Typography)(() => ({
+  border: '1px solid black',
+  borderRadius: '5px',
+  padding: '10px 20px',
+  margin: '1rem .5rem 0rem .5rem',
+  display: 'inline-block',
+  cursor: 'pointer'
+}))
+
+export const StyledLink = styled(Link)(() => ({
+  textDecoration: 'none',
+  color: '#000'
 }))
