@@ -1,9 +1,13 @@
-import { Box, CircularProgress, Container, Grid, Typography, styled } from '@mui/material'
+import { Box, Button, CircularProgress, Container, Grid, Typography, styled } from '@mui/material'
 import { Centered } from 'components/design'
 import { useViewports } from 'helpers/viewports'
 import { useParams } from 'react-router'
 import { useEffect, useState } from 'react'
 import { ServiceProps } from 'pages/ServiceList'
+import { AuthState } from 'store/auth'
+import { RootState } from 'store'
+import { useSelector } from 'react-redux'
+import { StyledLink } from 'pages/Home'
 
 const demoServiceData: ServiceProps = {
   id: 1,
@@ -21,6 +25,7 @@ const demoServiceData: ServiceProps = {
   }
 }
 const ViewService = () => {
+  const auth = useSelector<RootState, AuthState>(state => state.auth)
   const { isLaptop } = useViewports()
   const [services, setServices] = useState<ServiceProps>({
     id: '',
@@ -37,6 +42,7 @@ const ViewService = () => {
   })
   const [loading, setLoading] = useState(false)
   const { id } = useParams()
+  const [showService, setShowService] = useState(false)
 
   const handleClick = async () => {}
 
@@ -103,46 +109,62 @@ const ViewService = () => {
               ## Modify Accordingly
               {/* <LocationTab /> */}
             </Grid>
-            <Grid item xs={12} md={4}>
-              <StyledBox>
-                <Typography variant='h6' py={1} fontWeight='bold' color='#00458c'>
-                  {services.title}
-                </Typography>
-
-                <Typography variant='body2' fontWeight='400' pb={3}>
-                  {services.location}
-                </Typography>
-
-                <Centered justifyContent='space-between' py={1}>
-                  <Typography variant='body1' fontWeight='600'>
-                    Phone Number:
+            {showService ? (
+              <Grid item xs={12} md={4}>
+                <StyledBox>
+                  <Typography variant='h6' py={1} fontWeight='bold' color='#00458c'>
+                    {services.title}
                   </Typography>
 
-                  <Typography variant='body1' fontWeight='400'>
-                    {services.phone}
+                  <Typography variant='body2' fontWeight='400' pb={3}>
+                    {services.location}
                   </Typography>
+
+                  <Centered justifyContent='space-between' py={1}>
+                    <Typography variant='body1' fontWeight='600'>
+                      Phone Number:
+                    </Typography>
+
+                    <Typography variant='body1' fontWeight='400'>
+                      {services.phone}
+                    </Typography>
+                  </Centered>
+                  <Centered justifyContent='space-between' py={1}>
+                    <Typography variant='body1' fontWeight='600'>
+                      Email:
+                    </Typography>
+
+                    <Typography variant='body1' fontWeight='400'>
+                      {services.email}
+                    </Typography>
+                  </Centered>
+
+                  <Centered justifyContent='space-between' py={1}>
+                    <Typography variant='body1' fontWeight='600'>
+                      Availability:
+                    </Typography>
+
+                    <Typography variant='body1' fontWeight='400'>
+                      Contact for Availability
+                    </Typography>
+                  </Centered>
+                </StyledBox>
+              </Grid>
+            ) : (
+              <Grid item xs={12} md={4}>
+                <Centered height='100%'>
+                  {auth.isAuthenticated ? (
+                    <Button variant='outlined' onClick={() => setShowService(true)}>
+                      Show Details
+                    </Button>
+                  ) : (
+                    <StyledLink to='/login'>
+                      <Button variant='outlined'>Login to View Details</Button>
+                    </StyledLink>
+                  )}
                 </Centered>
-                <Centered justifyContent='space-between' py={1}>
-                  <Typography variant='body1' fontWeight='600'>
-                    Email:
-                  </Typography>
-
-                  <Typography variant='body1' fontWeight='400'>
-                    {services.email}
-                  </Typography>
-                </Centered>
-
-                <Centered justifyContent='space-between' py={1}>
-                  <Typography variant='body1' fontWeight='600'>
-                    Availability:
-                  </Typography>
-
-                  <Typography variant='body1' fontWeight='400'>
-                    Contact for Availability
-                  </Typography>
-                </Centered>
-              </StyledBox>
-            </Grid>
+              </Grid>
+            )}
           </Grid>
         </Container>
       )}

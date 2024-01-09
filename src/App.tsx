@@ -12,6 +12,7 @@ import ViewService from 'pages/ViewService'
 import PublicLayout from 'components/PublicLayout'
 import CreateService from 'pages/CreateService'
 import VendorServiceList from 'pages/VendorServiceList'
+import FavItems from 'pages/FavItems'
 
 function App() {
   const activeTheme = useMemo(() => CustomTheme(ThemeVariantsProps.light), [])
@@ -56,6 +57,10 @@ function App() {
         {
           path: '/vendor-services',
           element: <VendorServiceList />
+        },
+        {
+          path: '/fav-services',
+          element: <FavItems />
         },
       ]
     }

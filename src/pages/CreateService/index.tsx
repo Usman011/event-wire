@@ -1,18 +1,36 @@
-import { Box, Button, CircularProgress, Container,  Grid,  Typography } from '@mui/material'
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Container,
+  Grid,
+  Input,
+  List,
+  ListItem,
+  Typography
+} from '@mui/material'
 import { styled } from '@mui/system'
-import { getAllCategoriesApi } from 'api/userApi'
+import uploadToCloudinary from 'api/cloudnairy'
+import { createNewServiceApi, getAllCategoriesApi } from 'api/userApi'
 import { InputField } from 'components/InputField'
 import { SelectField } from 'components/SelectField'
 import { Centered, Flex } from 'components/design'
-import {  Formik } from 'formik'
+import { Formik } from 'formik'
 import { useEffect, useState } from 'react'
+import { useDispatch } from 'react-redux'
 import { Form } from 'react-router-dom'
-import { usePlacesWidget } from 'react-google-autocomplete'
+import { openToaster } from 'store/toast'
 import * as Yup from 'yup'
 
 export interface CreateServiceProps {
-  password: string
-  email: string
+  name: string
+  category: string
+  description: string
+  subCategory: string
+  faq1: string
+  faqAnswer1: string
+  faq2: string
+  faqAnswer2: string
 }
 
 interface Category {
@@ -25,20 +43,33 @@ interface Category {
 }
 
 const CreateService = () => {
-
   const [loading, setLoading] = useState(false)
   const [categories, setCategories] = useState([])
   const [catLoading, setCatLoading] = useState(false)
+  const dispatch = useDispatch()
+  const [selectedFiles, setSelectedFiles] = useState([])
+
   const initialValues: CreateServiceProps = {
-    password: '',
-    email: ''
+    name: '',
+    category: '',
+    description: '',
+    subCategory: '',
+    faq1: '',
+    faqAnswer1: '',
+    faq2: '',
+    faqAnswer2: ''
   }
 
   const CreateServiceValidationSchema = Yup.object().shape({
-    email: Yup.string().email().required('Email is required'),
-    password: Yup.string().required('Password is required.')
+    name: Yup.string().required('Name is required'),
+    category: Yup.string().required('category is required'),
+    description: Yup.string().required('description is required'),
+    subCategory: Yup.string().required('subCategory is required'),
+    faq1: Yup.string().required('This field is required'),
+    faqAnswer1: Yup.string().required('This field is required'),
+    faq2: Yup.string().required('This field is required'),
+    faqAnswer2: Yup.string().required('This field is required')
   })
-
 
   const getCategories = async () => {
     setCatLoading(true)
@@ -56,26 +87,75 @@ const CreateService = () => {
   }
 
   const handleSubmit = async (values: CreateServiceProps) => {
-    setLoading(true)
-    try {
-      //   const response = await CreateServiceUserApi(values)
-      //   console.log('response', response)
-    } catch (error) {
-      console.log(error)
+    console.log(values, 'values')
+    if (selectedFiles.length !== 0) {
+      setLoading(true)
+      try {
+        const metaData = await Promise.all(
+          selectedFiles.map(item => {
+            return uploadToCloudinary(item)
+          })
+        )
+        const formData = {
+          name: values.name,
+          description: values.description,
+          images: metaData,
+          category: values.category,
+          subcategory: values.subCategory,
+          faqs: [{
+            question: values.faq1,
+            answer: values.faqAnswer2
+          },{
+            question: values.faq2,
+            answer: values.faqAnswer2
+          }]
+        }
+        console.log(metaData)
+          const response = await createNewServiceApi(formData)
+          console.log('response', response)
+      } catch (error) {
+        console.log(error)
+      }
+      setLoading(false)
+    } else {
+      dispatch(
+        openToaster({
+          type: 'error',
+          message: 'No Image uploaded'
+        })
+      )
+      return
     }
-    setLoading(false)
+  }
+
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const handleFileChange = (event: any) => {
+    const files = event.target.files
+
+    // Validate the number of selected files
+    if (files.length < 3 || files.length > 5) {
+      dispatch(
+        openToaster({
+          type: 'error',
+          message: 'file limit is between is 3 to 5'
+        })
+      )
+      event.target.value = null // Clear the file input
+    } else {
+      setSelectedFiles(Array.from(files))
+    }
   }
 
   useEffect(() => {
     getCategories()
   }, [])
 
- 
   return (
     <Container maxWidth='md'>
       <Centered mt={4}>
         <StyledBox>
-          <Centered >
+          <Centered>
             {catLoading ? (
               <Box mt={5}>
                 <CircularProgress />
@@ -95,27 +175,59 @@ const CreateService = () => {
                 <Formik
                   initialValues={initialValues}
                   onSubmit={handleSubmit}
-                  validationSchema={CreateServiceValidationSchema}
+                  // validationSchema={CreateServiceValidationSchema}
                 >
-                  {({ submitForm }) => {
+                  {({ submitForm, errors }) => {
+                    console.log('errors', errors)
                     return (
                       <Form>
                         <Grid container spacing={2}>
-                            <Grid item xs={12} md={6} alignItems='space-between' flex={1}>
+                          <Grid item xs={12} md={6} alignItems='space-between' flex={1}>
                             <InputField name='name' label={'Name'} />
                             <Box mt={2}>
-                            <SelectField name='category' label='Category' options={categories}  />
+                              <SelectField name='category' label='Category' options={categories} />
                             </Box>
-                            </Grid>
-                            <Grid item xs={12} md={6}>
-                            <InputField name='description' label={'Description'} multiline rows={4} />
-                            </Grid>
+                          </Grid>
+                          <Grid item xs={12} md={6}>
+                            <InputField
+                              name='description'
+                              label={'Description'}
+                              multiline
+                              rows={4}
+                            />
+                          </Grid>
                         </Grid>
-                        <Flex flexDirection='column' gap={2}>
-                            <Box mt={2}>
-                            <InputField name='subCategory' label={'Sub Category'} />
+                        <Box>
+                          <input
+                            style={{
+                              width: '100%',
+                              padding: '1rem',
+                              margin: '.5rem 0rem',
+                              border: '1px solid #000'
+                            }}
+                            type='file'
+                            multiple
+                            onChange={handleFileChange}
+                            id='file-input'
+                          />
 
-                            </Box>
+                          <Box>
+                            <Typography variant='subtitle1'>
+                              <strong>Selected Files:</strong>
+                            </Typography>
+                            <List>
+                              {selectedFiles.map((file, index) => (
+                                <ListItem key={index}>
+                                  <Typography variant='body1'>{file.name}</Typography>
+                                </ListItem>
+                              ))}
+                            </List>
+                          </Box>
+                        </Box>
+                        <Flex flexDirection='column' gap={2}>
+                          <Box mt={2}>
+                            <InputField name='subCategory' label={'Sub Category'} />
+                          </Box>
                           <InputField name='faq1' label={'Frequently Asked Question 1'} />
                           <InputField name='faqAnswer1' label={'Answer'} multiline rows={3} />
                           <InputField name='faq2' label={'Frequently Asked Question 2'} />

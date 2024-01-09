@@ -91,7 +91,7 @@ const demoServiceData: ServiceProps[] = [
   }
 ]
 
-const ServiceList = () => {
+const FavItems = () => {
   const [services, setServices] = useState<ServiceProps[]>([])
   const [loading, setLoading] = useState(false)
 
@@ -116,7 +116,7 @@ const ServiceList = () => {
     <Container maxWidth='lg'>
       <Box mb={5}>
         <Typography variant='subtitle1' fontWeight='600' mt={4}>
-          {`${id} - 80 - Result Found `}
+          {` 80 - Fav Item Found `}
         </Typography>
         {loading ? (
           <Centered mt={5}>
@@ -134,4 +134,4 @@ const ServiceList = () => {
   )
 }
 
-export default ServiceList
+export default FavItems

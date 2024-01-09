@@ -130,7 +130,7 @@ export const Navbar = () => {
               justifyContent='center'
               sx={{ display: { xs: 'none', md: 'block', height: '100%' } }}
             >
-              <Centered>
+              <Centered onClick={() => setActiveTab(-1)}>
                 <Link to='/'>{<StyledLogo src={Logo} />}</Link>
               </Centered>
             </Flex>
@@ -160,19 +160,19 @@ export const Navbar = () => {
                       'aria-labelledby': 'basic-button'
                     }}
                   >
+                    {auth.isAuthenticated && (
+                      <MenuItem onClick={handleClose}>
+                        <StyledLink to='/fav-services'>
+                          <Typography textAlign='center'>Favorite</Typography>
+                        </StyledLink>
+                      </MenuItem>
+                    )}
                     {auth.role === 'vendor' && (
-                      <>
-                        <MenuItem onClick={handleClose}>
-                          <StyledLink to='/vendor-services'>
-                            <Typography textAlign='center'>My Services</Typography>
-                          </StyledLink>
-                        </MenuItem>
-                        <MenuItem onClick={handleClose}>
-                          <StyledLink to='/create-service'>
-                            <Typography textAlign='center'>Add New Service</Typography>
-                          </StyledLink>
-                        </MenuItem>
-                      </>
+                      <MenuItem onClick={handleClose}>
+                        <StyledLink to='/vendor-services'>
+                          <Typography textAlign='center'>Manage Services</Typography>
+                        </StyledLink>
+                      </MenuItem>
                     )}
                     <MenuItem onClick={handleClose}>
                       <Typography textAlign='center'>Account Setting</Typography>

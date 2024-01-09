@@ -9,9 +9,11 @@ const axiosInstance = axios.create({
   baseURL: BASE_URL,
   headers: {
     'Content-Type': 'application/json',
-    'x-api-key': 'B2535BDDCB3E8EA46F326A7E5C2F7'
+    'x-api-key': 'B2535BDDCB3E8EA46F326A7E5C2F7',
   }
 })
+
+axiosInstance.defaults.headers.common["Authorization"] = store.getState().auth.token;
 
 axiosInstance.interceptors.request.use(
   function (config) {

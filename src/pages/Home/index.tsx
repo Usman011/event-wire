@@ -1,8 +1,16 @@
-import { Box, Button, Container, Divider, Grid, Typography, styled } from '@mui/material'
+import {
+  Box,
+  CircularProgress,
+  Container,
+  Divider,
+  Grid,
+  Typography,
+  styled
+} from '@mui/material'
 import { useViewports } from 'helpers/viewports'
 import { useEffect, useState } from 'react'
 import { getAllCategoriesApi } from 'api/userApi'
-import { Flex } from 'components/design'
+import { Centered, Flex } from 'components/design'
 import { Link } from 'react-router-dom'
 
 interface Category {
@@ -15,8 +23,10 @@ interface Category {
 }
 const Home = () => {
   const [categories, setCategories] = useState<Category[]>([])
+  const [loading, setLoading] = useState(false)
 
   const getCategories = async () => {
+    setLoading(true)
     try {
       const response = await getAllCategoriesApi({ sub: true })
       setCategories(response.data.categories)
@@ -24,6 +34,7 @@ const Home = () => {
     } catch (error) {
       /* empty */
     }
+    setLoading(false)
   }
 
   useEffect(() => {
@@ -66,44 +77,50 @@ const Home = () => {
           <Typography variant={isLaptop ? 'body1' : 'body2'} fontWeight='400' mt={2}>
             Connect with seasoned wedding pros to help bring your day to life.
           </Typography>
-          <Box pb={4}>
-            <Grid container spacing={2} p={2} my={2}>
-              {categories.map(item => {
-                return (
-                  <Grid item xs={12} sm={6} md={4} lg={3} flex={1}>
-                    <StyledLink to={`services/${item.slug}`}>
-                      <CardBox>
-                        <Box position='relative'>
-                          <StyledImg src={item.icon} alt='card img' />
-                        </Box>
+          {loading ? (
+            <Centered mt={5}>
+              <CircularProgress />
+            </Centered>
+          ) : (
+            <Box pb={4}>
+              <Grid container spacing={2} p={2} my={2}>
+                {categories.map(item => {
+                  return (
+                    <Grid item xs={12} sm={6} md={4} lg={3} flex={1}>
+                      <StyledLink to={`services/${item.slug}`}>
+                        <CardBox>
+                          <Box position='relative'>
+                            <StyledImg src={item.icon} alt='card img' />
+                          </Box>
 
-                        <Typography variant='subtitle2' fontWeight='bold' mt={3} pb={2}>
-                          {item.name}
-                        </Typography>
-                        <Typography
-                          variant={isLaptop ? 'body2' : 'body1'}
-                          color='secondary'
-                          fontWeight='400'
-                        >
-                          {item.description}
-                        </Typography>
-                      </CardBox>
-                    </StyledLink>
-                  </Grid>
-                )
-              })}
-            </Grid>
-            <Flex flexWrap='wrap'>
-              {categories.map(item => (
-                <StyledLink to={`services/${item.slug}`}>
-                  <CategoryBlocks variant='body2'>{item.name}</CategoryBlocks>
+                          <Typography variant='subtitle2' fontWeight='bold' mt={3} pb={2}>
+                            {item.name}
+                          </Typography>
+                          <Typography
+                            variant={isLaptop ? 'body2' : 'body1'}
+                            color='secondary'
+                            fontWeight='400'
+                          >
+                            {item.description}
+                          </Typography>
+                        </CardBox>
+                      </StyledLink>
+                    </Grid>
+                  )
+                })}
+              </Grid>
+              <Flex flexWrap='wrap'>
+                {categories.map(item => (
+                  <StyledLink to={`services/${item.slug}`}>
+                    <CategoryBlocks variant='body2'>{item.name}</CategoryBlocks>
+                  </StyledLink>
+                ))}
+                <StyledLink to={`services/all`}>
+                  <CategoryBlocks variant='body2'>View All</CategoryBlocks>
                 </StyledLink>
-              ))}
-              <StyledLink to={`services/all`}>
-                <CategoryBlocks variant='body2'>View All</CategoryBlocks>
-              </StyledLink>
-            </Flex>
-          </Box>
+              </Flex>
+            </Box>
+          )}
         </Box>
       </Container>
     </Box>

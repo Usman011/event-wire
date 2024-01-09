@@ -38,7 +38,7 @@ const Login = () => {
       dispatch(setUser({ ...response.data }))
       navigate('/')
     } catch (error) {
-      console.log(error)
+      console.log('Login Error', error)
     }
     setLoading(false)
   }
