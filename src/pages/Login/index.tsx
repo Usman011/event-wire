@@ -44,7 +44,7 @@ const Login = () => {
   }
   return (
     <Container maxWidth='md'>
-      <Centered minHeight='100vh'>
+      <Centered py={5}>
         <StyledBox width={isLaptop ? '100%' : '400px'}>
           <Grid container>
             {isLaptop && (
@@ -112,13 +112,13 @@ export default Login
 const StyledBox = styled(Box)(() => ({
   boxShadow: 'rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;',
   backgroundColor: 'rgba(255, 255, 255, 1)',
-  minHeight: '80vh'
+  minHeight: '70vh'
 }))
 
 const ImageBackground = styled('img')(() => ({
   backgroundImage: 'url(https://wallpapercave.com/wp/wp7488460.jpg)',
   height: '100%',
-  minHeight: '80vh',
+  minHeight: '70vh',
   width: '100%',
   backgroundRepeat: 'no-repeat',
   backgroundSize: 'cover'

@@ -123,6 +123,11 @@ export const Navbar = () => {
                     </MenuItem>
                   )
                 })}
+                <MenuItem onClick={handleCloseNavMenu}>
+                  <StyledLink to='/contact'>
+                    <Typography textAlign='center'>Contact</Typography>
+                  </StyledLink>
+                </MenuItem>
               </Menu>
             </Box>
             <Flex
@@ -200,6 +205,15 @@ export const Navbar = () => {
                           </Typography>
                         )
                       })}
+                      <Typography
+                        variant='body1'
+                        fontWeight={500}
+                        onClick={() => {
+                          navigate('/contact')
+                        }}
+                      >
+                        Contact Us
+                      </Typography>
                     </Flex>
                   </Box>
                   {auth.isAuthenticated ? (

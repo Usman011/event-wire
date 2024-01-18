@@ -69,7 +69,7 @@ const Signup = () => {
       country: Yup.string().required('Country is required'),
       city: Yup.string().required('City is required')
     }),
-    role: Yup.string().required('Role is required'),
+    role: Yup.string().required('Role is required')
   })
 
   const handleSubmit = async (values: SignupProps) => {
@@ -100,7 +100,7 @@ const Signup = () => {
   }
   return (
     <Container maxWidth='md'>
-      <Centered py={5} minHeight='100vh'>
+      <Centered py={5}>
         <StyledBox width={isLaptop ? '100%' : '400px'}>
           <Grid container>
             {isLaptop && (
@@ -203,7 +203,7 @@ const StyledBox = styled(Box)(() => ({
 const ImageBackground = styled('img')(() => ({
   backgroundImage: 'url(https://wallpapercave.com/wp/wp7488460.jpg)',
   height: '100%',
-  minHeight: '80vh',
+  minHeight: '70vh',
   width: '430px',
   backgroundRepeat: 'no-repeat',
   backgroundSize: 'cover'

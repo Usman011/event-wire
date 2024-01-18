@@ -143,7 +143,7 @@ const demoServiceData: ServiceProps[] = [
   }
 ]
 
-const ServiceList = () => {
+const PopularService = () => {
   const [services, setServices] = useState<ServiceProps[]>([])
   const [loading, setLoading] = useState(false)
 
@@ -186,4 +186,4 @@ const ServiceList = () => {
   )
 }
 
-export default ServiceList
+export default PopularService

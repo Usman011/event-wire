@@ -3,7 +3,7 @@ import { Box, Button, Grid, Typography } from '@mui/material'
 import { Flex } from 'components/design'
 import { useState } from 'react'
 import FavoriteIcon from '@mui/icons-material/Favorite'
-import { ServiceProps } from 'pages/ServiceList'
+import { ServiceProps } from 'components/ServiceList'
 import { useNavigate } from 'react-router'
 
 const ItemCard = ({ category }: { category: ServiceProps }) => {
