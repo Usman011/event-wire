@@ -98,6 +98,9 @@ const Signup = () => {
     }
     setLoading(false)
   }
+
+  const { isMobile } = useViewports()
+
   return (
     <Container maxWidth='md'>
       <Centered py={5}>

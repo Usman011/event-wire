@@ -55,40 +55,52 @@ const Footer = () => {
           <Box py={5}>
             <Grid container spacing={2}>
               <Grid item xs={12} sm={4}>
-                <Typography textAlign='center' variant='h6' fontWeight='bold'>
-                  Vendor
-                </Typography>
-                {data1.map(item => {
-                  return (
-                    <Typography textAlign='center' variant='body2' my={1}>
-                      {item}
-                    </Typography>
-                  )
-                })}
+              <Centered flexDirection='column'>
+                  <Box>
+                  <Typography variant='h6' fontWeight='bold'>
+                    Vendor
+                  </Typography>
+                    {data1.map(item => {
+                      return (
+                        <Typography variant='body2' my={1}>
+                          {item}
+                        </Typography>
+                      )
+                    })}
+                  </Box>
+                </Centered>
               </Grid>
               <Grid item xs={12} sm={4}>
-                <Typography textAlign='center' variant='h6' fontWeight='bold'>
-                  Shops
-                </Typography>
-                {data1.map(item => {
-                  return (
-                    <Typography textAlign='center' variant='body2' my={1}>
-                      {item}
-                    </Typography>
-                  )
-                })}
+                <Centered flexDirection='column'>
+                  <Box>
+                  <Typography variant='h6' fontWeight='bold'>
+                    Shops
+                  </Typography>
+                    {data1.map(item => {
+                      return (
+                        <Typography variant='body2' my={1}>
+                          {item}
+                        </Typography>
+                      )
+                    })}
+                  </Box>
+                </Centered>
               </Grid>
               <Grid item xs={12} sm={4}>
-                <Typography textAlign='center' variant='h6' fontWeight='bold'>
-                  Wedding
-                </Typography>
-                {data1.map(item => {
-                  return (
-                    <Typography textAlign='center' variant='body2' my={1}>
-                      {item}
+                <Centered flexDirection='column'>
+                  <Box>
+                    <Typography variant='h6' fontWeight='bold'>
+                      Wedding
                     </Typography>
-                  )
-                })}
+                    {data1.map(item => {
+                      return (
+                        <Typography variant='body2' my={1}>
+                          {item}
+                        </Typography>
+                      )
+                    })}
+                  </Box>
+                </Centered>
               </Grid>
             </Grid>
           </Box>
