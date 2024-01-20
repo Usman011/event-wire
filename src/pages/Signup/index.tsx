@@ -46,7 +46,6 @@ const Signup = () => {
     phone: '',
     role: 'buyer'
   }
-  console.log('countries', countries)
 
   const countryList: countryListProp[] = Object.entries(countries).map(([key, country]) => ({
     key,
@@ -69,7 +68,7 @@ const Signup = () => {
       country: Yup.string().required('Country is required'),
       city: Yup.string().required('City is required')
     }),
-    role: Yup.string().required('Role is required'),
+    role: Yup.string().required('Role is required')
   })
 
   const handleSubmit = async (values: SignupProps) => {
@@ -84,15 +83,25 @@ const Signup = () => {
     setLoading(true)
     try {
       const response = await signupUserApi(formData)
-      console.log(response, 'res')
-      dispatch(setUser({ ...response.data }))
-      dispatch(
-        openToaster({
-          type: 'success',
-          message: 'Account Created Successfully'
-        })
-      )
-      navigate('/')
+      if (response.data.user.status === 'pending') {
+        navigate('/')
+        dispatch(
+          openToaster({
+            type: 'success',
+            message: 'Congratulations! Your accunt is under verification.'
+          })
+        )
+      }
+      if (response.data.user.status === 'active') {
+        dispatch(setUser({ ...response.data }))
+        dispatch(
+          openToaster({
+            type: 'success',
+            message: 'Account Created Successfully'
+          })
+        )
+        navigate('/')
+      }
     } catch (error) {
       console.log(error)
     }

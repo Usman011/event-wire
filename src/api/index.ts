@@ -3,17 +3,18 @@ import { store } from 'store'
 import { logout } from 'store/auth'
 import { openToaster } from 'store/toast'
 
-const BASE_URL = 'https://em-api-ca838e34c99a.herokuapp.com/api'
+// const BASE_URL = 'https://em-api-ca838e34c99a.herokuapp.com/api'
+const BASE_URL = 'http://localhost:8000/api'
 
 const axiosInstance = axios.create({
   baseURL: BASE_URL,
   headers: {
     'Content-Type': 'application/json',
-    'x-api-key': 'B2535BDDCB3E8EA46F326A7E5C2F7',
+    'x-api-key': 'B2535BDDCB3E8EA46F326A7E5C2F7'
   }
 })
 
-axiosInstance.defaults.headers.common["Authorization"] = store.getState().auth.token;
+axiosInstance.defaults.headers.common['Authorization'] = store.getState().auth.token
 
 axiosInstance.interceptors.request.use(
   function (config) {
