@@ -1,15 +1,11 @@
 import { Box, Button, CircularProgress, Container, Grid, Typography } from '@mui/material'
 import { styled } from '@mui/system'
-import { loginUserApi } from 'api/userApi'
 import { InputField } from 'components/InputField'
 import { SelectField } from 'components/SelectField'
 import { Centered, Flex } from 'components/design'
 import { Formik } from 'formik'
-import { useViewports } from 'helpers/viewports'
 import { useState } from 'react'
-import { useDispatch } from 'react-redux'
-import { Form, Link, useNavigate } from 'react-router-dom'
-import { setUser } from 'store/auth'
+import { Form } from 'react-router-dom'
 import * as Yup from 'yup'
 
 export interface CreateJobProps {
@@ -22,10 +18,7 @@ export interface CreateJobProps {
 }
 
 const CreateJob = () => {
-  const { isLaptop } = useViewports()
   const [loading, setLoading] = useState(false)
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
   const initialValues: CreateJobProps = {
     title: '',
     description: '',
