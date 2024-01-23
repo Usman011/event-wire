@@ -1,17 +1,10 @@
-import {
-  Box,
-  CircularProgress,
-  Container,
-  Divider,
-  Grid,
-  Typography,
-  styled
-} from '@mui/material'
+import { Box, CircularProgress, Container, Divider, Grid, Typography, styled } from '@mui/material'
 import { useViewports } from 'helpers/viewports'
 import { useEffect, useState } from 'react'
 import { getAllCategoriesApi } from 'api/userApi'
 import { Centered, Flex } from 'components/design'
 import { Link } from 'react-router-dom'
+import PopularService from 'components/PopularServices'
 
 interface Category {
   name: string
@@ -122,6 +115,7 @@ const Home = () => {
             </Box>
           )}
         </Box>
+        <PopularService />
       </Container>
     </Box>
   )

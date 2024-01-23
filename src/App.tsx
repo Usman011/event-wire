@@ -13,23 +13,24 @@ import PublicLayout from 'components/PublicLayout'
 import CreateService from 'pages/CreateService'
 import VendorServiceList from 'pages/VendorServiceList'
 import FavItems from 'pages/FavItems'
+import Contact from 'pages/Contact'
 
 function App() {
   const activeTheme = useMemo(() => CustomTheme(ThemeVariantsProps.light), [])
 
   const router = createBrowserRouter([
     {
-      path: 'signup',
-      element: <Signup />
-    },
-    {
-      path: 'login',
-      element: <Login />
-    },
-    {
       path: '/',
       element: <PublicLayout />,
       children: [
+        {
+          path: '/signup',
+          element: <Signup />
+        },
+        {
+          path: '/login',
+          element: <Login />
+        },
         {
           path: '/',
           element: <Home />
@@ -42,9 +43,12 @@ function App() {
           path: '/view-service/:id',
           element: <ViewService />
         },
+        {
+          path: '/contact',
+          element: <Contact />
+        }
       ]
     },
-   
 
     {
       path: '/',
@@ -61,7 +65,7 @@ function App() {
         {
           path: '/fav-services',
           element: <FavItems />
-        },
+        }
       ]
     }
   ])

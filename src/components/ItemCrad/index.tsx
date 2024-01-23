@@ -3,8 +3,9 @@ import { Box, Button, Grid, Typography } from '@mui/material'
 import { Flex } from 'components/design'
 import { useState } from 'react'
 import FavoriteIcon from '@mui/icons-material/Favorite'
-import { ServiceProps } from 'pages/ServiceList'
 import { useNavigate } from 'react-router'
+import LocalFireDepartmentIcon from '@mui/icons-material/LocalFireDepartment'
+import { ServiceProps } from 'components/PopularServices'
 
 const ItemCard = ({ category }: { category: ServiceProps }) => {
   const [isFav, setIsFav] = useState(false)
@@ -26,7 +27,7 @@ const ItemCard = ({ category }: { category: ServiceProps }) => {
             right={10}
             onClick={() => setIsFav(!isFav)}
           >
-            <FavoriteIcon sx={{ color: isFav ? 'red' : '#fff', cursor: 'pointer' }} />
+            <LocalFireDepartmentIcon sx={{ color: 'orange', fontSize: '35px' }} />
           </Flex>
         </Box>
 

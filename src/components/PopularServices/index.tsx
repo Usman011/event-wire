@@ -127,23 +127,10 @@ const demoServiceData: ServiceProps[] = [
       img2: 'https://source.unsplash.com/random/200x200?sig=13',
       img3: 'https://source.unsplash.com/random/200x200?sig=14'
     }
-  },
-  {
-    id: 9,
-    title: 'Community Volunteer Day',
-    location: 'Community Park',
-    description: 'Join us for a day of community service and teamwork.',
-    phone: '+1 (999) 888-7777',
-    email: 'sarah.thompson@example.com',
-    images: {
-      img1: 'https://source.unsplash.com/random/200x200?sig=15',
-      img2: 'https://source.unsplash.com/random/200x200?sig=16',
-      img3: 'https://source.unsplash.com/random/200x200?sig=17'
-    }
   }
 ]
 
-const ServiceList = () => {
+const PopularService = () => {
   const [services, setServices] = useState<ServiceProps[]>([])
   const [loading, setLoading] = useState(false)
 
@@ -186,4 +173,4 @@ const ServiceList = () => {
   )
 }
 
-export default ServiceList
+export default PopularService

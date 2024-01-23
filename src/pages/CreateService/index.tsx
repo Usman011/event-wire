@@ -1,17 +1,17 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   Box,
   Button,
   CircularProgress,
   Container,
   Grid,
-  Input,
   List,
   ListItem,
   Typography
 } from '@mui/material'
 import { styled } from '@mui/system'
 import uploadToCloudinary from 'api/cloudnairy'
-import { createNewServiceApi, getAllCategoriesApi } from 'api/userApi'
+import { createNewServiceApi, getCompleteCategoriesApi } from 'api/userApi'
 import { InputField } from 'components/InputField'
 import { SelectField } from 'components/SelectField'
 import { Centered, Flex } from 'components/design'
@@ -45,6 +45,7 @@ interface Category {
 const CreateService = () => {
   const [loading, setLoading] = useState(false)
   const [categories, setCategories] = useState([])
+  const [subcategories, setSubcategories] = useState([])
   const [catLoading, setCatLoading] = useState(false)
   const dispatch = useDispatch()
   const [selectedFiles, setSelectedFiles] = useState([])
@@ -60,26 +61,27 @@ const CreateService = () => {
     faqAnswer2: ''
   }
 
-  const CreateServiceValidationSchema = Yup.object().shape({
-    name: Yup.string().required('Name is required'),
-    category: Yup.string().required('category is required'),
-    description: Yup.string().required('description is required'),
-    subCategory: Yup.string().required('subCategory is required'),
-    faq1: Yup.string().required('This field is required'),
-    faqAnswer1: Yup.string().required('This field is required'),
-    faq2: Yup.string().required('This field is required'),
-    faqAnswer2: Yup.string().required('This field is required')
-  })
+  // const CreateServiceValidationSchema = Yup.object().shape({
+  //   name: Yup.string().required('Name is required'),
+  //   category: Yup.string().required('category is required'),
+  //   description: Yup.string().required('description is required'),
+  //   subCategory: Yup.string().required('subCategory is required'),
+  //   faq1: Yup.string().required('This field is required'),
+  //   faqAnswer1: Yup.string().required('This field is required'),
+  //   faq2: Yup.string().required('This field is required'),
+  //   faqAnswer2: Yup.string().required('This field is required')
+  // })
 
   const getCategories = async () => {
     setCatLoading(true)
     try {
-      const response = await getAllCategoriesApi({ sub: true })
-      const data = response.data.categories.map((item: Category) => {
-        return { title: item.name, key: item.id }
-      })
-      setCategories(data)
-      console.log('getAllCategoriesApi', response)
+      const response = await getCompleteCategoriesApi()
+
+      // const data = response.data.categories.map((item: Category) => {
+      //   return { title: item.name, key: item.id }
+      // })
+      setCategories(response.data.categories)
+      // console.log('getAllCategoriesApi', response)
     } catch (error) {
       /* empty */
     }
@@ -102,17 +104,20 @@ const CreateService = () => {
           images: metaData,
           category: values.category,
           subcategory: values.subCategory,
-          faqs: [{
-            question: values.faq1,
-            answer: values.faqAnswer2
-          },{
-            question: values.faq2,
-            answer: values.faqAnswer2
-          }]
+          faqs: [
+            {
+              question: values.faq1,
+              answer: values.faqAnswer2
+            },
+            {
+              question: values.faq2,
+              answer: values.faqAnswer2
+            }
+          ]
         }
         console.log(metaData)
-          const response = await createNewServiceApi(formData)
-          console.log('response', response)
+        const response = await createNewServiceApi(formData)
+        console.log('response', response)
       } catch (error) {
         console.log(error)
       }
@@ -127,7 +132,6 @@ const CreateService = () => {
       return
     }
   }
-
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleFileChange = (event: any) => {
@@ -146,6 +150,20 @@ const CreateService = () => {
       setSelectedFiles(Array.from(files))
     }
   }
+
+  // const handleValues = (values: any) => {
+  //   // const subcategories = categories.filter(ct => {
+  //   //   if (ct.category.id === values.category) {
+  //   //     return ct.subcategories.map((sct: any) => {
+  //   //       return {
+  //   //         title: sct.name,
+  //   //         key: sct.id
+  //   //       }
+  //   //     })
+  //   //   }
+  //   // })
+  //   // setSubcategories(subcategories)
+  // }
 
   useEffect(() => {
     getCategories()
@@ -177,15 +195,25 @@ const CreateService = () => {
                   onSubmit={handleSubmit}
                   // validationSchema={CreateServiceValidationSchema}
                 >
-                  {({ submitForm, errors }) => {
-                    console.log('errors', errors)
+                  {({ submitForm, errors, values }) => {
+                    //
+                    // handleValues(values)
                     return (
                       <Form>
                         <Grid container spacing={2}>
                           <Grid item xs={12} md={6} alignItems='space-between' flex={1}>
                             <InputField name='name' label={'Name'} />
                             <Box mt={2}>
-                              <SelectField name='category' label='Category' options={categories} />
+                              <SelectField
+                                name='category'
+                                label='Category'
+                                options={categories.map(ct => {
+                                  return {
+                                    title: ct.category.name,
+                                    key: ct.category.id
+                                  }
+                                })}
+                              />
                             </Box>
                           </Grid>
                           <Grid item xs={12} md={6}>
@@ -226,7 +254,11 @@ const CreateService = () => {
                         </Box>
                         <Flex flexDirection='column' gap={2}>
                           <Box mt={2}>
-                            <InputField name='subCategory' label={'Sub Category'} />
+                            <SelectField
+                              name='subCategory'
+                              label='Subcategory'
+                              options={subcategories}
+                            />
                           </Box>
                           <InputField name='faq1' label={'Frequently Asked Question 1'} />
                           <InputField name='faqAnswer1' label={'Answer'} multiline rows={3} />

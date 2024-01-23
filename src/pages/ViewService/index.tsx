@@ -3,11 +3,11 @@ import { Centered } from 'components/design'
 import { useViewports } from 'helpers/viewports'
 import { useParams } from 'react-router'
 import { useEffect, useState } from 'react'
-import { ServiceProps } from 'pages/ServiceList'
 import { AuthState } from 'store/auth'
 import { RootState } from 'store'
 import { useSelector } from 'react-redux'
 import { StyledLink } from 'pages/Home'
+import { ServiceProps } from 'components/PopularServices'
 
 const demoServiceData: ServiceProps = {
   id: 1,

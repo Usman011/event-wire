@@ -66,13 +66,21 @@ export const getAllCategoriesApi = ({ parent = '', sub = false }) => {
   return axiosInstance(axiosConfig)
 }
 
+export const getCompleteCategoriesApi = () => {
+  let axiosConfig = {
+    method: 'get',
+    url: `${URL.GET_CATEGORIES}/all`
+  }
+  return axiosInstance(axiosConfig)
+}
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const createNewServiceApi = (data: any) => {
   let axiosConfig = {
     method: 'post',
     url: URL.POST_SERVICE,
     accessToken: store.getState().auth.token,
-    data,
+    data
   }
   return axiosInstance(axiosConfig)
 }
