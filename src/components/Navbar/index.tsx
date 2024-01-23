@@ -18,11 +18,13 @@ import { getAllCategoriesApi, logoutUserApi } from 'api/userApi'
 import { RootState } from 'store'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle'
 import { Button, Divider, Stack } from '@mui/material'
+import SimpleMenu from 'components/Menu'
 
 const gap = {
   mobile: 2,
   laptop: 4
 }
+
 interface Category {
   name: string
   description: string
@@ -128,6 +130,17 @@ export const Navbar = () => {
                     <Typography textAlign='center'>Contact</Typography>
                   </StyledLink>
                 </MenuItem>
+                <MenuItem onClick={handleCloseNavMenu}>
+                  <StyledLink to='/create-job'>
+                    <Typography textAlign='center'>Create Job</Typography>
+                  </StyledLink>
+                </MenuItem>
+                <MenuItem onClick={handleCloseNavMenu}>
+                  <StyledLink to='/view-jobs'> 
+                    <Typography textAlign='center'>View Jobs</Typography>
+                  </StyledLink>
+                </MenuItem>
+                <SimpleMenu />
               </Menu>
             </Box>
             <Flex
@@ -214,6 +227,25 @@ export const Navbar = () => {
                       >
                         Contact Us
                       </Typography>
+                      <Typography
+                        variant='body1'
+                        fontWeight={500}
+                        onClick={() => {
+                          navigate('/create-job')
+                        }}
+                      >
+                        Create Job
+                      </Typography>
+                      <Typography
+                        variant='body1'
+                        fontWeight={500}
+                        onClick={() => {
+                          navigate('/view-jobs')
+                        }}
+                      >
+                        View All Jobs
+                      </Typography>
+                      <SimpleMenu />
                     </Flex>
                   </Box>
                   {auth.isAuthenticated ? (

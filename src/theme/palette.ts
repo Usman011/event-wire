@@ -25,7 +25,7 @@ export const lightModePalette: PaletteOptions = {
     dark: '#1dd4dc'
   },
   secondary: {
-    main: '#8c8c8c',
+    main: '#0A1172',
     light: '#aea09b',
     dark: '#8c8c8c'
   },

@@ -14,6 +14,8 @@ import CreateService from 'pages/CreateService'
 import VendorServiceList from 'pages/VendorServiceList'
 import FavItems from 'pages/FavItems'
 import Contact from 'pages/Contact'
+import CreateJob from 'pages/CreateJob'
+import ViewJobs from 'pages/ViewJobs'
 
 function App() {
   const activeTheme = useMemo(() => CustomTheme(ThemeVariantsProps.light), [])
@@ -65,6 +67,14 @@ function App() {
         {
           path: '/fav-services',
           element: <FavItems />
+        },
+        {
+          path: '/create-job',
+          element: <CreateJob />
+        },
+        {
+          path: '/view-jobs',
+          element: <ViewJobs />
         }
       ]
     }

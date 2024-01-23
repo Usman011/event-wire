@@ -5,6 +5,7 @@ import { getAllCategoriesApi } from 'api/userApi'
 import { Centered, Flex } from 'components/design'
 import { Link } from 'react-router-dom'
 import PopularService from 'components/PopularServices'
+import BuyerRequest from 'components/BuyerRequest'
 
 interface Category {
   name: string
@@ -63,6 +64,15 @@ const Home = () => {
       </Container>
       <BorderBox />
       <Container maxWidth='lg'>
+        <Grid container spacing={2} mt={2}>
+          <Grid item xs={12} md={6}>
+            <BuyerRequest />
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <BuyerRequest />
+          </Grid>
+        </Grid>
+
         <Box>
           <Typography variant='h4' fontWeight='bold' mt={4}>
             Find every vendor you need
@@ -115,6 +125,7 @@ const Home = () => {
             </Box>
           )}
         </Box>
+
         <PopularService />
       </Container>
     </Box>
