@@ -14,7 +14,7 @@ import LogoutIcon from '@mui/icons-material/Logout'
 import { Link, useNavigate } from 'react-router-dom'
 import { AuthState, logout } from 'store/auth'
 import { useDispatch, useSelector } from 'react-redux'
-import { getAllCategoriesApi, logoutUserApi } from 'api/userApi'
+import { getAllCategoriesApi, getAllCategoriesWithSubApi, logoutUserApi } from 'api/userApi'
 import { RootState } from 'store'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle'
 import { Button, Divider, Stack } from '@mui/material'
@@ -23,15 +23,6 @@ import SimpleMenu from 'components/Menu'
 const gap = {
   mobile: 2,
   laptop: 4
-}
-
-interface Category {
-  name: string
-  description: string
-  icon: string
-  slug: string
-  parent: string
-  id: string
 }
 
 export const Navbar = () => {
@@ -44,7 +35,7 @@ export const Navbar = () => {
   const [profileAnchorEl, setProfileAnchorEl] = useState<null | HTMLElement>(null)
   const open = Boolean(profileAnchorEl)
   const [activeTab, setActiveTab] = useState(-1)
-  const [categories, setCategories] = useState<Category[]>([])
+  const [categories, setCategories] = useState([])
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget)
@@ -69,7 +60,7 @@ export const Navbar = () => {
 
   const getCategories = async () => {
     try {
-      const response = await getAllCategoriesApi({})
+      const response = await getAllCategoriesWithSubApi()
       setCategories(response.data.categories)
       console.log('response', response)
     } catch (error) {
@@ -118,29 +109,25 @@ export const Navbar = () => {
               >
                 {categories.map(item => {
                   return (
-                    <MenuItem onClick={handleCloseNavMenu}>
-                      <StyledLink to={`services/${item.slug}`}>
-                        <Typography textAlign='center'>{item.name}</Typography>
-                      </StyledLink>
+                    <MenuItem>
+                      <SimpleMenu
+                        name={item.category.name}
+                        subcategories={item.subcategories}
+                        img={item.category.icon}
+                      />
                     </MenuItem>
                   )
                 })}
+                <MenuItem onClick={handleCloseNavMenu}>
+                  <StyledLink to='/view-jobs'>
+                    <Typography textAlign='center'>Jobs</Typography>
+                  </StyledLink>
+                </MenuItem>
                 <MenuItem onClick={handleCloseNavMenu}>
                   <StyledLink to='/contact'>
                     <Typography textAlign='center'>Contact</Typography>
                   </StyledLink>
                 </MenuItem>
-                <MenuItem onClick={handleCloseNavMenu}>
-                  <StyledLink to='/create-job'>
-                    <Typography textAlign='center'>Create Job</Typography>
-                  </StyledLink>
-                </MenuItem>
-                <MenuItem onClick={handleCloseNavMenu}>
-                  <StyledLink to='/view-jobs'> 
-                    <Typography textAlign='center'>View Jobs</Typography>
-                  </StyledLink>
-                </MenuItem>
-                <SimpleMenu />
               </Menu>
             </Box>
             <Flex
@@ -178,6 +165,11 @@ export const Navbar = () => {
                       'aria-labelledby': 'basic-button'
                     }}
                   >
+                    <MenuItem onClick={handleClose}>
+                      <StyledLink to='/create-job'>
+                        <Typography textAlign='center'>Create Job</Typography>
+                      </StyledLink>
+                    </MenuItem>
                     {auth.isAuthenticated && (
                       <MenuItem onClick={handleClose}>
                         <StyledLink to='/fav-services'>
@@ -203,22 +195,27 @@ export const Navbar = () => {
                   </Menu>
                   <Box sx={{ display: { xs: 'none', md: 'flex', cursor: 'pointer' } }}>
                     <Flex gap={2}>
-                      {categories.map((item, index) => {
+                      {categories.map(item => {
+                        console.log('item', item)
                         return (
-                          <Typography
-                            variant='body1'
-                            fontWeight={activeTab === index ? 'bold' : 500}
-                            color={activeTab === index ? 'hover' : '#000'}
-                            onClick={() => {
-                              setActiveTab(index)
-                              navigate(`/services/${item.slug}`)
-                            }}
-                          >
-                            {item.name}
-                          </Typography>
+                          <SimpleMenu
+                            name={item.category.name}
+                            subcategories={item.subcategories}
+                            img={item.category.icon}
+                          />
                         )
                       })}
-                      <Typography
+
+                      <StyledTypography
+                        variant='body1'
+                        fontWeight={500}
+                        onClick={() => {
+                          navigate('/view-jobs')
+                        }}
+                      >
+                        Jobs
+                      </StyledTypography>
+                      <StyledTypography
                         variant='body1'
                         fontWeight={500}
                         onClick={() => {
@@ -226,26 +223,7 @@ export const Navbar = () => {
                         }}
                       >
                         Contact Us
-                      </Typography>
-                      <Typography
-                        variant='body1'
-                        fontWeight={500}
-                        onClick={() => {
-                          navigate('/create-job')
-                        }}
-                      >
-                        Create Job
-                      </Typography>
-                      <Typography
-                        variant='body1'
-                        fontWeight={500}
-                        onClick={() => {
-                          navigate('/view-jobs')
-                        }}
-                      >
-                        View All Jobs
-                      </Typography>
-                      <SimpleMenu />
+                      </StyledTypography>
                     </Flex>
                   </Box>
                   {auth.isAuthenticated ? (
@@ -317,4 +295,10 @@ const Wrapper = styled(Box)(() => ({
 
 const StyledLogo = styled('img')(() => ({
   height: '100%'
+}))
+
+const StyledTypography = styled(Typography)(({ theme }) => ({
+  '&:hover': {
+    color: '#19b5bc'
+  }
 }))

@@ -1,12 +1,14 @@
 import { Box, Button, CircularProgress, Container, Grid, Typography } from '@mui/material'
 import { styled } from '@mui/system'
+import { getAllCategoriesWithSubApi } from 'api/userApi'
 import { InputField } from 'components/InputField'
 import { SelectField } from 'components/SelectField'
 import { Centered, Flex } from 'components/design'
 import { Formik } from 'formik'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Form } from 'react-router-dom'
 import * as Yup from 'yup'
+
 
 export interface CreateJobProps {
   title: string
@@ -19,6 +21,8 @@ export interface CreateJobProps {
 
 const CreateJob = () => {
   const [loading, setLoading] = useState(false)
+  const [categories, setCategories] = useState([])
+
   const initialValues: CreateJobProps = {
     title: '',
     description: '',
@@ -38,6 +42,24 @@ const CreateJob = () => {
 
     setLoading(false)
   }
+
+  const getCategories = async () => {
+    try {
+      const response = await getAllCategoriesWithSubApi()
+      const options = response.data.categories.map(item => {
+        return { title: item.category.name, key: item.category.id }
+      })
+      setCategories(options)
+
+      console.log('response', response)
+    } catch (error) {
+      /* empty */
+    }
+  }
+
+  useEffect(() => {
+    getCategories()
+  }, [])
 
   return (
     <Container maxWidth='md'>
@@ -68,28 +90,7 @@ const CreateJob = () => {
                           <Flex flexDirection='column' gap={2}>
                             <InputField name='title' label={'Title'} />
                             <InputField name='description' label={'Description'} />
-                            <SelectField
-                              name='category'
-                              label='Category'
-                              options={[
-                                {
-                                  title: 'UI & UX',
-                                  key: 'ui&ux'
-                                },
-                                {
-                                  title: 'UI & UX',
-                                  key: 'ui&ux'
-                                },
-                                {
-                                  title: 'UI & UX',
-                                  key: 'ui&ux'
-                                },
-                                {
-                                  title: 'UI & UX',
-                                  key: 'ui&ux'
-                                }
-                              ]}
-                            />
+                            <SelectField name='category' label='Category' options={categories} />
                             <InputField name='priceFrom' type='number' label={'Starting Price'} />
                             <InputField
                               name='priceTo'

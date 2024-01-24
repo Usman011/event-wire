@@ -19,6 +19,6 @@ module.exports = {
     'no-undef': 'off',
     'prefer-arrow-callback': 0,
     'prefer-const': 0,
-    quotes: [0, 'double']
+    quotes: [0, 'double'],
   }
 }

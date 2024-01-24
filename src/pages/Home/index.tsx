@@ -67,19 +67,6 @@ const Home = () => {
                 Search over 250,000 local professionals with reviews, pricing, availability, and
                 more
               </Typography>
-              <Box pt={2}>
-                <TextField
-                  label='Search'
-                  variant='outlined'
-                  InputProps={{
-                    endAdornment: (
-                      <InputAdornment position='start'>
-                        <SearchIcon />
-                      </InputAdornment>
-                    )
-                  }}
-                />
-              </Box>
             </StyledBox>
           </Grid>
           <Grid item xs={12} md={6}>
