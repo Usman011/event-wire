@@ -10,12 +10,12 @@ import {
 } from '@mui/material'
 import { styled } from '@mui/system'
 import uploadToCloudinary from 'api/cloudnairy'
-import { createNewServiceApi, getAllCategoriesApi } from 'api/userApi'
+import { createNewServiceApi, getAllCategoriesApi, getAllCategoriesWithSubApi } from 'api/userApi'
 import { InputField } from 'components/InputField'
 import { SelectField } from 'components/SelectField'
 import { Centered, Flex } from 'components/design'
 import { Formik } from 'formik'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { Form } from 'react-router-dom'
 import { openToaster } from 'store/toast'
@@ -44,6 +44,8 @@ interface Category {
 const CreateService = () => {
   const [loading, setLoading] = useState(false)
   const [categories, setCategories] = useState([])
+  const [allData, setAllData] = useState([])
+  const [selectedCategory, setSelectedCategory] = useState('')
   const [catLoading, setCatLoading] = useState(false)
   const dispatch = useDispatch()
   const [selectedFiles, setSelectedFiles] = useState([])
@@ -73,17 +75,35 @@ const CreateService = () => {
   const getCategories = async () => {
     setCatLoading(true)
     try {
-      const response = await getAllCategoriesApi({ sub: true })
-      const data = response.data.categories.map((item: Category) => {
-        return { title: item.name, key: item.id }
+      const response = await getAllCategoriesWithSubApi()
+      setAllData(response.data.categories)
+      const data = response.data.categories.map(item => {
+        return { title: item.category.name, key: item.category.id }
       })
       setCategories(data)
-      console.log('getAllCategoriesApi', response)
     } catch (error) {
       /* empty */
     }
     setCatLoading(false)
   }
+
+  const subCategoryData = useMemo(() => {
+    if (allData.length > 0 && selectedCategory !== '') {
+      return allData.flatMap(item => {
+        if (item.category.id === selectedCategory) {
+          return item.subcategories.map(sub => ({
+            title: sub.name,
+            key: sub.id
+          }))
+        }
+        return []
+      })
+    }
+    return []
+  }, [allData, selectedCategory])
+
+  console.log('subCategoryData', subCategoryData)
+  console.log('subCategoryData', subCategoryData)
 
   const handleSubmit = async (values: CreateServiceProps) => {
     console.log(values, 'values')
@@ -101,17 +121,20 @@ const CreateService = () => {
           images: metaData,
           category: values.category,
           subcategory: values.subCategory,
-          faqs: [{
-            question: values.faq1,
-            answer: values.faqAnswer2
-          },{
-            question: values.faq2,
-            answer: values.faqAnswer2
-          }]
+          faqs: [
+            {
+              question: values.faq1,
+              answer: values.faqAnswer2
+            },
+            {
+              question: values.faq2,
+              answer: values.faqAnswer2
+            }
+          ]
         }
         console.log(metaData)
-          const response = await createNewServiceApi(formData)
-          console.log('response', response)
+        const response = await createNewServiceApi(formData)
+        console.log('response', response)
       } catch (error) {
         console.log(error)
       }
@@ -126,7 +149,6 @@ const CreateService = () => {
       return
     }
   }
-
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleFileChange = (event: any) => {
@@ -176,7 +198,7 @@ const CreateService = () => {
                   onSubmit={handleSubmit}
                   // validationSchema={CreateServiceValidationSchema}
                 >
-                  {({ submitForm, errors }) => {
+                  {({ submitForm, errors, handleChange }) => {
                     console.log('errors', errors)
                     return (
                       <Form>
@@ -184,7 +206,15 @@ const CreateService = () => {
                           <Grid item xs={12} md={6} alignItems='space-between' flex={1}>
                             <InputField name='name' label={'Name'} />
                             <Box mt={2}>
-                              <SelectField name='category' label='Category' options={categories} />
+                              <SelectField
+                                name='category'
+                                label='Category'
+                                options={categories}
+                                onChange={event => {
+                                  handleChange(event)
+                                  setSelectedCategory(event.target.value)
+                                }}
+                              />
                             </Box>
                           </Grid>
                           <Grid item xs={12} md={6}>
@@ -196,6 +226,7 @@ const CreateService = () => {
                             />
                           </Grid>
                         </Grid>
+
                         <Box>
                           <input
                             style={{
@@ -225,7 +256,13 @@ const CreateService = () => {
                         </Box>
                         <Flex flexDirection='column' gap={2}>
                           <Box mt={2}>
-                            <InputField name='subCategory' label={'Sub Category'} />
+                            {subCategoryData.length > 0 && (
+                              <SelectField
+                                name='subCategory'
+                                label='Sub Category'
+                                options={subCategoryData}
+                              />
+                            )}
                           </Box>
                           <InputField name='faq1' label={'Frequently Asked Question 1'} />
                           <InputField name='faqAnswer1' label={'Answer'} multiline rows={3} />
