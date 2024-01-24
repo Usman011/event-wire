@@ -1,4 +1,14 @@
-import { Box, CircularProgress, Container, Divider, Grid, Typography, styled } from '@mui/material'
+import {
+  Box,
+  CircularProgress,
+  Container,
+  Divider,
+  Grid,
+  InputAdornment,
+  TextField,
+  Typography,
+  styled
+} from '@mui/material'
 import { useViewports } from 'helpers/viewports'
 import { useEffect, useState } from 'react'
 import { getAllCategoriesApi } from 'api/userApi'
@@ -6,6 +16,8 @@ import { Centered, Flex } from 'components/design'
 import { Link } from 'react-router-dom'
 import PopularService from 'components/PopularServices'
 import BuyerRequest from 'components/BuyerRequest'
+import Carousel from 'react-material-ui-carousel'
+import SearchIcon from '@mui/icons-material/Search'
 
 interface Category {
   name: string
@@ -18,7 +30,7 @@ interface Category {
 const Home = () => {
   const [categories, setCategories] = useState<Category[]>([])
   const [loading, setLoading] = useState(false)
-
+  const { isMobile } = useViewports()
   const getCategories = async () => {
     setLoading(true)
     try {
@@ -55,6 +67,19 @@ const Home = () => {
                 Search over 250,000 local professionals with reviews, pricing, availability, and
                 more
               </Typography>
+              <Box pt={2}>
+                <TextField
+                  label='Search'
+                  variant='outlined'
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position='start'>
+                        <SearchIcon />
+                      </InputAdornment>
+                    )
+                  }}
+                />
+              </Box>
             </StyledBox>
           </Grid>
           <Grid item xs={12} md={6}>
@@ -64,14 +89,73 @@ const Home = () => {
       </Container>
       <BorderBox />
       <Container maxWidth='lg'>
-        <Grid container spacing={2} mt={2}>
-          <Grid item xs={12} md={6}>
-            <BuyerRequest />
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <BuyerRequest />
-          </Grid>
-        </Grid>
+        <Typography variant='h4' fontWeight='bold' mt={4}>
+          Recently Added Jobs
+        </Typography>
+        <Typography variant={isLaptop ? 'body1' : 'body2'} fontWeight='400' mt={2}>
+          Connect with user directly.
+        </Typography>
+
+        {isMobile ? (
+          <Carousel
+            autoPlay
+            interval={3000}
+            stopAutoPlayOnHover
+            animation='slide'
+            duration={800}
+            indicators={false}
+          >
+            <Box p={2}>
+              <BuyerRequest />
+            </Box>
+            <Box p={2}>
+              <BuyerRequest />
+            </Box>
+            <Box p={2}>
+              <BuyerRequest />
+            </Box>
+          </Carousel>
+        ) : (
+          <Carousel
+            autoPlay
+            interval={3000}
+            stopAutoPlayOnHover
+            animation='slide'
+            duration={800}
+            indicators={false}
+          >
+            <Box p={2}>
+              <Grid container spacing={2} mt={2}>
+                <Grid item xs={6} md={6}>
+                  <BuyerRequest />
+                </Grid>
+                <Grid item xs={6} md={6}>
+                  <BuyerRequest />
+                </Grid>
+              </Grid>
+            </Box>
+            <Box p={2}>
+              <Grid container spacing={2} mt={2}>
+                <Grid item xs={6} md={6}>
+                  <BuyerRequest />
+                </Grid>
+                <Grid item xs={6} md={6}>
+                  <BuyerRequest />
+                </Grid>
+              </Grid>
+            </Box>
+            <Box p={2}>
+              <Grid container spacing={2} mt={2}>
+                <Grid item xs={6} md={6}>
+                  <BuyerRequest />
+                </Grid>
+                <Grid item xs={6} md={6}>
+                  <BuyerRequest />
+                </Grid>
+              </Grid>
+            </Box>
+          </Carousel>
+        )}
 
         <Box>
           <Typography variant='h4' fontWeight='bold' mt={4}>
@@ -128,6 +212,39 @@ const Home = () => {
 
         <PopularService />
       </Container>
+      <Box
+        sx={{
+          background: '#f8f8f8',
+          padding: '3rem 0rem'
+        }}
+      >
+        <Container>
+          <Typography variant='h4' fontWeight='bold' textAlign='center'>
+            Why us?
+          </Typography>
+          <Typography variant='body2' fontWeight='400' mt={2}>
+            With the largest network of local wedding vendors, WeddingWire offers the most
+            comprehensive wedding site out there. You will be able to find the best vendor for your
+            budget and plan your wedding exactly the way you envisioned it. We make it simple to get
+            the pricing, availability, and answers you need from wedding venues and wedding vendors
+            across every town.
+          </Typography>
+          <Typography variant='body2' fontWeight='400' mt={2}>
+            In addition to the wedding industry’s best and brightest wedding vendors, WeddingWire
+            offers free, easy-to-use wedding planning tools like customizable wedding checklists to
+            keep your tasks in order, wedding websites with designs made just for you and a
+            comprehensive wedding registry for all your guests. You can stay on top of all the
+            details while on-the-go with the WeddingWire app, which features a wedding countdown to
+            your big day.
+          </Typography>
+          <Typography variant='body2' fontWeight='400' mt={2}>
+            Meanwhile, our dedicated team of editors provides you with the very best wedding ideas
+            and curated wedding photos filled with inspiration to help you choose between florists,
+            cakes, photographers and wedding venues when you start planning the details. WeddingWire
+            will help turn your vision into a reality!
+          </Typography>
+        </Container>
+      </Box>
     </Box>
   )
 }

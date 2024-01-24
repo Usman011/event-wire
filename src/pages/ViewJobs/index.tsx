@@ -1,11 +1,7 @@
-import { Box, Button, Container, Grid, Modal, Typography } from '@mui/material'
+import { Box, Container, Grid } from '@mui/material'
 import BuyerRequest from 'components/BuyerRequest'
-import { useState } from 'react'
-
 
 const ViewJobs = () => {
-
-
   return (
     <Container maxWidth='lg'>
       <Box pt={5} minHeight='calc(100vh - 100px)'>
@@ -30,7 +26,6 @@ const ViewJobs = () => {
           </Grid>
         </Grid>
       </Box>
-   
     </Container>
   )
 }
