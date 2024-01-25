@@ -17,6 +17,7 @@ interface SelectFieldProps {
   toolTipTitle?: string
   defaultSelected?: string | number
   label: string
+  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void
 }
 
 export const SelectField: React.FC<SelectFieldProps> = ({
@@ -25,6 +26,7 @@ export const SelectField: React.FC<SelectFieldProps> = ({
   label,
   toolTipTitle,
   defaultSelected,
+  onChange,
   ...props
 }) => {
   const [field, meta] = useField(name)
@@ -42,6 +44,7 @@ export const SelectField: React.FC<SelectFieldProps> = ({
             label={label}
             {...field}
             {...props}
+            onChange={onChange || field.onChange}
             name={field.name}
             value={field.value || defaultSelected || ''}
           >

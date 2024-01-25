@@ -1,79 +1,85 @@
-import { Box, Button, CircularProgress, Container, Grid, Typography } from '@mui/material'
-import { styled } from '@mui/system'
-import { getAllCategoriesWithSubApi } from 'api/userApi'
-import { InputField } from 'components/InputField'
-import { SelectField } from 'components/SelectField'
-import { Centered, Flex } from 'components/design'
-import { Formik } from 'formik'
-import { useEffect, useState } from 'react'
-import { Form } from 'react-router-dom'
-import * as Yup from 'yup'
-
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Container,
+  Grid,
+  Typography,
+} from "@mui/material";
+import { styled } from "@mui/system";
+import { getAllCategoriesWithSubApi } from "api/userApi";
+import { InputField } from "components/InputField";
+import { SelectField } from "components/SelectField";
+import { Centered, Flex } from "components/design";
+import { Formik } from "formik";
+import { useEffect, useState } from "react";
+import { Form } from "react-router-dom";
+import * as Yup from "yup";
 
 export interface CreateJobProps {
-  title: string
-  description: string
-  priceFrom: number
-  priceTo: number
-  category: string
-  city: string
+  title: string;
+  description: string;
+  priceFrom: number;
+  priceTo: number;
+  category: string;
+  city: string;
 }
 
 const CreateJob = () => {
-  const [loading, setLoading] = useState(false)
-  const [categories, setCategories] = useState([])
+  const [loading, setLoading] = useState(false);
+  const [categories, setCategories] = useState([]);
 
   const initialValues: CreateJobProps = {
-    title: '',
-    description: '',
+    title: "",
+    description: "",
     priceFrom: 0,
     priceTo: 0,
-    category: '',
-    city: ''
-  }
+    category: "",
+    city: "",
+  };
 
   const loginValidationSchema = Yup.object().shape({
-    email: Yup.string().email().required('Email is required'),
-    password: Yup.string().required('Password is required.')
-  })
+    email: Yup.string().email().required("Email is required"),
+    password: Yup.string().required("Password is required."),
+  });
 
   const handleSubmit = async () => {
-    setLoading(true)
+    setLoading(true);
 
-    setLoading(false)
-  }
+    setLoading(false);
+  };
 
   const getCategories = async () => {
     try {
-      const response = await getAllCategoriesWithSubApi()
-      const options = response.data.categories.map(item => {
-        return { title: item.category.name, key: item.category.id }
-      })
-      setCategories(options)
+      const response = await getAllCategoriesWithSubApi();
+      const options = response.data.categories.map((item: any) => {
+        return { title: item.category.name, key: item.category.id };
+      });
+      setCategories(options);
 
-      console.log('response', response)
+      console.log("response", response);
     } catch (error) {
       /* empty */
     }
-  }
+  };
 
   useEffect(() => {
-    getCategories()
-  }, [])
+    getCategories();
+  }, []);
 
   return (
-    <Container maxWidth='md'>
-      <Centered py={5} minHeight='calc(100vh - 100px)'>
-        <StyledBox maxWidth={'500px'} width='100%'>
+    <Container maxWidth="md">
+      <Centered py={5} minHeight="calc(100vh - 100px)">
+        <StyledBox maxWidth={"500px"} width="100%">
           <Grid container>
             <Grid item xs={12}>
               <Centered pt={3}>
-                <Box p={4} maxWidth='450px' width='100%'>
+                <Box p={4} maxWidth="450px" width="100%">
                   <Typography
-                    variant='h4'
-                    color='primary'
-                    fontWeight='bold'
-                    textAlign='center'
+                    variant="h4"
+                    color="primary"
+                    fontWeight="bold"
+                    textAlign="center"
                     pb={5}
                   >
                     Lets Post a Job!
@@ -87,28 +93,44 @@ const CreateJob = () => {
                     {({ submitForm }) => {
                       return (
                         <Form>
-                          <Flex flexDirection='column' gap={2}>
-                            <InputField name='title' label={'Title'} />
-                            <InputField name='description' label={'Description'} />
-                            <SelectField name='category' label='Category' options={categories} />
-                            <InputField name='priceFrom' type='number' label={'Starting Price'} />
+                          <Flex flexDirection="column" gap={2}>
+                            <InputField name="title" label={"Title"} />
                             <InputField
-                              name='priceTo'
-                              type='number'
-                              label={'Maximum Price Limit'}
+                              name="description"
+                              label={"Description"}
                             />
-                            <InputField name='city' label={'City'} />
+                            <SelectField
+                              name="category"
+                              label="Category"
+                              options={categories}
+                            />
+                            <InputField
+                              name="priceFrom"
+                              type="number"
+                              label={"Starting Price"}
+                            />
+                            <InputField
+                              name="priceTo"
+                              type="number"
+                              label={"Maximum Price Limit"}
+                            />
+                            <InputField name="city" label={"City"} />
                           </Flex>
                           <Box mt={4}>
-                            <Button fullWidth size='large' variant='contained' onClick={submitForm}>
+                            <Button
+                              fullWidth
+                              size="large"
+                              variant="contained"
+                              onClick={submitForm}
+                            >
                               {loading ? (
-                                <CircularProgress sx={{ color: '#fff' }} />
+                                <CircularProgress sx={{ color: "#fff" }} />
                               ) : (
                                 <Typography
-                                  variant={'subtitle2'}
-                                  color='#fff'
-                                  textTransform='capitalize'
-                                  fontWeight='bold'
+                                  variant={"subtitle2"}
+                                  color="#fff"
+                                  textTransform="capitalize"
+                                  fontWeight="bold"
                                 >
                                   Create Job
                                 </Typography>
@@ -116,7 +138,7 @@ const CreateJob = () => {
                             </Button>
                           </Box>
                         </Form>
-                      )
+                      );
                     }}
                   </Formik>
                 </Box>
@@ -126,13 +148,14 @@ const CreateJob = () => {
         </StyledBox>
       </Centered>
     </Container>
-  )
-}
+  );
+};
 
-export default CreateJob
+export default CreateJob;
 
 const StyledBox = styled(Box)(() => ({
-  boxShadow: 'rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;',
-  backgroundColor: 'rgba(255, 255, 255, 1)',
-  paddingBottom: '3rem'
-}))
+  boxShadow:
+    "rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;",
+  backgroundColor: "rgba(255, 255, 255, 1)",
+  paddingBottom: "3rem",
+}));
