@@ -1,8 +1,18 @@
-import { Box, CircularProgress, Container, Grid, Typography } from '@mui/material'
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Container,
+  Grid,
+  IconButton,
+  TextField,
+  Typography
+} from '@mui/material'
 import ItemCard from 'components/ItemCrad'
-import { Centered } from 'components/design'
+import { Centered, Flex } from 'components/design'
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router'
+import SearchIcon from '@mui/icons-material/Search'
 
 interface ServiceImages {
   img1: string
@@ -167,9 +177,28 @@ const ServiceList = () => {
   return (
     <Container maxWidth='lg'>
       <Box mb={5}>
-        <Typography variant='h4' fontWeight='600' mt={4}>
-          Popular Services
-        </Typography>
+        <Grid container alignItems='center' mt={3}>
+          <Grid item xs={12} md={6}>
+            <Typography variant='subtitle1' fontWeight='600'>
+              My Services
+            </Typography>
+          </Grid>
+          <Grid item xs={12} md={6} alignItems='center'>
+            <Flex justifyContent='flex-end'>
+              <TextField
+                variant='outlined'
+                label='Search Services here.'
+                InputProps={{
+                  endAdornment: (
+                    <IconButton size='large'>
+                      <SearchIcon />
+                    </IconButton>
+                  )
+                }}
+              />
+            </Flex>
+          </Grid>
+        </Grid>
         {loading ? (
           <Centered mt={5}>
             <CircularProgress />

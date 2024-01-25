@@ -7,8 +7,8 @@ import { Centered, Flex } from 'components/design'
 import { Formik } from 'formik'
 import { useEffect, useState } from 'react'
 import { Form } from 'react-router-dom'
-import { createJobApi } from 'api/userApi'
 import * as Yup from 'yup'
+import { createJobApi } from 'api/userApi'
 
 export interface CreateJobProps {
   title: string
@@ -59,7 +59,7 @@ const CreateJob = () => {
   const getCategories = async () => {
     try {
       const response = await getAllCategoriesWithSubApi()
-      const options = response.data.categories.map(item => {
+      const options = response.data.categories.map((item: any) => {
         return { title: item.category.name, key: item.category.id }
       })
       setCategories(options)

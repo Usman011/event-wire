@@ -20,15 +20,14 @@ const ItemCard = ({ category }: { category: ServiceProps }) => {
       <CardBox>
         <Box position='relative'>
           <StyledImg src={category.images.img1} alt='profile img' />
-          <Flex
-            justifyContent='flex-end'
-            position='absolute'
-            top={10}
-            right={10}
-            onClick={() => setIsFav(!isFav)}
-          >
+          <Box position='absolute' top={10} right={10} onClick={() => setIsFav(!isFav)}>
+            <FavoriteIcon
+              sx={{ color: isFav ? 'red' : 'grey', fontSize: '35px', cursor: 'pointer' }}
+            />
+          </Box>
+          <Box position='absolute' top={10} left={10} onClick={() => setIsFav(!isFav)}>
             <LocalFireDepartmentIcon sx={{ color: 'orange', fontSize: '35px' }} />
-          </Flex>
+          </Box>
         </Box>
 
         <Typography variant='subtitle1' pt={1} fontWeight='bold'>

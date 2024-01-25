@@ -14,7 +14,7 @@ import LogoutIcon from '@mui/icons-material/Logout'
 import { Link, useNavigate } from 'react-router-dom'
 import { AuthState, logout } from 'store/auth'
 import { useDispatch, useSelector } from 'react-redux'
-import { getAllCategoriesApi, getAllCategoriesWithSubApi, logoutUserApi } from 'api/userApi'
+import { getAllCategoriesWithSubApi, logoutUserApi } from 'api/userApi'
 import { RootState } from 'store'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle'
 import { Button, Divider, Stack } from '@mui/material'
@@ -170,6 +170,13 @@ export const Navbar = () => {
                         <Typography textAlign='center'>Create Job</Typography>
                       </StyledLink>
                     </MenuItem>
+
+                    <MenuItem onClick={handleClose}>
+                      <StyledLink to='/my-jobs'>
+                        <Typography textAlign='center'>My Job</Typography>
+                      </StyledLink>
+                    </MenuItem>
+
                     {auth.isAuthenticated && (
                       <MenuItem onClick={handleClose}>
                         <StyledLink to='/fav-services'>
@@ -184,9 +191,11 @@ export const Navbar = () => {
                         </StyledLink>
                       </MenuItem>
                     )}
-                    <MenuItem onClick={handleClose}>
-                      <Typography textAlign='center'>Account Setting</Typography>
-                    </MenuItem>
+                     <MenuItem onClick={handleClose}>
+                        <StyledLink to='/profile'>
+                          <Typography textAlign='center'>Profile Setting</Typography>
+                        </StyledLink>
+                      </MenuItem>
                     <MenuItem onClick={handleLogout}>
                       <Typography textAlign='center'>Logout </Typography>
 

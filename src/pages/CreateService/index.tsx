@@ -1,4 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable */
+
 import {
   Box,
   Button,
@@ -12,11 +14,12 @@ import {
 import { styled } from '@mui/system'
 import uploadToCloudinary from 'api/cloudnairy'
 import { createNewServiceApi, getAllCategoriesWithSubApi } from 'api/userApi'
+import { createNewServiceApi, getAllCategoriesWithSubApi } from 'api/userApi'
 import { InputField } from 'components/InputField'
 import { SelectField } from 'components/SelectField'
 import { Centered, Flex } from 'components/design'
 import { Formik } from 'formik'
-import { useEffect, useMemo, useState } from 'react'
+import { ChangeEvent, useEffect, useMemo, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { Form } from 'react-router-dom'
 import { openToaster } from 'store/toast'
@@ -68,7 +71,7 @@ const CreateService = () => {
     try {
       const response = await getAllCategoriesWithSubApi()
       setAllData(response.data.categories)
-      const data = response.data.categories.map(item => {
+      const data = response.data.categories.map((item: any) => {
         return { title: item.category.name, key: item.category.id }
       })
       setCategories(data)
@@ -82,7 +85,7 @@ const CreateService = () => {
     if (allData.length > 0 && selectedCategory !== '') {
       return allData.flatMap(item => {
         if (item.category.id === selectedCategory) {
-          return item.subcategories.map(sub => ({
+          return item.subcategories.map((sub: any) => ({
             title: sub.name,
             key: sub.id
           }))
@@ -211,7 +214,7 @@ const CreateService = () => {
                                 name='category'
                                 label='Category'
                                 options={categories}
-                                onChange={event => {
+                                onChange={(event: ChangeEvent<HTMLInputElement>) => {
                                   handleChange(event)
                                   setSelectedCategory(event.target.value)
                                 }}

@@ -1,14 +1,4 @@
-import {
-  Box,
-  CircularProgress,
-  Container,
-  Divider,
-  Grid,
-  InputAdornment,
-  TextField,
-  Typography,
-  styled
-} from '@mui/material'
+import { Box, CircularProgress, Container, Divider, Grid, Typography, styled } from '@mui/material'
 import { useViewports } from 'helpers/viewports'
 import { useEffect, useState } from 'react'
 import { getAllCategoriesApi } from 'api/userApi'
@@ -17,7 +7,6 @@ import { Link } from 'react-router-dom'
 import PopularService from 'components/PopularServices'
 import BuyerRequest from 'components/BuyerRequest'
 import Carousel from 'react-material-ui-carousel'
-import SearchIcon from '@mui/icons-material/Search'
 
 interface Category {
   name: string

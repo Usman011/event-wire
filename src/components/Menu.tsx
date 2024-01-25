@@ -5,10 +5,20 @@ import React from 'react'
 import { Centered, Flex } from './design'
 import { StyledLink } from 'pages/Home'
 
-function SimpleMenu({ name, subcategories, img }) {
+interface subcategoriesProps {
+  slug: string
+  name: string
+}
+interface SimpleMenuProps {
+  name: string
+  img: string
+  subcategories: subcategoriesProps[]
+}
+
+function SimpleMenu({ name, subcategories, img }: SimpleMenuProps) {
   const [anchorEl, setAnchorEl] = React.useState(null)
   const { isMobile } = useViewports()
-  const handleClick = event => {
+  const handleClick =( event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget)
   }
   const handleClose = () => {

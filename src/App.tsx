@@ -16,6 +16,8 @@ import FavItems from 'pages/FavItems'
 import Contact from 'pages/Contact'
 import CreateJob from 'pages/CreateJob'
 import ViewJobs from 'pages/ViewJobs'
+import MyJobs from 'pages/MyJobs'
+import AccountSetting from 'pages/AccountSetting'
 
 function App() {
   const activeTheme = useMemo(() => CustomTheme(ThemeVariantsProps.light), [])
@@ -61,6 +63,10 @@ function App() {
           element: <CreateService />
         },
         {
+          path: '/my-jobs',
+          element: <MyJobs />
+        },
+        {
           path: '/vendor-services',
           element: <VendorServiceList />
         },
@@ -75,6 +81,10 @@ function App() {
         {
           path: '/view-jobs',
           element: <ViewJobs />
+        },
+        {
+          path: '/profile',
+          element: <AccountSetting />
         }
       ]
     }
