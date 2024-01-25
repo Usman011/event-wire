@@ -7,10 +7,10 @@ export const URL = {
   LOGIN: '/auth/login',
   SIGNUP: '/auth/register',
   LOGOUT: 'auth/logout',
-  GET_SERVICES: '',
-  GET_ALL_SERVICES: '',
   GET_CATEGORIES: '/categories',
-  POST_SERVICE: '/marketplace/service'
+  POST_SERVICE: '/marketplace/service',
+  GET_SERVICES: '/marketplace/services',
+  GET_POPULAR_SERVICES: '/marketplace/services/popular'
 }
 
 export const loginUserApi = (userData: LoginProps) => {
@@ -46,14 +46,6 @@ export const getServiceDetailApi = (id: number | string) => {
   let axiosConfig = {
     method: 'get',
     url: `${URL.GET_SERVICES}/${id}`
-  }
-  return axiosInstance(axiosConfig)
-}
-
-export const getAllServicesByCategoryApi = () => {
-  let axiosConfig = {
-    method: 'get',
-    url: URL.GET_ALL_SERVICES
   }
   return axiosInstance(axiosConfig)
 }
