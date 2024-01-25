@@ -1,11 +1,13 @@
 import { Box, Button, CircularProgress, Container, Grid, Typography } from '@mui/material'
 import { styled } from '@mui/system'
+import { getAllCategoriesWithSubApi } from 'api/userApi'
 import { InputField } from 'components/InputField'
 import { SelectField } from 'components/SelectField'
 import { Centered, Flex } from 'components/design'
 import { Formik } from 'formik'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Form } from 'react-router-dom'
+import { createJobApi } from 'api/userApi'
 import * as Yup from 'yup'
 
 export interface CreateJobProps {
@@ -14,30 +16,63 @@ export interface CreateJobProps {
   priceFrom: number
   priceTo: number
   category: string
-  city: string
+  address: string
 }
 
 const CreateJob = () => {
   const [loading, setLoading] = useState(false)
+  const [categories, setCategories] = useState([])
+
   const initialValues: CreateJobProps = {
     title: '',
     description: '',
     priceFrom: 0,
     priceTo: 0,
     category: '',
-    city: ''
+    address: ''
   }
 
-  const loginValidationSchema = Yup.object().shape({
-    email: Yup.string().email().required('Email is required'),
-    password: Yup.string().required('Password is required.')
+  const jobValidationSchema = Yup.object().shape({
+    title: Yup.string().required('Title must required.'),
+    description: Yup.string().required('Description must required.'),
+    category: Yup.string().required('Category must required.'),
+    priceFrom: Yup.number().required('Min Price required.'),
+    priceTo: Yup.number().required('Max Price required.'),
+    address: Yup.string().required('Address must required.')
   })
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (values: CreateJobProps) => {
     setLoading(true)
-
+    try {
+      const response = await createJobApi({
+        title: values.title,
+        description: values.description,
+        category: values.category,
+        minPrice: values.priceFrom,
+        maxPrice: values.priceTo,
+        address: values.address
+      })
+    } catch (err) {}
     setLoading(false)
   }
+
+  const getCategories = async () => {
+    try {
+      const response = await getAllCategoriesWithSubApi()
+      const options = response.data.categories.map(item => {
+        return { title: item.category.name, key: item.category.id }
+      })
+      setCategories(options)
+
+      console.log('response', response)
+    } catch (error) {
+      /* empty */
+    }
+  }
+
+  useEffect(() => {
+    getCategories()
+  }, [])
 
   return (
     <Container maxWidth='md'>
@@ -60,43 +95,23 @@ const CreateJob = () => {
                   <Formik
                     initialValues={initialValues}
                     onSubmit={handleSubmit}
-                    validationSchema={loginValidationSchema}
+                    validationSchema={jobValidationSchema}
                   >
-                    {({ submitForm }) => {
+                    {({ submitForm, errors }) => {
+                      console.log(errors)
                       return (
                         <Form>
                           <Flex flexDirection='column' gap={2}>
                             <InputField name='title' label={'Title'} />
                             <InputField name='description' label={'Description'} />
-                            <SelectField
-                              name='category'
-                              label='Category'
-                              options={[
-                                {
-                                  title: 'UI & UX',
-                                  key: 'ui&ux'
-                                },
-                                {
-                                  title: 'UI & UX',
-                                  key: 'ui&ux'
-                                },
-                                {
-                                  title: 'UI & UX',
-                                  key: 'ui&ux'
-                                },
-                                {
-                                  title: 'UI & UX',
-                                  key: 'ui&ux'
-                                }
-                              ]}
-                            />
+                            <SelectField name='category' label='Category' options={categories} />
                             <InputField name='priceFrom' type='number' label={'Starting Price'} />
                             <InputField
                               name='priceTo'
                               type='number'
                               label={'Maximum Price Limit'}
                             />
-                            <InputField name='city' label={'City'} />
+                            <InputField name='address' label={'address'} />
                           </Flex>
                           <Box mt={4}>
                             <Button fullWidth size='large' variant='contained' onClick={submitForm}>

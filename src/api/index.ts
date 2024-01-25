@@ -9,8 +9,7 @@ const BASE_URL = 'http://localhost:8000/api'
 const axiosInstance = axios.create({
   baseURL: BASE_URL,
   headers: {
-    'Content-Type': 'application/json',
-    'x-api-key': 'B2535BDDCB3E8EA46F326A7E5C2F7'
+    'Content-Type': 'application/json'
   }
 })
 
@@ -31,7 +30,6 @@ axiosInstance.interceptors.response.use(
     return response
   },
   function (error) {
-    console.log('error', error)
     store.dispatch(
       openToaster({
         type: 'error',

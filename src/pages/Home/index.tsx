@@ -67,19 +67,6 @@ const Home = () => {
                 Search over 250,000 local professionals with reviews, pricing, availability, and
                 more
               </Typography>
-              <Box pt={2}>
-                <TextField
-                  label='Search'
-                  variant='outlined'
-                  InputProps={{
-                    endAdornment: (
-                      <InputAdornment position='start'>
-                        <SearchIcon />
-                      </InputAdornment>
-                    )
-                  }}
-                />
-              </Box>
             </StyledBox>
           </Grid>
           <Grid item xs={12} md={6}>
@@ -252,7 +239,8 @@ const Home = () => {
 export default Home
 
 const ImageBackground = styled('img')(({ isLaptop }: { isLaptop: boolean }) => ({
-  backgroundImage: 'url(https://wallpapercave.com/wp/wp7488460.jpg)',
+  backgroundImage:
+    'url(https://res.cloudinary.com/chirptech123/image/upload/v1706113109/luxurious-dinner-hall-with-large-crystal-chandelier_vpx6la.jpg)',
   height: !isLaptop ? '200px' : '400px',
   position: 'relative',
 

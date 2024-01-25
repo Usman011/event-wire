@@ -10,7 +10,8 @@ export const URL = {
   GET_CATEGORIES: '/categories',
   POST_SERVICE: '/marketplace/service',
   GET_SERVICES: '/marketplace/services',
-  GET_POPULAR_SERVICES: '/marketplace/services/popular'
+  GET_POPULAR_SERVICES: '/marketplace/services/popular',
+  POST_JOB: '/jobs'
 }
 
 export const loginUserApi = (userData: LoginProps) => {
@@ -58,7 +59,7 @@ export const getAllCategoriesApi = ({ parent = '', sub = false }) => {
   return axiosInstance(axiosConfig)
 }
 
-export const getCompleteCategoriesApi = () => {
+export const getAllCategoriesWithSubApi = () => {
   let axiosConfig = {
     method: 'get',
     url: `${URL.GET_CATEGORIES}/all`
@@ -75,4 +76,13 @@ export const createNewServiceApi = (data: any) => {
     data
   }
   return axiosInstance(axiosConfig)
+}
+
+export const createJobApi = (data: unknown) => {
+  const config = {
+    method: 'post',
+    url: URL.POST_JOB,
+    data
+  }
+  return axiosInstance(config)
 }
