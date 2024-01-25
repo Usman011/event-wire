@@ -119,41 +119,6 @@ const VendorServiceList = () => {
   return (
     <Container maxWidth='lg'>
       <Box mb={5}>
-        {/* <Flex justifyContent='space-between'>
-            <Flex alignItems='center'>
-              <Typography variant='subtitle1' color='primary'></Typography>
-              <FormControl fullWidth>
-                <InputLabel id='demo-simple-select-label'>Type</InputLabel>
-                <Select
-                  labelId='demo-simple-select-label'
-                  id='demo-simple-select'
-                  label='Type'
-                  value={gender}
-                  onChange={handleGenderChange}
-                >
-                  <MenuItem value='male'>Residential</MenuItem>
-                  <MenuItem value='female'>Commercial</MenuItem>
-                  <MenuItem value='both'>Both</MenuItem>
-                </Select>
-              </FormControl>
-            </Flex>
-            <Box>
-              <FormControl fullWidth>
-                <InputLabel id='demo-simple-select-label'>Limit</InputLabel>
-                <Select
-                  labelId='demo-simple-select-label'
-                  id='demo-simple-select'
-                  value={limit}
-                  label='Limit'
-                  onChange={handleLimitChange}
-                >
-                  <MenuItem value='4'>4</MenuItem>
-                  <MenuItem value='8'>8</MenuItem>
-                  <MenuItem value='12'>12</MenuItem>
-                </Select>
-              </FormControl>
-            </Box>
-          </Flex> */}
         <Grid container alignItems='center' mt={3}>
           <Grid item xs={12} md={6}>
             <Typography variant='subtitle1' fontWeight='600'>
