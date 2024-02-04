@@ -10,11 +10,14 @@ declare module '@mui/material/styles' {
   interface Palette {
     customText: string
     customBackground: string
+    white: Palette["primary"];
   }
   interface PaletteOptions {
     customText: string
     customBackground: string
     hover: string
+    white: PaletteOptions["primary"];
+
   }
 }
 
@@ -50,6 +53,11 @@ export const lightModePalette: PaletteOptions = {
     light: '#81c784',
     dark: '#388e3c'
   },
+  white: {
+    main: '#fff',
+    light: '#fff',
+    dark: '#fff' 
+  },
   customText: '#002c59',
   customBackground: '#fff',
   hover: '#64b5f6'
@@ -60,6 +68,11 @@ export const darkModePalette: PaletteOptions = {
     main: '#64ffda',
     light: '#e3f2fd',
     dark: '#42a5f5'
+  },
+  white: {
+    main: '#fff',
+    light: '#fff',
+    dark: '#fff' 
   },
   secondary: {
     main: '#ce93d8',

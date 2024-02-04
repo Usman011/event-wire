@@ -78,7 +78,7 @@ const Home = () => {
   const { isLaptop } = useViewports()
   return (
     <Box>
-      <Container maxWidth='lg'>
+      {/* <Container maxWidth='lg'>
         <Grid container flexDirection={isLaptop ? 'row' : 'column-reverse'}>
           <Grid item xs={12} md={6}>
             <StyledBox isLaptop={isLaptop}>
@@ -115,171 +115,220 @@ const Home = () => {
             <ImageBackground isLaptop={isLaptop} />
           </Grid>
         </Grid>
-      </Container>
-      <BorderBox />
+      </Container> */}
+      <Box position='relative'>
+        <ImageBackground2 isLaptop={isLaptop} />
+        <OverLay />
+        <Container maxWidth='lg'>
+          <StyledBox height='70vh'>
+            <Typography variant='h3' color='#fff' fontWeight='bold' zIndex={9}>
+              Let's find your wedding team
+            </Typography>
+            <Typography
+              variant={isLaptop ? 'subtitle2' : 'body1'}
+              color='#fff'
+              zIndex={999}
+              my={2}
+              fontWeight='400'
+              maxWidth='500px'
+              textAlign={isLaptop ? 'start' : 'center'}
+            >
+              Search over 250,000 local professionals with reviews, pricing, availability, and more
+            </Typography>
+            <TextField
+              sx={{
+                marginTop: '1rem',
+                zIndex: 9,
+                maxWidth: '400px'
+              }}
+              color='white'
+              variant='outlined'
+              focused
+              label='Search here.'
+              InputProps={{
+                style: { color: '#ffff' },
+                endAdornment: (
+                  <IconButton size='large'>
+                    <SearchIcon sx={{ color: '#fff' }} />
+                  </IconButton>
+                )
+              }}
+            />
+          </StyledBox>
+        </Container>
+      </Box>
+      {/* <BorderBox /> */}
       <Container maxWidth='lg'>
-        <Typography variant='h4' fontWeight='bold' mt={4}>
+        <Box
+          sx={{
+            position: 'relative',
+            bottom: 120,
+          }}
+          zIndex={999}
+        >
+          {/* <Typography variant='h4' fontWeight='bold'>
           Recently Added Jobs
         </Typography>
         <Typography variant={isLaptop ? 'body1' : 'body2'} fontWeight='400' mt={2}>
           Connect with user directly.
-        </Typography>
+        </Typography> */}
 
-        {isMobile ? (
-          <Carousel
-            autoPlay
-            interval={3000}
-            stopAutoPlayOnHover
-            animation='slide'
-            duration={800}
-            indicators={false}
-          >
-            <Box p={2}>
-              <BuyerRequest />
-            </Box>
-            <Box p={2}>
-              <BuyerRequest />
-            </Box>
-            <Box p={2}>
-              <BuyerRequest />
-            </Box>
-          </Carousel>
-        ) : (
-          <Carousel
-            autoPlay
-            interval={3000}
-            stopAutoPlayOnHover
-            animation='slide'
-            duration={800}
-            indicators={false}
-          >
-            <Box p={2}>
-              <Grid container spacing={2} mt={2}>
-                <Grid item xs={6} md={6}>
-                  <BuyerRequest />
-                </Grid>
-                <Grid item xs={6} md={6}>
-                  <BuyerRequest />
-                </Grid>
-              </Grid>
-            </Box>
-            <Box p={2}>
-              <Grid container spacing={2} mt={2}>
-                <Grid item xs={6} md={6}>
-                  <BuyerRequest />
-                </Grid>
-                <Grid item xs={6} md={6}>
-                  <BuyerRequest />
-                </Grid>
-              </Grid>
-            </Box>
-            <Box p={2}>
-              <Grid container spacing={2} mt={2}>
-                <Grid item xs={6} md={6}>
-                  <BuyerRequest />
-                </Grid>
-                <Grid item xs={6} md={6}>
-                  <BuyerRequest />
-                </Grid>
-              </Grid>
-            </Box>
-          </Carousel>
-        )}
-
-        <Box>
-          <Typography variant='h4' fontWeight='bold' mt={4}>
-            Find every vendor you need
-          </Typography>
-          <Typography variant={isLaptop ? 'body1' : 'body2'} fontWeight='400' mt={2}>
-            Connect with seasoned wedding pros to help bring your day to life.
-          </Typography>
-          {loading ? (
-            <Centered mt={5}>
-              <CircularProgress />
-            </Centered>
+          {isMobile ? (
+            <Carousel
+              autoPlay
+              interval={3000}
+              stopAutoPlayOnHover
+              animation='slide'
+              duration={800}
+              indicators={false}
+            >
+              <Box p={2}>
+                <BuyerRequest />
+              </Box>
+              <Box p={2}>
+                <BuyerRequest />
+              </Box>
+              <Box p={2}>
+                <BuyerRequest />
+              </Box>
+            </Carousel>
           ) : (
-            <Box pb={4}>
-              <Grid container spacing={2} p={2} my={2}>
-                {categories.map(item => {
-                  return (
-                    <Grid item xs={12} sm={6} md={4} lg={3} flex={1}>
-                      <StyledLink to={`services/${item.slug}`}>
-                        <CardBox>
-                          <Box position='relative'>
-                            <StyledImg src={item.icon} alt='card img' />
-                          </Box>
-
-                          <Typography variant='subtitle2' fontWeight='bold' mt={3} pb={2}>
-                            {item.name}
-                          </Typography>
-                          <Typography
-                            variant={isLaptop ? 'body2' : 'body1'}
-                            color='secondary'
-                            fontWeight='400'
-                          >
-                            {item.description}
-                          </Typography>
-                        </CardBox>
-                      </StyledLink>
-                    </Grid>
-                  )
-                })}
-              </Grid>
-              <Flex flexWrap='wrap'>
-                {categories.map(item => (
-                  <StyledLink to={`services/${item.slug}`}>
-                    <CategoryBlocks variant='body2'>{item.name}</CategoryBlocks>
-                  </StyledLink>
-                ))}
-                <StyledLink to={`services/all`}>
-                  <CategoryBlocks variant='body2'>View All</CategoryBlocks>
-                </StyledLink>
-              </Flex>
-            </Box>
+            <Carousel
+              autoPlay
+              interval={3000}
+              stopAutoPlayOnHover
+              animation='slide'
+              duration={800}
+              indicators={false}
+            >
+              <Box p={2}>
+                <Grid container spacing={2} mt={2}>
+                  <Grid item xs={6} md={6}>
+                    <BuyerRequest />
+                  </Grid>
+                  <Grid item xs={6} md={6}>
+                    <BuyerRequest />
+                  </Grid>
+                </Grid>
+              </Box>
+              <Box p={2}>
+                <Grid container spacing={2} mt={2}>
+                  <Grid item xs={6} md={6}>
+                    <BuyerRequest />
+                  </Grid>
+                  <Grid item xs={6} md={6}>
+                    <BuyerRequest />
+                  </Grid>
+                </Grid>
+              </Box>
+              <Box p={2}>
+                <Grid container spacing={2} mt={2}>
+                  <Grid item xs={6} md={6}>
+                    <BuyerRequest />
+                  </Grid>
+                  <Grid item xs={6} md={6}>
+                    <BuyerRequest />
+                  </Grid>
+                </Grid>
+              </Box>
+            </Carousel>
           )}
-        </Box>
 
-        <PopularService />
-        <Box px={3}>
-          <Typography variant='subtitle1' fontWeight='700' mt={2}>
-            Forums
-          </Typography>
-          <Typography variant='body1' color='#7777' fontWeight='500' mt={1}>
-            Ask questions and get answers with support from other engaged couples.
-          </Typography>
-        </Box>
-        <Grid container spacing={2} mt={1} px={2}>
-          {Forums.map(item => (
-            <Grid item xs={12} sm={6} md={4} lg={3} key={item.label} flex={1}>
-              <Box>
-                <CardBox mr={3}>
-                  <Typography variant='subtitle1' fontWeight='700'>
-                    {item.label}
-                  </Typography>
-                  <Typography my={2} variant='body2' color='#666' fontWeight='400'>
-                    {item.text}
-                  </Typography>
-                </CardBox>
-                <Flex gap={2} alignItems='center' mt={3}>
-                  <AccountCircleIcon
-                    sx={{
-                      fontSize: '55px',
-                      color: '#666666'
-                    }}
-                  />
-                  <Box>
-                    <Typography variant='subtitle2' color='#555' fontWeight='600'>
-                      {item.name}
-                    </Typography>
-                    <Typography variant='caption' color='#555' fontWeight='400'>
-                      {item.date}
-                    </Typography>
-                  </Box>
+          <Box>
+            <Typography variant='h4' fontWeight='bold' mt={4}>
+              Find every vendor you need
+            </Typography>
+            <Typography variant={isLaptop ? 'body1' : 'body2'} fontWeight='400' mt={2}>
+              Connect with seasoned wedding pros to help bring your day to life.
+            </Typography>
+            {loading ? (
+              <Centered mt={5}>
+                <CircularProgress />
+              </Centered>
+            ) : (
+              <Box pb={4}>
+                <Grid container spacing={2} p={2} my={2}>
+                  {categories.map(item => {
+                    return (
+                      <Grid item xs={12} sm={6} md={4} lg={3} flex={1}>
+                        <StyledLink to={`services/${item.slug}`}>
+                          <CardBox>
+                            <Box position='relative'>
+                              <StyledImg src={item.icon} alt='card img' />
+                            </Box>
+
+                            <Typography variant='subtitle2' fontWeight='bold' mt={3} pb={2}>
+                              {item.name}
+                            </Typography>
+                            <Typography
+                              variant={isLaptop ? 'body2' : 'body1'}
+                              color='secondary'
+                              fontWeight='400'
+                            >
+                              {item.description}
+                            </Typography>
+                          </CardBox>
+                        </StyledLink>
+                      </Grid>
+                    )
+                  })}
+                </Grid>
+                <Flex flexWrap='wrap'>
+                  {categories.map(item => (
+                    <StyledLink to={`services/${item.slug}`}>
+                      <CategoryBlocks variant='body2'>{item.name}</CategoryBlocks>
+                    </StyledLink>
+                  ))}
+                  <StyledLink to={`services/all`}>
+                    <CategoryBlocks variant='body2'>View All</CategoryBlocks>
+                  </StyledLink>
                 </Flex>
               </Box>
-            </Grid>
-          ))}
-        </Grid>
+            )}
+          </Box>
+
+          <PopularService />
+          <Box px={3}>
+            <Typography variant='subtitle1' fontWeight='700' mt={2}>
+              Forums
+            </Typography>
+            <Typography variant='body1' color='#7777' fontWeight='500' mt={1}>
+              Ask questions and get answers with support from other engaged couples.
+            </Typography>
+          </Box>
+          <Grid container spacing={2} mt={1} px={2}>
+            {Forums.map(item => (
+              <Grid item xs={12} sm={6} md={4} lg={3} key={item.label} flex={1}>
+                <Box>
+                  <CardBox mr={3}>
+                    <Typography variant='subtitle1' fontWeight='700'>
+                      {item.label}
+                    </Typography>
+                    <Typography my={2} variant='body2' color='#666' fontWeight='400'>
+                      {item.text}
+                    </Typography>
+                  </CardBox>
+                  <Flex gap={2} alignItems='center' mt={3}>
+                    <AccountCircleIcon
+                      sx={{
+                        fontSize: '55px',
+                        color: '#666666'
+                      }}
+                    />
+                    <Box>
+                      <Typography variant='subtitle2' color='#555' fontWeight='600'>
+                        {item.name}
+                      </Typography>
+                      <Typography variant='caption' color='#555' fontWeight='400'>
+                        {item.date}
+                      </Typography>
+                    </Box>
+                  </Flex>
+                </Box>
+              </Grid>
+            ))}
+          </Grid>
+        </Box>
       </Container>
 
       <Box
@@ -336,6 +385,26 @@ const ImageBackground = styled('img')(({ isLaptop }: { isLaptop: boolean }) => (
     : 'polygon(10% 0, 100% 0%, 100% 100%, 0% 100%)'
 }))
 
+const ImageBackground2 = styled('img')(({ isLaptop }: { isLaptop: boolean }) => ({
+  backgroundImage:
+    'url(https://res.cloudinary.com/chirptech123/image/upload/v1706113109/luxurious-dinner-hall-with-large-crystal-chandelier_vpx6la.jpg)',
+  height: '70vh',
+  position: 'absolute',
+  width: '100%',
+  backgroundRepeat: 'no-repeat',
+  backgroundSize: 'cover'
+}))
+
+const OverLay = styled(Box)(() => ({
+  backgroundColor: 'rgba(0, 0, 0, 0.4)',
+  top: 0,
+  left: 0,
+  width: '100%',
+  height: '70vh',
+  position: 'absolute',
+  zIndex: 1
+}))
+
 export const CardBox = styled(Box)(() => ({
   padding: '.8rem',
   border: '1px solid #fff',
@@ -351,13 +420,12 @@ export const StyledImg = styled('img')(() => ({
   borderRadius: '5px'
 }))
 
-const StyledBox = styled(Box)(({ isLaptop }: { isLaptop: boolean }) => ({
-  height: '100%',
+const StyledBox = styled(Box)(() => ({
+  // height: '100%',
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'center',
-  alignItems: isLaptop ? 'flex-start' : 'center',
-  marginTop: isLaptop ? '0px' : '0px'
+  zIndex: 999
 }))
 
 const BorderBox = styled(Divider)(() => ({
