@@ -125,13 +125,12 @@ const Home = () => {
               Let's find your wedding team
             </Typography>
             <Typography
-              variant={isLaptop ? 'subtitle2' : 'body1'}
+              variant={isLaptop ? 'subtitle2' : 'body2'}
               color='#fff'
               zIndex={999}
               my={2}
               fontWeight='400'
-              maxWidth='500px'
-              textAlign={isLaptop ? 'start' : 'center'}
+              maxWidth={isLaptop ? '600px' : '320px'}
             >
               Search over 250,000 local professionals with reviews, pricing, availability, and more
             </Typography>
@@ -139,7 +138,8 @@ const Home = () => {
               sx={{
                 marginTop: '1rem',
                 zIndex: 9,
-                maxWidth: '400px'
+                // maxWidth: '400px',
+                maxWidth: isLaptop ? '400px' : '300px'
               }}
               color='white'
               variant='outlined'
@@ -157,22 +157,14 @@ const Home = () => {
           </StyledBox>
         </Container>
       </Box>
-      {/* <BorderBox /> */}
       <Container maxWidth='lg'>
         <Box
           sx={{
             position: 'relative',
-            bottom: 120,
+            bottom: 120
           }}
           zIndex={999}
         >
-          {/* <Typography variant='h4' fontWeight='bold'>
-          Recently Added Jobs
-        </Typography>
-        <Typography variant={isLaptop ? 'body1' : 'body2'} fontWeight='400' mt={2}>
-          Connect with user directly.
-        </Typography> */}
-
           {isMobile ? (
             <Carousel
               autoPlay
@@ -248,7 +240,7 @@ const Home = () => {
             ) : (
               <Box pb={4}>
                 <Grid container spacing={2} p={2} my={2}>
-                  {categories.map(item => {
+                  {categories.slice(0, 4).map(item => {
                     return (
                       <Grid item xs={12} sm={6} md={4} lg={3} flex={1}>
                         <StyledLink to={`services/${item.slug}`}>

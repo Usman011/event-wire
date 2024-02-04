@@ -163,7 +163,7 @@ const PopularService = () => {
           </Centered>
         ) : (
           <Grid container spacing={3} mt={1}>
-            {services.map(item => {
+            {services.slice(0, 4).map(item => {
               return <ItemCard category={item} />
             })}
           </Grid>
