@@ -9,11 +9,12 @@ const BASE_URL = 'https://em-api-ca838e34c99a.herokuapp.com/api'
 const axiosInstance = axios.create({
   baseURL: BASE_URL,
   headers: {
-    'Content-Type': 'application/json'
+    'Content-Type': 'application/json',
+    Authorization: store.getState().auth.token
   }
 })
 
-axiosInstance.defaults.headers.common['Authorization'] = store.getState().auth.token
+// axiosInstance.defaults.headers.common['Authorization'] = store.getState().auth.token
 
 axiosInstance.interceptors.request.use(
   function (config) {

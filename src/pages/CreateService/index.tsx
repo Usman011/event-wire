@@ -14,7 +14,6 @@ import {
 import { styled } from '@mui/system'
 import uploadToCloudinary from 'api/cloudnairy'
 import { createNewServiceApi, getAllCategoriesWithSubApi } from 'api/userApi'
-import { createNewServiceApi, getAllCategoriesWithSubApi } from 'api/userApi'
 import { InputField } from 'components/InputField'
 import { SelectField } from 'components/SelectField'
 import { Centered, Flex } from 'components/design'

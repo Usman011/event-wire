@@ -1,4 +1,14 @@
-import { Box, CircularProgress, Container, Divider, Grid, Typography, styled } from '@mui/material'
+import {
+  Box,
+  CircularProgress,
+  Container,
+  Divider,
+  Grid,
+  IconButton,
+  TextField,
+  Typography,
+  styled
+} from '@mui/material'
 import { useViewports } from 'helpers/viewports'
 import { useEffect, useState } from 'react'
 import { getAllCategoriesApi } from 'api/userApi'
@@ -7,6 +17,8 @@ import { Link } from 'react-router-dom'
 import PopularService from 'components/PopularServices'
 import BuyerRequest from 'components/BuyerRequest'
 import Carousel from 'react-material-ui-carousel'
+import SearchIcon from '@mui/icons-material/Search'
+import AccountCircleIcon from '@mui/icons-material/AccountCircle'
 
 interface Category {
   name: string
@@ -36,6 +48,33 @@ const Home = () => {
     getCategories()
   }, [])
 
+  const Forums = [
+    {
+      label: 'Wedding dress',
+      text: 'Hello, This is going to be my 3rd marriage and I wanted input and what type of wedding dress to buy. Not sure If I want...',
+      date: 'on February 2, 2024 at 12:18 PM',
+      name: 'Kris'
+    },
+    {
+      label: 'Wedding dress',
+      text: 'Hello, This is going to be my 3rd marriage and I wanted input and what type of wedding dress to buy. Not sure If I want...',
+      date: 'on February 2, 2024 at 12:18 PM',
+      name: 'Kris'
+    },
+    {
+      label: 'Wedding dress',
+      text: 'Hello, This is going to be my 3rd marriage and I wanted input and what type of wedding dress to buy. Not sure If I want...',
+      date: 'on February 2, 2024 at 12:18 PM',
+      name: 'Kris'
+    },
+    {
+      label: 'Wedding dress',
+      text: 'Hello, This is going to be my 3rd marriage and I wanted input and what type of wedding dress to buy. Not sure If I want...',
+      date: 'on February 2, 2024 at 12:18 PM',
+      name: 'Kris'
+    }
+  ]
+
   const { isLaptop } = useViewports()
   return (
     <Box>
@@ -56,6 +95,20 @@ const Home = () => {
                 Search over 250,000 local professionals with reviews, pricing, availability, and
                 more
               </Typography>
+              <TextField
+                sx={{
+                  marginTop: '1rem'
+                }}
+                variant='outlined'
+                label='Search here.'
+                InputProps={{
+                  endAdornment: (
+                    <IconButton size='large'>
+                      <SearchIcon />
+                    </IconButton>
+                  )
+                }}
+              />
             </StyledBox>
           </Grid>
           <Grid item xs={12} md={6}>
@@ -187,11 +240,53 @@ const Home = () => {
         </Box>
 
         <PopularService />
+        <Box px={3}>
+          <Typography variant='subtitle1' fontWeight='700' mt={2}>
+            Forums
+          </Typography>
+          <Typography variant='body1' color='#7777' fontWeight='500' mt={1}>
+            Ask questions and get answers with support from other engaged couples.
+          </Typography>
+        </Box>
+        <Grid container spacing={2} mt={1} px={2}>
+          {Forums.map(item => (
+            <Grid item xs={12} sm={6} md={4} lg={3} key={item.label} flex={1}>
+              <Box>
+                <CardBox mr={3}>
+                  <Typography variant='subtitle1' fontWeight='700'>
+                    {item.label}
+                  </Typography>
+                  <Typography my={2} variant='body2' color='#666' fontWeight='400'>
+                    {item.text}
+                  </Typography>
+                </CardBox>
+                <Flex gap={2} alignItems='center' mt={3}>
+                  <AccountCircleIcon
+                    sx={{
+                      fontSize: '55px',
+                      color: '#666666'
+                    }}
+                  />
+                  <Box>
+                    <Typography variant='subtitle2' color='#555' fontWeight='600'>
+                      {item.name}
+                    </Typography>
+                    <Typography variant='caption' color='#555' fontWeight='400'>
+                      {item.date}
+                    </Typography>
+                  </Box>
+                </Flex>
+              </Box>
+            </Grid>
+          ))}
+        </Grid>
       </Container>
+
       <Box
         sx={{
           background: '#f8f8f8',
-          padding: '3rem 0rem'
+          padding: '3rem 0rem',
+          marginTop: '3rem'
         }}
       >
         <Container>

@@ -6,7 +6,7 @@ import { SelectField } from 'components/SelectField'
 import { Centered, Flex } from 'components/design'
 import { Formik } from 'formik'
 import { useEffect, useState } from 'react'
-import { Form } from 'react-router-dom'
+import { Form, useNavigate } from 'react-router-dom'
 import * as Yup from 'yup'
 import { createJobApi } from 'api/userApi'
 
@@ -22,7 +22,7 @@ export interface CreateJobProps {
 const CreateJob = () => {
   const [loading, setLoading] = useState(false)
   const [categories, setCategories] = useState([])
-
+  const navigate = useNavigate()
   const initialValues: CreateJobProps = {
     title: '',
     description: '',
@@ -52,6 +52,7 @@ const CreateJob = () => {
         maxPrice: values.priceTo,
         address: values.address
       })
+      navigate('/my-jobs')
     } catch (err) {}
     setLoading(false)
   }

@@ -165,37 +165,37 @@ export const Navbar = () => {
                       'aria-labelledby': 'basic-button'
                     }}
                   >
-                    <MenuItem onClick={handleClose}>
-                      <StyledLink to='/create-job'>
+                    <StyledLink to='/create-job'>
+                      <MenuItem onClick={handleClose}>
                         <Typography textAlign='center'>Create Job</Typography>
-                      </StyledLink>
-                    </MenuItem>
+                      </MenuItem>
+                    </StyledLink>
 
-                    <MenuItem onClick={handleClose}>
-                      <StyledLink to='/my-jobs'>
+                    <StyledLink to='/my-jobs'>
+                      <MenuItem onClick={handleClose}>
                         <Typography textAlign='center'>My Job</Typography>
-                      </StyledLink>
-                    </MenuItem>
+                      </MenuItem>
+                    </StyledLink>
 
                     {auth.isAuthenticated && (
-                      <MenuItem onClick={handleClose}>
-                        <StyledLink to='/fav-services'>
+                      <StyledLink to='/fav-services'>
+                        <MenuItem onClick={handleClose}>
                           <Typography textAlign='center'>Favorite</Typography>
-                        </StyledLink>
-                      </MenuItem>
+                        </MenuItem>
+                      </StyledLink>
                     )}
                     {auth.role === 'vendor' && (
-                      <MenuItem onClick={handleClose}>
-                        <StyledLink to='/vendor-services'>
+                      <StyledLink to='/vendor-services'>
+                        <MenuItem onClick={handleClose}>
                           <Typography textAlign='center'>Manage Services</Typography>
-                        </StyledLink>
-                      </MenuItem>
+                        </MenuItem>
+                      </StyledLink>
                     )}
-                     <MenuItem onClick={handleClose}>
-                        <StyledLink to='/profile'>
-                          <Typography textAlign='center'>Profile Setting</Typography>
-                        </StyledLink>
+                    <StyledLink to='/profile'>
+                      <MenuItem onClick={handleClose}>
+                        <Typography textAlign='center'>Profile Setting</Typography>
                       </MenuItem>
+                    </StyledLink>
                     <MenuItem onClick={handleLogout}>
                       <Typography textAlign='center'>Logout </Typography>
 
