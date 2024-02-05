@@ -2,7 +2,6 @@ import {
   Box,
   CircularProgress,
   Container,
-  Divider,
   Grid,
   IconButton,
   TextField,
@@ -117,7 +116,7 @@ const Home = () => {
         </Grid>
       </Container> */}
       <Box position='relative'>
-        <ImageBackground2 isLaptop={isLaptop} />
+        <ImageBackground />
         <OverLay />
         <Container maxWidth='lg'>
           <StyledBox height='70vh'>
@@ -363,21 +362,7 @@ const Home = () => {
 
 export default Home
 
-const ImageBackground = styled('img')(({ isLaptop }: { isLaptop: boolean }) => ({
-  backgroundImage:
-    'url(https://res.cloudinary.com/chirptech123/image/upload/v1706113109/luxurious-dinner-hall-with-large-crystal-chandelier_vpx6la.jpg)',
-  height: !isLaptop ? '200px' : '400px',
-  position: 'relative',
-
-  width: !isLaptop ? '100%' : '49.5vw',
-  backgroundRepeat: 'no-repeat',
-  backgroundSize: 'cover',
-  clipPath: !isLaptop
-    ? 'polygon(0 0, 100% 0%, 100% 85%, 0% 100%)'
-    : 'polygon(10% 0, 100% 0%, 100% 100%, 0% 100%)'
-}))
-
-const ImageBackground2 = styled('img')(({ isLaptop }: { isLaptop: boolean }) => ({
+const ImageBackground = styled('img')(() => ({
   backgroundImage:
     'url(https://res.cloudinary.com/chirptech123/image/upload/v1706113109/luxurious-dinner-hall-with-large-crystal-chandelier_vpx6la.jpg)',
   height: '70vh',
@@ -418,11 +403,6 @@ const StyledBox = styled(Box)(() => ({
   flexDirection: 'column',
   justifyContent: 'center',
   zIndex: 999
-}))
-
-const BorderBox = styled(Divider)(() => ({
-  position: 'relative',
-  top: '-6.5px'
 }))
 
 const CategoryBlocks = styled(Typography)(() => ({

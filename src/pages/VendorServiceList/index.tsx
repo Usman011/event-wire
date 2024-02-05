@@ -1,8 +1,8 @@
 import { Box, Button, Container, Grid, Typography } from '@mui/material'
 import { styled } from '@mui/system'
-import { Centered, Flex } from 'components/design'
+import { Centered } from 'components/design'
 import { useEffect, useState } from 'react'
-import { useNavigate, useParams } from 'react-router'
+import { useNavigate } from 'react-router'
 import { Link } from 'react-router-dom'
 // import { getAllServicesByCategoryApi } from 'api/userApi'
 

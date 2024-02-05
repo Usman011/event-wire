@@ -1,9 +1,9 @@
 import styled from '@emotion/styled'
-import { Box, Button, CircularProgress, Container, Typography } from '@mui/material'
+import { Box, Button, CircularProgress, Container, TextField, Typography } from '@mui/material'
 import { InputField } from 'components/InputField'
 import { Centered, Flex } from 'components/design'
 import { Formik } from 'formik'
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { Form } from 'react-router-dom'
 import * as Yup from 'yup'
 
@@ -50,6 +50,12 @@ const Contact = () => {
                     <InputField name='email' label={'Email'} />
 
                     <InputField multiline rows={10} name='message' label={'Message'} />
+                    <TextField
+                      fullWidth
+                      color='secondary'
+                      variant='outlined'
+                      inputRef={materialRef}
+                    />
                   </Flex>
                   <Box mt={4}>
                     <Button fullWidth size='large' variant='contained' onClick={submitForm}>
