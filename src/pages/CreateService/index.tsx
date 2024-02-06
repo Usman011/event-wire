@@ -18,6 +18,7 @@ import { InputField } from 'components/InputField'
 import { SelectField } from 'components/SelectField'
 import { Centered, Flex } from 'components/design'
 import { Formik } from 'formik'
+import { useViewports } from 'helpers/viewports'
 import { ChangeEvent, useEffect, useMemo, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { Form } from 'react-router-dom'
@@ -35,6 +36,7 @@ export interface CreateServiceProps {
 }
 
 const CreateService = () => {
+  const { isLaptop } = useViewports()
   const [loading, setLoading] = useState(false)
   const [categories, setCategories] = useState([])
   const [allData, setAllData] = useState([])
@@ -176,125 +178,128 @@ const CreateService = () => {
   }, [])
 
   return (
-    <Container maxWidth='md'>
-      <Centered mt={4}>
-        <StyledBox>
-          <Centered>
-            {catLoading ? (
-              <Box mt={5}>
-                <CircularProgress />
-              </Box>
-            ) : (
-              <Box p={4} width='100%'>
-                <Typography
-                  variant='h4'
-                  color='primary'
-                  fontWeight='bold'
-                  textAlign='center'
-                  pb={5}
-                >
-                  Create your Service
-                </Typography>
-
-                <Formik
-                  initialValues={initialValues}
-                  onSubmit={handleSubmit}
-                  // validationSchema={CreateServiceValidationSchema}
-                >
-                  {({ submitForm, errors, handleChange }) => {
-                    console.log('errors', errors)
-                    return (
-                      <Form>
-                        <Grid container spacing={2}>
-                          <Grid item xs={12} md={6} alignItems='space-between' flex={1}>
-                            <InputField name='name' label={'Name'} />
-                            <Box mt={2}>
-                              <SelectField
-                                name='category'
-                                label='Category'
-                                options={categories}
-                                onChange={(event: ChangeEvent<HTMLInputElement>) => {
-                                  handleChange(event)
-                                  setSelectedCategory(event.target.value)
-                                }}
-                              />
-                            </Box>
-                          </Grid>
-                          <Grid item xs={12} md={6}>
-                            <InputField
-                              name='description'
-                              label={'Description'}
-                              multiline
-                              rows={4}
-                            />
-                          </Grid>
-                        </Grid>
-
-                        <Box>
-                          <input
-                            style={{
-                              width: '100%',
-                              padding: '1rem',
-                              margin: '.5rem 0rem',
-                              border: '1px solid #000'
-                            }}
-                            type='file'
-                            multiple
-                            onChange={handleFileChange}
-                            id='file-input'
-                          />
-
-                          <Box>
-                            <Typography variant='subtitle1'>
-                              <strong>Selected Files:</strong>
-                            </Typography>
-                            <List>
-                              {selectedFiles.map((file, index) => (
-                                <ListItem key={index}>
-                                  <Typography variant='body1'>{file.name}</Typography>
-                                </ListItem>
-                              ))}
-                            </List>
-                          </Box>
-                        </Box>
-                        <Flex flexDirection='column' gap={2}>
-                          <Box mt={2}>
-                            {subCategoryData.length > 0 && (
-                              <SelectField
-                                name='subCategory'
-                                label='Sub Category'
-                                options={subCategoryData}
-                              />
-                            )}
-                          </Box>
-                          <InputField name='faq1' label={'Frequently Asked Question 1'} />
-                          <InputField name='faqAnswer1' label={'Answer'} multiline rows={3} />
-                          <InputField name='faq2' label={'Frequently Asked Question 2'} />
-                          <InputField name='faqAnswer2' label={'Answer'} multiline rows={3} />
-                        </Flex>
-                        <Box mt={4}>
-                          <Button fullWidth size='large' variant='contained' onClick={submitForm}>
-                            {loading ? (
-                              <CircularProgress sx={{ color: '#fff' }} />
-                            ) : (
-                              <Typography
-                                variant={'subtitle2'}
-                                color='#fff'
-                                textTransform='capitalize'
-                                fontWeight='bold'
-                              >
-                                Create Service
-                              </Typography>
-                            )}
-                          </Button>
-                        </Box>
-                      </Form>
-                    )
-                  }}
-                </Formik>
-              </Box>
+    <Container maxWidth='lg'>
+      <Centered py={5}>
+        <StyledBox width={isLaptop ? '100%' : '400px'} maxWidth='1200px'>
+          <Grid container>
+            {isLaptop && (
+              <Grid item md={5}>
+                <ImageBackground />
+              </Grid>
             )}
-          </Centered>
+            <Grid item xs={12} md={7}>
+              <Centered minHeight='80vh'>
+                <Box p={4} width='100%'>
+                  <Typography
+                    variant='h3'
+                    color='primary'
+                    fontWeight='bold'
+                    textAlign='center'
+                    pb={4}
+                  >
+                    Create your Service
+                  </Typography>
+
+                  <Formik
+                    initialValues={initialValues}
+                    onSubmit={handleSubmit}
+                    // validationSchema={CreateServiceValidationSchema}
+                  >
+                    {({ submitForm, errors, handleChange }) => {
+                      console.log('errors', errors)
+                      return (
+                        <Form>
+                          <Grid container spacing={2}>
+                            <Grid item xs={12} md={6} alignItems='space-between' flex={1}>
+                              <InputField name='name' label={'Name'} />
+                              <Box mt={2}>
+                                <SelectField
+                                  name='category'
+                                  label='Category'
+                                  options={categories}
+                                  onChange={(event: ChangeEvent<HTMLInputElement>) => {
+                                    handleChange(event)
+                                    setSelectedCategory(event.target.value)
+                                  }}
+                                />
+                              </Box>
+                            </Grid>
+                            <Grid item xs={12} md={6}>
+                              <InputField
+                                name='description'
+                                label={'Description'}
+                                multiline
+                                rows={4}
+                              />
+                            </Grid>
+                          </Grid>
+
+                          <Box mt={2}>
+                            <input
+                              style={{
+                                width: '100%',
+                                padding: '1rem',
+                                margin: '.5rem 0rem',
+                                border: '1px solid #000'
+                              }}
+                              type='file'
+                              multiple
+                              onChange={handleFileChange}
+                              id='file-input'
+                            />
+
+                            {/* <Box>
+                              <Typography variant='subtitle1'>
+                                <strong>Selected Files:</strong>
+                              </Typography>
+                              <List>
+                                {selectedFiles.map((file, index) => (
+                                  <ListItem key={index}>
+                                    <Typography variant='body1'>{file.name}</Typography>
+                                  </ListItem>
+                                ))}
+                              </List>
+                            </Box> */}
+                          </Box>
+                          <Flex flexDirection='column' gap={2}>
+                            <Box>
+                              {subCategoryData.length > 0 && (
+                                <SelectField
+                                  name='subCategory'
+                                  label='Sub Category'
+                                  options={subCategoryData}
+                                />
+                              )}
+                            </Box>
+                            <InputField name='faq1' label={'Frequently Asked Question 1'} />
+                            <InputField name='faqAnswer1' label={'Answer'} multiline rows={3} />
+                            <InputField name='faq2' label={'Frequently Asked Question 2'} />
+                            <InputField name='faqAnswer2' label={'Answer'} multiline rows={3} />
+                          </Flex>
+                          <Box mt={4}>
+                            <Button fullWidth size='large' variant='contained' onClick={submitForm}>
+                              {loading ? (
+                                <CircularProgress sx={{ color: '#fff' }} />
+                              ) : (
+                                <Typography
+                                  variant={'subtitle2'}
+                                  color='#fff'
+                                  textTransform='capitalize'
+                                  fontWeight='bold'
+                                >
+                                  Create Service
+                                </Typography>
+                              )}
+                            </Button>
+                          </Box>
+                        </Form>
+                      )
+                    }}
+                  </Formik>
+                </Box>
+              </Centered>
+            </Grid>
+          </Grid>
         </StyledBox>
       </Centered>
     </Container>
@@ -306,7 +311,16 @@ export default CreateService
 const StyledBox = styled(Box)(() => ({
   boxShadow: 'rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;',
   backgroundColor: 'rgba(255, 255, 255, 1)',
-  minHeight: '80vh',
-  maxWidth: '800px',
-  width: '100%'
+  minHeight: '70vh'
+}))
+
+const ImageBackground = styled('img')(() => ({
+  backgroundImage:
+    'url(https://freepixels.com/wp-content/uploads/Architecture/090223a6449-wood-house-construction-yard-new.jpg)',
+  height: '100%',
+  minHeight: '70vh',
+  width: '100%',
+  backgroundRepeat: 'no-repeat',
+  backgroundSize: 'cover',
+  backgroundPosition: 'center'
 }))
