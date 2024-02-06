@@ -25,6 +25,22 @@
   </head>
   <body>
     <div id="root"></div>
+    <script type="text/javascript" id="zsiqchat">
+      var $zoho = $zoho || {}
+      $zoho.salesiq = $zoho.salesiq || {
+        widgetcode: 'siqce3cb55643a238b2b2030356ec3a83c8807f541c707995b945b26064bec7dd66',
+        values: {},
+        ready: function () {}
+      }
+      var d = document
+      s = d.createElement('script')
+      s.type = 'text/javascript'
+      s.id = 'zsiqscript'
+      s.defer = true
+      s.src = 'https://salesiq.zohopublic.com/widget'
+      t = d.getElementsByTagName('script')[0]
+      t.parentNode.insertBefore(s, t)
+    </script>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

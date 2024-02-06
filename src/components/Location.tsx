@@ -5,9 +5,14 @@ import { useViewports } from 'helpers/viewports'
 
 const LocationTab = () => {
   const [isMapLoaded, setIsMapLoaded] = useState(false)
-  const data = useLocation().state
   const { isMobile } = useViewports()
-  const { street, city, state, country } = data.location
+  const street = {
+    number: 9492,
+    name: 'Slobodana Aligrudića'
+  }
+  const city = 'Alibunar'
+  const state = 'Zaječar'
+  const country = 'Serbia'
   const embedUrl = `https://www.google.com/maps/embed/v1/place?q=${
     street.number
   }+${encodeURIComponent(street.name)},${city},${state},${country}&key=${

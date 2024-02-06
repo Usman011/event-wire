@@ -195,7 +195,8 @@ export const StyledImg = styled('img')(() => ({
   borderTopLeftRadius: '5px',
   borderTopRightRadius: '5px',
   height: '200px',
-  width: '100%'
+  width: '100%',
+
 }))
 
 export const StyledLink = styled(Link)(() => ({

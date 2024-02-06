@@ -22,6 +22,30 @@ import { Form } from 'react-router-dom'
 import { Formik } from 'formik'
 import { InputField } from 'components/InputField'
 import * as Yup from 'yup'
+import LocationTab from 'components/Location'
+
+const locationData = [
+  {
+    long_name: 'Lahore',
+    short_name: 'Lahore',
+    types: ['locality', 'political']
+  },
+  {
+    long_name: 'Lahore',
+    short_name: 'Lahore',
+    types: ['administrative_area_level_2', 'political']
+  },
+  {
+    long_name: 'Punjab',
+    short_name: 'Punjab',
+    types: ['administrative_area_level_1', 'political']
+  },
+  {
+    long_name: 'Pakistan',
+    short_name: 'PK',
+    types: ['country', 'political']
+  }
+]
 
 const demoServiceData: ServiceProps = {
   id: 1,
@@ -114,67 +138,35 @@ const ViewService = () => {
         </Centered>
       ) : (
         <Container maxWidth='lg'>
-          <Grid container spacing={2} my={4}>
-            <Grid item xs={12} md={6}>
-              <StyledImg src={services.images.img1} height={!isLaptop ? 350 : 500} />
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <Grid container columnSpacing={2} rowSpacing={1}>
-                <Grid item xs={12} md={services.images.img5 || services.images.img4 ? 6 : 12}>
-                  <StyledImg src={services.images.img2} height={!isLaptop ? 350 : 243} />
+          <Grid container spacing={2} my={5}>
+            <Grid item xs={12} md={8}>
+              <Grid container spacing={2}>
+                <Grid item xs={12} md={6}>
+                  <StyledImg src={services.images.img1} height={!isLaptop ? 350 : 500} />
                 </Grid>
-                <Grid item xs={12} md={services.images.img5 || services.images.img4 ? 6 : 12}>
-                  <StyledImg src={services.images.img3} height={!isLaptop ? 350 : 243} />
+                <Grid item xs={12} md={6}>
+                  <Grid container columnSpacing={2} rowSpacing={1}>
+                    <Grid item xs={12} md={services.images.img5 || services.images.img4 ? 6 : 12}>
+                      <StyledImg src={services.images.img2} height={!isLaptop ? 350 : 243} />
+                    </Grid>
+                    <Grid item xs={12} md={services.images.img5 || services.images.img4 ? 6 : 12}>
+                      <StyledImg src={services.images.img3} height={!isLaptop ? 350 : 243} />
+                    </Grid>
+                    {services.images.img4 && (
+                      <Grid item xs={12} md={services.images.img5 ? 6 : 12}>
+                        <StyledImg src={services.images.img4} height={!isLaptop ? 350 : 243} />
+                      </Grid>
+                    )}
+                    {services.images.img5 && (
+                      <Grid item xs={12} md={services.images.img4 ? 6 : 12}>
+                        <StyledImg src={services.images.img5} height={!isLaptop ? 350 : 243} />
+                      </Grid>
+                    )}
+                  </Grid>
                 </Grid>
-                {services.images.img4 && (
-                  <Grid item xs={12} md={services.images.img5 ? 6 : 12}>
-                    <StyledImg src={services.images.img4} height={!isLaptop ? 350 : 243} />
-                  </Grid>
-                )}
-                {services.images.img5 && (
-                  <Grid item xs={12} md={services.images.img4 ? 6 : 12}>
-                    <StyledImg src={services.images.img5} height={!isLaptop ? 350 : 243} />
-                  </Grid>
-                )}
               </Grid>
             </Grid>
-          </Grid>
-          <Grid container spacing={4} my={1}>
-            <Grid item xs={12} md={8}>
-              <Typography variant='h3' py={1} fontWeight='bold' color='#00458c'>
-                {services.title}
-              </Typography>
-
-              <Typography variant='body1' fontWeight='400' pb={3}>
-                {services.description}
-              </Typography>
-              <Typography variant='body2' color='#999' fontWeight='400' pb={2}>
-                {` ${services.title} is a stunning mansion event space located in Santorini,
-                Greece. This property provides couples with the opportunity to wed in a dreamy
-                seaside setting. With panoramic views of Santorini's mysterious caldera, the
-                stunning volcano, and the dazzling blue Aegean Sea, this property is the ideal venue
-                for an unforgettable destination wedding.`}
-              </Typography>
-              <Typography variant='body2' color='#000' fontWeight='600' pb={2}>
-                Facilities and Capacity
-              </Typography>
-              <Typography variant='body2' color='#999' fontWeight='400' pb={2}>
-                {` ${services.title}  provides guests with a number of picture-perfect gathering
-                spaces. You will be welcome to exchange your vows in front of your loved ones under
-                a beautiful arch surrounded by candles and flowers as the sun sets on the beach. The
-                seaside event space can accommodate up to 100 guests seated for your ceremony and
-                for your reception. The space also features a large dance floor, perfect for those
-                looking to dance the night away. Situated right next to the venue, the Diamond Rock
-                Villa is waiting to host the newlyweds and some guests for an overnight stay. Its
-                stylish and contemporary interiors include three elegantly appointed bedrooms, two
-                luxurious bathrooms, a fully-equipped colorful kitchen, and tastefully furnished
-                living and dining rooms. Here, you can enjoy the marvelous view from the terrace or
-                relax with a cocktail in the heated jacuzzi or by the pool.`}
-              </Typography>
-
-              {/* <LocationTab /> */}
-            </Grid>
-            <Grid item xs={12} md={4}>
+            <Grid item xs={12} md={4} flex={1}>
               <StyledBox>
                 <Typography variant='h4' py={1} fontWeight='bold' color='#00458c'>
                   {services.title}
@@ -233,6 +225,59 @@ const ViewService = () => {
                   </Flex>
                 </Centered>
               </StyledBox>
+            </Grid>
+          </Grid>
+          <Grid container spacing={4} my={1}>
+            <Grid item xs={12} md={8}>
+              <Typography variant='h3' py={1} fontWeight='bold' color='#00458c'>
+                {services.title}
+              </Typography>
+
+              <Typography variant='body1' fontWeight='400' pb={3}>
+                {services.description}
+              </Typography>
+              <Typography variant='body2' color='#999' fontWeight='400' pb={2}>
+                {` ${services.title} is a stunning mansion event space located in Santorini,
+                Greece. This property provides couples with the opportunity to wed in a dreamy
+                seaside setting. With panoramic views of Santorini's mysterious caldera, the
+                stunning volcano, and the dazzling blue Aegean Sea, this property is the ideal venue
+                for an unforgettable destination wedding.`}
+              </Typography>
+              <Typography variant='body1' color='#000' fontWeight='700' pb={2}>
+                Facilities
+              </Typography>
+              <Typography variant='body2' color='#999' fontWeight='400' pb={2}>
+                {` ${services.title}  provides guests with a number of picture-perfect gathering
+                spaces. You will be welcome to exchange your vows in front of your loved ones under
+                a beautiful arch surrounded by candles and flowers as the sun sets on the beach. The
+                seaside event space can accommodate up to 100 guests seated for your ceremony and
+                for your reception. The space also features a large dance floor, perfect for those
+                looking to dance the night away. Situated right next to the venue, the Diamond Rock
+                Villa is waiting to host the newlyweds and some guests for an overnight stay. Its
+                stylish and contemporary interiors include three elegantly appointed bedrooms, two
+                luxurious bathrooms, a fully-equipped colorful kitchen, and tastefully furnished
+                living and dining rooms. Here, you can enjoy the marvelous view from the terrace or
+                relax with a cocktail in the heated jacuzzi or by the pool.`}
+              </Typography>
+              <Typography variant='body1' color='#000' fontWeight='700' pb={2}>
+                Capacity
+              </Typography>
+              <Typography variant='body2' color='#999' fontWeight='400' pb={2}>
+                {` ${services.title}  provides guests with a number of picture-perfect gathering
+                spaces. You will be welcome to exchange your vows in front of your loved ones under
+                a beautiful arch surrounded by candles and flowers as the sun sets on the beach. The
+                seaside event space can accommodate up to 100 guests seated for your ceremony and
+                for your reception. The space also features a large dance floor, perfect for those
+                looking to dance the night away. Situated right next to the venue, the Diamond Rock
+                Villa is waiting to host the newlyweds and some guests for an overnight stay. Its
+                stylish and contemporary interiors include three elegantly appointed bedrooms, two
+                luxurious bathrooms, a fully-equipped colorful kitchen, and tastefully furnished
+                living and dining rooms. Here, you can enjoy the marvelous view from the terrace or
+                relax with a cocktail in the heated jacuzzi or by the pool.`}
+              </Typography>
+            </Grid>
+            <Grid item xs={12} md={4}>
+              <LocationTab />
             </Grid>
           </Grid>
         </Container>
@@ -313,11 +358,12 @@ const StyledImg = styled('img')(() => ({
 }))
 
 const StyledBox = styled(Box)(() => ({
-  boxShadow: 'rgba(100, 100, 111, 0.2) 0px 7px 29px 0px',
+  // bo xShadow: 'rgba(100, 100, 111, 0.2) 0px 7px 29px 0px',
   backgroundColor: 'rgba(255, 255, 255, 1)',
-  padding: '2rem',
+  // background: 'red',
   borderRadius: '5px',
-  maxWidth: '450px',
   width: '100%',
-  marginBottom: '2rem'
+  height: '100%',
+  padding: '0rem 2rem 2rem 2rem'
+  // marginBottom: '2rem'
 }))

@@ -1,7 +1,9 @@
 import {
   Box,
+  Breadcrumbs,
   CircularProgress,
   Container,
+  Divider,
   Grid,
   IconButton,
   TextField,
@@ -12,6 +14,9 @@ import { Centered, Flex } from 'components/design'
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router'
 import SearchIcon from '@mui/icons-material/Search'
+import styled from '@emotion/styled'
+import { useViewports } from 'helpers/viewports'
+import { Link } from 'react-router-dom'
 
 interface ServiceImages {
   img1: string
@@ -169,12 +174,50 @@ const ServiceList = () => {
     }
   }
 
+  const { isLaptop } = useViewports()
+
   useEffect(() => {
     getAllEvents()
   }, [])
 
   return (
     <Container maxWidth='lg'>
+      <Grid container flexDirection={isLaptop ? 'row' : 'column-reverse'}>
+        <Grid item xs={12} md={6}>
+          <StyledBox isLaptop={isLaptop}>
+            <Breadcrumbs aria-label='breadcrumb'>
+              <Typography variant='body2' fontWeight='bold'>
+                Weddings
+              </Typography>
+              <Typography variant='body2' fontWeight='bold'>
+                Wedding Venues
+              </Typography>
+            </Breadcrumbs>
+            <Typography variant='h3' fontWeight='bold' pt={2}>
+              Greece Wedding Venues
+            </Typography>
+
+            <TextField
+              sx={{
+                marginTop: '1rem'
+              }}
+              variant='outlined'
+              label='Search here.'
+              InputProps={{
+                endAdornment: (
+                  <IconButton size='large'>
+                    <SearchIcon />
+                  </IconButton>
+                )
+              }}
+            />
+          </StyledBox>
+        </Grid>
+        <Grid item xs={12} md={6}>
+          <ImageBackground isLaptop={isLaptop} />
+        </Grid>
+      </Grid>
+      {/* <BorderBox /> */}
       <Box mb={5}>
         <Grid container alignItems='center' mt={3}>
           <Grid item xs={12} md={6}>
@@ -215,3 +258,31 @@ const ServiceList = () => {
 }
 
 export default ServiceList
+
+const ImageBackground = styled('img')(({ isLaptop }: { isLaptop: boolean }) => ({
+  backgroundImage:
+    'url(https://cdn0.weddingwire.com/vendor/125394/original/960/jpeg/image_51_493521-168087040726835.webp)',
+  height: !isLaptop ? '200px' : '300px',
+  position: 'relative',
+  width: !isLaptop ? '100%' : '49.5vw',
+  backgroundRepeat: 'no-repeat',
+  clipPath: !isLaptop
+  ? 'polygon(0 0, 100% 0%, 100% 85%, 0% 100%)'
+  : 'polygon(10% 0, 100% 0%, 100% 100%, 0% 100%)',
+  backgroundSize: 'cover',
+  backgroundPosition: 'center'
+}))
+
+const StyledBox = styled(Box)(({ isLaptop }: { isLaptop: boolean }) => ({
+  height: '100%',
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'center',
+  alignItems: isLaptop ? 'flex-start' : 'center',
+  marginTop: isLaptop ? '0px' : '0px'
+}))
+
+const BorderBox = styled(Divider)(() => ({
+  position: 'relative',
+  top: '-6.5px'
+}))

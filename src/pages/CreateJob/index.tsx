@@ -1,4 +1,12 @@
-import { Box, Button, CircularProgress, Container, Grid, Typography } from '@mui/material'
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Container,
+  Grid,
+  TextField,
+  Typography
+} from '@mui/material'
 import { styled } from '@mui/system'
 import { getAllCategoriesWithSubApi } from 'api/userApi'
 import { InputField } from 'components/InputField'
@@ -9,6 +17,9 @@ import { useEffect, useState } from 'react'
 import { Form, useNavigate } from 'react-router-dom'
 import * as Yup from 'yup'
 import { createJobApi } from 'api/userApi'
+import { usePlacesWidget } from 'react-google-autocomplete'
+import { useViewports } from 'helpers/viewports'
+import JobImage from 'assets/createJob.png'
 
 export interface CreateJobProps {
   title: string
@@ -20,9 +31,16 @@ export interface CreateJobProps {
 }
 
 const CreateJob = () => {
+  const { isLaptop } = useViewports()
   const [loading, setLoading] = useState(false)
   const [categories, setCategories] = useState([])
   const navigate = useNavigate()
+  const { ref: materialRef } = usePlacesWidget({
+    apiKey: 'AIzaSyBL4JbKL4SotWhSAnoYflXy9fnHrmT52Lg',
+    onPlaceSelected: place => console.log(place),
+
+    inputAutocompleteValue: 'country'
+  })
   const initialValues: CreateJobProps = {
     title: '',
     description: '',
@@ -53,7 +71,9 @@ const CreateJob = () => {
         address: values.address
       })
       navigate('/my-jobs')
-    } catch (err) {}
+    } catch (err) {
+      /* empty */
+    }
     setLoading(false)
   }
 
@@ -77,20 +97,29 @@ const CreateJob = () => {
 
   return (
     <Container maxWidth='md'>
-      <Centered py={5} minHeight='calc(100vh - 100px)'>
-        <StyledBox maxWidth={'500px'} width='100%'>
+      <Centered py={5}>
+        <StyledBox width={isLaptop ? '100%' : '400px'}>
           <Grid container>
-            <Grid item xs={12}>
-              <Centered pt={3}>
+            {isLaptop && (
+              <Grid item md={6}>
+                <ImageBackground />
+              </Grid>
+            )}
+            <Grid item xs={12} md={6}>
+              <Centered pt={3} minHeight='80vh'>
                 <Box p={4} maxWidth='450px' width='100%'>
+                  <Typography variant='h4' color='primary' fontWeight='bold' textAlign='center'>
+                    Welcome!
+                  </Typography>
                   <Typography
-                    variant='h4'
-                    color='primary'
-                    fontWeight='bold'
+                    variant={'body2'}
+                    fontWeight='500'
+                    color='#666'
                     textAlign='center'
-                    pb={5}
+                    mb={4}
+                    mt={1}
                   >
-                    Lets Post a Job!
+                    Let's create a job
                   </Typography>
 
                   <Formik
@@ -98,8 +127,7 @@ const CreateJob = () => {
                     onSubmit={handleSubmit}
                     validationSchema={jobValidationSchema}
                   >
-                    {({ submitForm, errors }) => {
-                      console.log(errors)
+                    {({ submitForm }) => {
                       return (
                         <Form>
                           <Flex flexDirection='column' gap={2}>
@@ -112,7 +140,13 @@ const CreateJob = () => {
                               type='number'
                               label={'Maximum Price Limit'}
                             />
-                            <InputField name='address' label={'address'} />
+                            <TextField
+                              label='Location'
+                              fullWidth
+                              color='secondary'
+                              variant='outlined'
+                              inputRef={materialRef}
+                            />
                           </Flex>
                           <Box mt={4}>
                             <Button fullWidth size='large' variant='contained' onClick={submitForm}>
@@ -141,6 +175,77 @@ const CreateJob = () => {
         </StyledBox>
       </Centered>
     </Container>
+    // <Container maxWidth='md'>
+    //   <Centered py={5} minHeight='calc(100vh - 100px)'>
+    //     <StyledBox maxWidth={'500px'} width='100%'>
+    //       <Grid container>
+    //         <Grid item xs={12}>
+    //           <Centered pt={3}>
+    //             <Box p={4} maxWidth='450px' width='100%'>
+    //               <Typography
+    //                 variant='h4'
+    //                 color='primary'
+    //                 fontWeight='bold'
+    //                 textAlign='center'
+    //                 pb={5}
+    //               >
+    //                 Lets Post a Job!
+    //               </Typography>
+
+    //               <Formik
+    //                 initialValues={initialValues}
+    //                 onSubmit={handleSubmit}
+    //                 validationSchema={jobValidationSchema}
+    //               >
+    //                 {({ submitForm, errors }) => {
+    //                   console.log(errors)
+    //                   return (
+    //                     <Form>
+    //                       <Flex flexDirection='column' gap={2}>
+    //                         <InputField name='title' label={'Title'} />
+    //                         <InputField name='description' label={'Description'} />
+    //                         <SelectField name='category' label='Category' options={categories} />
+    //                         <InputField name='priceFrom' type='number' label={'Starting Price'} />
+    //                         <InputField
+    //                           name='priceTo'
+    //                           type='number'
+    //                           label={'Maximum Price Limit'}
+    //                         />
+    //                         <TextField
+    //                           label='Location'
+    //                           fullWidth
+    //                           color='secondary'
+    //                           variant='outlined'
+    //                           inputRef={materialRef}
+    //                         />
+    //                       </Flex>
+    //                       <Box mt={4}>
+    //                         <Button fullWidth size='large' variant='contained' onClick={submitForm}>
+    //                           {loading ? (
+    //                             <CircularProgress sx={{ color: '#fff' }} />
+    //                           ) : (
+    //                             <Typography
+    //                               variant={'subtitle2'}
+    //                               color='#fff'
+    //                               textTransform='capitalize'
+    //                               fontWeight='bold'
+    //                             >
+    //                               Create Job
+    //                             </Typography>
+    //                           )}
+    //                         </Button>
+    //                       </Box>
+    //                     </Form>
+    //                   )
+    //                 }}
+    //               </Formik>
+    //             </Box>
+    //           </Centered>
+    //         </Grid>
+    //       </Grid>
+    //     </StyledBox>
+    //   </Centered>
+    // </Container>
   )
 }
 
@@ -149,5 +254,15 @@ export default CreateJob
 const StyledBox = styled(Box)(() => ({
   boxShadow: 'rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;',
   backgroundColor: 'rgba(255, 255, 255, 1)',
-  paddingBottom: '3rem'
+  minHeight: '70vh'
+}))
+
+const ImageBackground = styled('img')(() => ({
+  backgroundImage: 'url(https://freepixels.com/wp-content/uploads/Architecture/090223a6449-wood-house-construction-yard-new.jpg)',
+  height: '100%',
+  minHeight: '70vh',
+  width: '100%',
+  backgroundRepeat: 'no-repeat',
+  backgroundSize: 'cover',
+  backgroundPosition: 'center'
 }))

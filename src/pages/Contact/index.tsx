@@ -32,9 +32,9 @@ const Contact = () => {
         }}
       >
         <StyledBox>
-          <Typography variant='h4' fontWeight='bold' mb={3} textAlign='center'>
+          {/* <Typography variant='h4' fontWeight='bold' mb={3} textAlign='center'>
             Send us Message
-          </Typography>
+          </Typography> */}
 
           <Formik
             initialValues={initialValues}
@@ -50,12 +50,6 @@ const Contact = () => {
                     <InputField name='email' label={'Email'} />
 
                     <InputField multiline rows={10} name='message' label={'Message'} />
-                    <TextField
-                      fullWidth
-                      color='secondary'
-                      variant='outlined'
-                      inputRef={materialRef}
-                    />
                   </Flex>
                   <Box mt={4}>
                     <Button fullWidth size='large' variant='contained' onClick={submitForm}>
@@ -86,7 +80,6 @@ const Contact = () => {
 export default Contact
 
 const StyledBox = styled(Box)(() => ({
-  boxShadow: 'rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;',
   backgroundColor: 'rgba(255, 255, 255, 1)',
   width: '100%',
   padding: '2rem'
