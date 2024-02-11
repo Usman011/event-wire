@@ -1,9 +1,11 @@
 import styled from '@emotion/styled'
-import { Box, Button, Container, Divider, Grid, Menu, Stack, Typography } from '@mui/material'
+import { Box, Container, Divider, Grid, Popover, Typography } from '@mui/material'
 import { useViewports } from 'helpers/viewports'
 import React from 'react'
 import { Centered, Flex } from './design'
 import { StyledLink } from 'pages/Home'
+import { ClickAwayListener } from '@mui/base/ClickAwayListener'
+import CloseIcon from '@mui/icons-material/Close'
 
 interface subcategoriesProps {
   slug: string
@@ -16,13 +18,13 @@ interface SimpleMenuProps {
 }
 
 function SimpleMenu({ name, subcategories, img }: SimpleMenuProps) {
-  const [anchorEl, setAnchorEl] = React.useState(null)
+  const [open, setOpen] = React.useState(false)
   const { isMobile } = useViewports()
-  const handleClick =( event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget)
+  const handleClick = () => {
+    setOpen(true)
   }
   const handleClose = () => {
-    setAnchorEl(null)
+    setOpen(false)
   }
 
   return (
@@ -32,91 +34,100 @@ function SimpleMenu({ name, subcategories, img }: SimpleMenuProps) {
           {name}
         </StyledTypography>
       </Box>
-      <Menu
-        id='simple-menu'
-        anchorEl={anchorEl}
-        open={Boolean(anchorEl)}
-        onClose={handleClose}
-        sx={{
-          marginTop: '10px'
-        }}
-        anchorOrigin={{ horizontal: 'center', vertical: 'bottom' }}
-      >
-        <Box
-          sx={{
-            width: isMobile ? '100%' : '100vw',
-            padding: isMobile ? '1rem' : '2rem 1.5rem'
-          }}
-        >
-          <Container maxWidth='lg'>
-            <Grid container spacing={2}>
-              <Grid item sm={12} md={4}>
-                <Grid container spacing={2}>
-                  {subcategories?.map(item => {
-                    return (
-                      <Grid item xs={12} md={6}>
-                        <Flex
-                          sx={{
-                            alignItems: 'center'
-                          }}
-                        >
-                          <Box
-                            sx={{
-                              padding: '4px',
-                              background: '#000',
-                              marginRight: '10px'
-                            }}
-                          />
-                          <StyledLink to={`services/${item.slug}`} onClick={handleClose}>
-                            <StyledTypography variant='caption'>{item.name}</StyledTypography>
-                          </StyledLink>
-                        </Flex>
-                      </Grid>
-                    )
-                  })}
-                </Grid>
-              </Grid>
-              {!isMobile && (
+      {open && (
+        <ClickAwayListener onClickAway={handleClose}>
+          <Box
+            sx={{
+              width: '99.2vw',
+              // padding: isMobile ? '1rem' : '2rem 1.5rem',
+              position: 'absolute',
+              top: 65,
+              left: 0,
+              zIndex: 999,
+              background: '#fff'
+            }}
+          >
+            <Divider />
+            <Flex position='relative' top={20} right={40} justifyContent='flex-end' onClick={handleClose}>
+              <CloseIcon sx={{
+                fontWeight: '1rem'
+              }} />
+            </Flex>
+            <Container
+              maxWidth='lg'
+              sx={{
+                padding: isMobile ? '1rem' : '2rem 1.5rem'
+              }}
+            >
+              <Grid container spacing={2}>
                 <Grid item sm={12} md={4}>
-                  <Centered mx={4}>
-                    <StyledImg alt='no Img' src={img} />
-                  </Centered>
+                  <Grid container spacing={2}>
+                    {subcategories?.map(item => {
+                      return (
+                        <Grid item xs={12} md={6}>
+                          <Flex
+                            sx={{
+                              alignItems: 'center'
+                            }}
+                          >
+                            <Box
+                              sx={{
+                                padding: '4px',
+                                background: '#000',
+                                marginRight: '10px'
+                              }}
+                            />
+                            <StyledLink to={`services/${item.slug}`} onClick={handleClose}>
+                              <StyledTypography variant='body2'>{item.name}</StyledTypography>
+                            </StyledLink>
+                          </Flex>
+                        </Grid>
+                      )
+                    })}
+                  </Grid>
                 </Grid>
-              )}
-              {!isMobile && (
-                <Grid item sm={12} md={4} px={2}>
-                  <StyledBox>
-                    <Flex alignItems='center' justifyContent='space-between'>
-                      <Box pr={2}>
-                        <Typography variant='body2' fontWeight='600'>
-                          Destination Weddings
-                        </Typography>
-                        <Typography variant='caption' mt={1}>
-                          Easily plan your international wedding.
-                        </Typography>
-                      </Box>
-                      <StyledIcon src='https://www.weddingwire.com/assets/img/logos/square-icon-guest.svg' />
-                    </Flex>
-                  </StyledBox>
-                  <StyledBox mt={4}>
-                    <Flex alignItems='center' justifyContent='space-between'>
-                      <Box pr={2}>
-                        <Typography variant='body2' fontWeight='600'>
-                          WeddingWire for Guests
-                        </Typography>
-                        <Typography variant='caption' mt={1}>
-                          Share with your guests to collect your wedding photos{' '}
-                        </Typography>
-                      </Box>
-                      <StyledIcon src='https://www.weddingwire.com/assets/img/logos/square-icon-guest.svg' />
-                    </Flex>
-                  </StyledBox>
-                </Grid>
-              )}
-            </Grid>
-          </Container>
-        </Box>
-      </Menu>
+                {!isMobile && (
+                  <Grid item sm={12} md={4}>
+                    <Centered mx={4}>
+                      <StyledImg alt='no Img' src={img} />
+                    </Centered>
+                  </Grid>
+                )}
+                {!isMobile && (
+                  <Grid item sm={12} md={4} px={2}>
+                    <StyledBox>
+                      <Flex alignItems='center' justifyContent='space-between'>
+                        <Box pr={2}>
+                          <Typography variant='body2' fontWeight='600'>
+                            Destination Weddings
+                          </Typography>
+                          <Typography variant='caption' mt={1}>
+                            Easily plan your international wedding.
+                          </Typography>
+                        </Box>
+                        <StyledIcon src='https://www.weddingwire.com/assets/img/logos/square-icon-guest.svg' />
+                      </Flex>
+                    </StyledBox>
+                    <StyledBox mt={4}>
+                      <Flex alignItems='center' justifyContent='space-between'>
+                        <Box pr={2}>
+                          <Typography variant='body2' fontWeight='600'>
+                            WeddingWire for Guests
+                          </Typography>
+                          <Typography variant='caption' mt={1}>
+                            Share with your guests to collect your wedding photos{' '}
+                          </Typography>
+                        </Box>
+                        <StyledIcon src='https://www.weddingwire.com/assets/img/logos/square-icon-guest.svg' />
+                      </Flex>
+                    </StyledBox>
+                  </Grid>
+                )}
+              </Grid>
+            </Container>
+          </Box>
+        </ClickAwayListener>
+      )}
     </div>
   )
 }
@@ -149,3 +160,17 @@ const StyledTypography = styled(Typography)(({ theme }) => ({
     color: '#19b5bc'
   }
 }))
+
+const CustomPopover = styled(Popover)({
+  '& .MuiPaper-root': {
+    // Add your custom styles for the Popover paper here
+    // For example:
+    margin: 0,
+    width: '100vw',
+    padding: 0,
+    boxShadow: 'none',
+    border: '1px solid #ccc',
+    borderRadius: '0px',
+    backgroundColor: '#fff'
+  }
+})

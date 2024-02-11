@@ -18,6 +18,7 @@ import CreateJob from 'pages/CreateJob'
 import ViewJobs from 'pages/ViewJobs'
 import MyJobs from 'pages/MyJobs'
 import AccountSetting from 'pages/AccountSetting'
+import Wedding from 'pages/Wedding'
 
 function App() {
   const activeTheme = useMemo(() => CustomTheme(ThemeVariantsProps.light), [])
@@ -50,6 +51,10 @@ function App() {
         {
           path: '/contact',
           element: <Contact />
+        },
+        {
+          path: '/wedding',
+          element: <Wedding />
         }
       ]
     },

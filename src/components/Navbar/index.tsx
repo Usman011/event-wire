@@ -107,7 +107,10 @@ export const Navbar = () => {
                   display: { xs: 'block', md: 'none' }
                 }}
               >
-                {categories.map(item => {
+            <Box sx={{
+              width: '100vw'
+            }}>
+            {categories.map(item => {
                   return (
                     <MenuItem>
                       <SimpleMenu
@@ -128,6 +131,7 @@ export const Navbar = () => {
                     <Typography textAlign='center'>Contact</Typography>
                   </StyledLink>
                 </MenuItem>
+            </Box>
               </Menu>
             </Box>
             <Flex
