@@ -88,7 +88,8 @@ const Contact = () => {
                       return (
                         <Form>
                           <Flex flexDirection='column' gap={2}>
-                            <InputField name='name' label={'Full Name'} />
+                            <InputField name='username' label={'Full Name'} />
+                            <InputField name='subject' label={'Subject'} />
 
                             <InputField name='email' label={'Email'} />
 
