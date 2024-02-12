@@ -7,9 +7,13 @@ import { Formik } from 'formik'
 import { Form } from 'react-router-dom'
 import { InputField } from './InputField'
 import * as Yup from 'yup'
+import { contactJobProposal } from 'api/userApi'
+import { openToaster } from 'store/toast'
+import { useDispatch } from 'react-redux'
 
 const BuyerRequest = (props: any) => {
   const initialLimit = 30
+  const dispatch = useDispatch()
   const [open, setOpen] = useState(false)
   const handleOpen = () => setOpen(true)
   const handleClose = () => setOpen(false)
@@ -46,13 +50,39 @@ const BuyerRequest = (props: any) => {
   }
 
   const loginValidationSchema = Yup.object().shape({
-    email: Yup.string().email().required('Email is required'),
-    password: Yup.string().required('Password is required.')
+    message: Yup.string().required(),
+    firstName: Yup.string(),
+    lastName: Yup.string(),
+    email: Yup.string().email().required(),
+    phoneNumber: Yup.string().required()
   })
 
-  const handleSubmit = async () => {
-    setLoading(true)
-
+  const handleSubmit = async (values: any) => {
+    try {
+      setLoading(true)
+      const data = {
+        jobId: props.id,
+        message: values.message,
+        firstname: values.firstName,
+        lastName: values.lastName,
+        email: values.email,
+        phoneNumber: values.phoneNumber
+      }
+      await contactJobProposal(data)
+      dispatch(
+        openToaster({
+          type: 'success',
+          message: 'Proposal email sent successfully'
+        })
+      )
+    } catch (err) {
+      dispatch(
+        openToaster({
+          type: 'error',
+          message: 'Proposal email sent Fail'
+        })
+      )
+    }
     setLoading(false)
   }
   return (
@@ -96,7 +126,7 @@ const BuyerRequest = (props: any) => {
       <Flex mt={2} gap={3} justifyContent='space-between'>
         <Box>
           <Typography variant='subtitle2' fontWeight='700' color='#666'>
-            $3000 - $4000
+            ${props.minPrice} - ${props.maxPrice}
           </Typography>
         </Box>
         <Button variant='contained' color='primary' onClick={handleOpen}>
@@ -118,7 +148,8 @@ const BuyerRequest = (props: any) => {
               onSubmit={handleSubmit}
               validationSchema={loginValidationSchema}
             >
-              {({ submitForm }) => {
+              {({ submitForm, errors }) => {
+                console.log(errors)
                 return (
                   <Form>
                     <Typography variant={'subtitle1'} fontWeight='700' my={1}>
@@ -131,7 +162,7 @@ const BuyerRequest = (props: any) => {
                       <InputField name='message' multiline={true} rows={5} label={'Message'} />
                       <Grid container spacing={2}>
                         <Grid item xs={12} md={6}>
-                          <InputField name='firstNamMessagee' label={'First Name'} />
+                          <InputField name='firstName' label={'First Name'} />
                         </Grid>
                         <Grid item xs={12} md={6}>
                           <InputField name='lastName' label={'Last Name'} />

@@ -19,7 +19,8 @@ export const URL = {
   GET_JOBS: '/jobs',
   POPULAR_JOBS: '/jobs/latest',
   QUERY_JOBS: '/jobs/query',
-  CONTACT_US: '/email/contact-us'
+  CONTACT_US: '/email/contact-us',
+  SUBMIT_JOB_PROPOSAL: '/email/job-proposal'
 }
 
 export const loginUserApi = (userData: LoginProps) => {
@@ -157,6 +158,15 @@ export const contactUs = (data: IContactUsMessage) => {
     method: 'post',
     url: URL.CONTACT_US,
     data: data
+  }
+  return axiosInstance(config)
+}
+
+export const contactJobProposal = (data: any) => {
+  const config = {
+    method: 'post',
+    url: URL.SUBMIT_JOB_PROPOSAL,
+    data
   }
   return axiosInstance(config)
 }
