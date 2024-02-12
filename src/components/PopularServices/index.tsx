@@ -16,6 +16,7 @@ export interface ServiceProps {
   description: string
   email: string
   images: string[]
+  phone?: string
   rating: number
 }
 

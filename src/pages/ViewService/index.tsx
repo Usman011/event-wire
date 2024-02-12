@@ -16,29 +16,29 @@ import { useEffect, useState } from 'react'
 import { AuthState } from 'store/auth'
 import { RootState } from 'store'
 import { useSelector } from 'react-redux'
-import { ServiceProps } from 'components/PopularServices'
 import BoltIcon from '@mui/icons-material/Bolt'
 import { Form } from 'react-router-dom'
 import { Formik } from 'formik'
 import { InputField } from 'components/InputField'
 import * as Yup from 'yup'
 import LocationTab from 'components/Location'
+import * as API from 'api/userApi'
 
-const demoServiceData: ServiceProps = {
-  id: 1,
-  title: 'Tech Conference',
-  location: 'Convention Center',
-  description: 'Explore the latest trends in technology.',
-  phone: '+1 (123) 456-7890',
-  email: 'john.doe@example.com',
-  images: {
-    img1: 'https://source.unsplash.com/random/200x200?sig=1',
-    img2: 'https://source.unsplash.com/random/200x200?sig=2',
-    img3: 'https://source.unsplash.com/random/200x200?sig=3',
-    img4: 'https://source.unsplash.com/random/200x200?sig=4',
-    img5: 'https://source.unsplash.com/random/200x200?sig=5'
+interface ServiceProps {
+  id: number | string
+  name: string
+  location: {
+    address: string
+    lat: number
+    lng: number
   }
+  description: string
+  email: string
+  images: string[]
+  phone?: string
+  rating: number
 }
+
 const ViewService = () => {
   const auth = useSelector<RootState, AuthState>(state => state.auth)
   const { isLaptop } = useViewports()
@@ -49,24 +49,34 @@ const ViewService = () => {
   const params = useParams()
   const [services, setServices] = useState<ServiceProps>({
     id: '',
-    title: '',
-    location: '',
+    name: '',
+    location: {
+      address: '',
+      lat: 0,
+      lng: 0
+    },
     description: '',
-    phone: '',
+
     email: '',
-    images: {
-      img1: '',
-      img2: '',
-      img3: ''
-    }
+
+    images: [],
+    phone: '',
+    rating: 0
   })
 
   const getServiceDetail = async () => {
     setLoading(true)
     try {
-      // const response = await getServiceDetailApi(id)
-      // setProperty(response.data)
-      setServices(demoServiceData)
+      const response = await API.getServiceDetail(params.id)
+      const service = response.data.service
+      setServices(prev => ({
+        ...prev,
+        id: service.id,
+        name: service.name,
+        location: service.location,
+        description: service.description,
+        images: service.images
+      }))
     } catch (error) {
       // console.log(error)
     }
@@ -75,7 +85,7 @@ const ViewService = () => {
 
   useEffect(() => {
     getServiceDetail()
-  }, [])
+  }, [params])
 
   const style = {
     position: 'absolute',
@@ -118,24 +128,24 @@ const ViewService = () => {
             <Grid item xs={12} md={8}>
               <Grid container spacing={2}>
                 <Grid item xs={12} md={6}>
-                  <StyledImg src={services.images.img1} height={!isLaptop ? 350 : 500} />
+                  <StyledImg src={services.images[0]} height={!isLaptop ? 350 : 500} />
                 </Grid>
                 <Grid item xs={12} md={6}>
                   <Grid container columnSpacing={2} rowSpacing={1}>
-                    <Grid item xs={12} md={services.images.img5 || services.images.img4 ? 6 : 12}>
-                      <StyledImg src={services.images.img2} height={!isLaptop ? 350 : 243} />
+                    <Grid item xs={12} md={services.images[4] || services.images[3] ? 6 : 12}>
+                      <StyledImg src={services.images[1]} height={!isLaptop ? 350 : 243} />
                     </Grid>
-                    <Grid item xs={12} md={services.images.img5 || services.images.img4 ? 6 : 12}>
-                      <StyledImg src={services.images.img3} height={!isLaptop ? 350 : 243} />
+                    <Grid item xs={12} md={services.images[4] || services.images[3] ? 6 : 12}>
+                      <StyledImg src={services.images[2]} height={!isLaptop ? 350 : 243} />
                     </Grid>
                     {services.images.img4 && (
-                      <Grid item xs={12} md={services.images.img5 ? 6 : 12}>
-                        <StyledImg src={services.images.img4} height={!isLaptop ? 350 : 243} />
+                      <Grid item xs={12} md={services.images[4] ? 6 : 12}>
+                        <StyledImg src={services.images[3]} height={!isLaptop ? 350 : 243} />
                       </Grid>
                     )}
                     {services.images.img5 && (
-                      <Grid item xs={12} md={services.images.img4 ? 6 : 12}>
-                        <StyledImg src={services.images.img5} height={!isLaptop ? 350 : 243} />
+                      <Grid item xs={12} md={services.images[3] ? 6 : 12}>
+                        <StyledImg src={services.images[4]} height={!isLaptop ? 350 : 243} />
                       </Grid>
                     )}
                   </Grid>

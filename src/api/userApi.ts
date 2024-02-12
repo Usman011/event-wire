@@ -14,6 +14,7 @@ export const URL = {
   GET_SERVICE_MY_SERVICES: '/marketplace/services/my',
   GET_POPULAR_SERVICES: '/marketplace/services/popular',
   GET_QUERY_SERVICES: '/marketplace/services/query',
+  GET_SERVICE_DETAIL: '/marketplace/services',
   POST_JOB: '/jobs',
   GET_JOBS: '/jobs',
   POPULAR_JOBS: '/jobs/latest',
@@ -101,10 +102,18 @@ export const getPopularServices = () => {
   return axiosInstance(axiosConfig)
 }
 
-export const getQueryServices = (subcategorySlug: unknown) => {
+export const getQueryServices = (subcategorySlug: string) => {
   let axiosConfig = {
     method: 'get',
     url: `${URL.GET_QUERY_SERVICES}?subcategory=${subcategorySlug}`
+  }
+  return axiosInstance(axiosConfig)
+}
+
+export const getServiceDetail = (serviceId: string) => {
+  let axiosConfig = {
+    method: 'get',
+    url: `${URL.GET_SERVICE_DETAIL}/${serviceId}/details`
   }
   return axiosInstance(axiosConfig)
 }

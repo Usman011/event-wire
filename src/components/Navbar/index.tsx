@@ -124,6 +124,11 @@ export const Navbar = () => {
                       </MenuItem>
                     )
                   })}
+                  <MenuItem onClick={handleCloseNavMenu}>
+                    <StyledLink to='/wedding-dresses'>
+                      <Typography textAlign='center'>Dresses</Typography>
+                    </StyledLink>
+                  </MenuItem>
 
                   <MenuItem onClick={handleCloseNavMenu}>
                     <StyledLink to='/forums'>
@@ -218,7 +223,6 @@ export const Navbar = () => {
                   <Box sx={{ display: { xs: 'none', md: 'flex', cursor: 'pointer' } }}>
                     <Flex gap={2}>
                       {categories.map(item => {
-                        console.log('item', item)
                         return (
                           <SimpleMenu
                             name={item.category.name}
@@ -227,6 +231,16 @@ export const Navbar = () => {
                           />
                         )
                       })}
+
+                      <StyledTypography
+                        variant='body1'
+                        fontWeight={500}
+                        onClick={() => {
+                          navigate('/wedding-dresses')
+                        }}
+                      >
+                        Dresses
+                      </StyledTypography>
 
                       <StyledTypography
                         variant='body1'

@@ -53,7 +53,7 @@ function App() {
           element: <Contact />
         },
         {
-          path: '/wedding',
+          path: '/wedding-dresses',
           element: <Wedding />
         }
       ]
