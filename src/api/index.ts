@@ -3,8 +3,8 @@ import { store } from 'store'
 import { logout } from 'store/auth'
 import { openToaster } from 'store/toast'
 
-//const BASE_URL = 'https://em-api-ca838e34c99a.herokuapp.com/api'
-const BASE_URL = 'http://localhost:8000/api'
+const BASE_URL = 'https://em-api-ca838e34c99a.herokuapp.com/api'
+// const BASE_URL = 'http://localhost:8000/api'
 
 const getToken = () => store.getState().auth.token
 
