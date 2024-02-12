@@ -24,21 +24,6 @@ import * as Yup from 'yup'
 import LocationTab from 'components/Location'
 import * as API from 'api/userApi'
 
-interface ServiceProps {
-  id: number | string
-  name: string
-  location: {
-    address: string
-    lat: number
-    lng: number
-  }
-  description: string
-  email: string
-  images: string[]
-  phone?: string
-  rating: number
-}
-
 const ViewService = () => {
   const auth = useSelector<RootState, AuthState>(state => state.auth)
   const { isLaptop } = useViewports()
@@ -47,29 +32,14 @@ const ViewService = () => {
   const handleClose = () => setOpen(false)
   const [loading, setLoading] = useState(false)
   const params = useParams()
-  const [services, setServices] = useState<ServiceProps>({
-    id: '',
-    name: '',
-    location: {
-      address: '',
-      lat: 0,
-      lng: 0
-    },
-    description: '',
-
-    email: '',
-
-    images: [],
-    phone: '',
-    rating: 0
-  })
+  const [services, setServices] = useState<any>({})
 
   const getServiceDetail = async () => {
     setLoading(true)
     try {
       const response = await API.getServiceDetail(params.id)
       const service = response.data.service
-      setServices(prev => ({
+      setServices((prev: any) => ({
         ...prev,
         id: service.id,
         name: service.name,
@@ -138,12 +108,12 @@ const ViewService = () => {
                     <Grid item xs={12} md={services.images[4] || services.images[3] ? 6 : 12}>
                       <StyledImg src={services.images[2]} height={!isLaptop ? 350 : 243} />
                     </Grid>
-                    {services.images.img4 && (
+                    {services?.images[3] && (
                       <Grid item xs={12} md={services.images[4] ? 6 : 12}>
                         <StyledImg src={services.images[3]} height={!isLaptop ? 350 : 243} />
                       </Grid>
                     )}
-                    {services.images.img5 && (
+                    {services.images[4] && (
                       <Grid item xs={12} md={services.images[3] ? 6 : 12}>
                         <StyledImg src={services.images[4]} height={!isLaptop ? 350 : 243} />
                       </Grid>

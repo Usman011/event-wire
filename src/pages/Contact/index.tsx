@@ -26,7 +26,7 @@ const Contact = () => {
     message: ''
   }
 
-  const handleSubmit = async (values: IContactUsMessage, { resetForm }) => {
+  const handleSubmit = async (values: IContactUsMessage, { resetForm }: { resetForm: any }) => {
     setLoading(true)
     try {
       await API.contactUs(values)

@@ -2,7 +2,6 @@ import { Box, CircularProgress, Container, Grid, Typography } from '@mui/materia
 import ItemCard from 'components/ItemCrad'
 import { Centered } from 'components/design'
 import { useEffect, useState } from 'react'
-import { useParams } from 'react-router'
 import * as API from 'api/userApi'
 
 export interface ServiceProps {

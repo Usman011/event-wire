@@ -28,7 +28,7 @@ export interface ServiceProps {
   // images: ServiceImages
 }
 
-const MyService = ({ list = [] }) => {
+const MyService = ({ list = [] }: { list: any }) => {
   const navigate = useNavigate()
   const initialLimit = 30
   // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -46,7 +46,7 @@ const MyService = ({ list = [] }) => {
     const words = text.split(' ')
     return words.slice(0, limit).join(' ') + (words.length > limit ? '...' : '')
   }
-  return list.map(item => (
+  return list.map((item: any) => (
     <Grid item xs={12} sm={6} md={4} lg={3} key={item.id} flex={1}>
       <CardBox>
         <Centered>

@@ -8,7 +8,7 @@ import { Form } from 'react-router-dom'
 import { InputField } from './InputField'
 import * as Yup from 'yup'
 
-const BuyerRequest = props => {
+const BuyerRequest = (props: any) => {
   const initialLimit = 30
   const [open, setOpen] = useState(false)
   const handleOpen = () => setOpen(true)

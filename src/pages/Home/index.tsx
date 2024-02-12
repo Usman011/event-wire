@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import {
   Box,
   CircularProgress,
@@ -153,7 +155,7 @@ const Home = () => {
                 // maxWidth: '400px',
                 maxWidth: isLaptop ? '400px' : '300px'
               }}
-              color='white'
+              color='warning'
               variant='outlined'
               focused
               label='Search here.'
@@ -161,7 +163,7 @@ const Home = () => {
                 style: { color: '#ffff' },
                 endAdornment: (
                   <IconButton size='large'>
-                    <SearchIcon sx={{ color: '#fff' }} />
+                    <SearchIcon sx={{ color: '#ff9800' }} />
                   </IconButton>
                 )
               }}
@@ -239,7 +241,15 @@ const Home = () => {
                   {categories.slice(0, 4).map(item => {
                     return (
                       <Grid item xs={12} sm={6} md={4} lg={3} flex={1}>
-                        <StyledLink to={`services/${item.slug}`}>
+                        <StyledLink
+                          to={{
+                            pathname: `services/${item.slug}`
+                          }}
+                          state={{
+                            img: item.icon,
+                            name: item.name
+                          }}
+                        >
                           <CardBox>
                             <Box position='relative'>
                               <StyledImg src={item.icon} alt='card img' />

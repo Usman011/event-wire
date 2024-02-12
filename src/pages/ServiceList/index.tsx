@@ -12,7 +12,7 @@ import {
 import ItemCard from 'components/ItemCrad'
 import { Centered, Flex } from 'components/design'
 import { useEffect, useState } from 'react'
-import { useParams } from 'react-router'
+import { useLocation, useParams } from 'react-router'
 import SearchIcon from '@mui/icons-material/Search'
 import styled from '@emotion/styled'
 import { useViewports } from 'helpers/viewports'
@@ -37,9 +37,12 @@ export interface ServiceProps {
 
 const ServiceList = () => {
   const [services, setServices] = useState<ServiceProps[]>([])
+  const [filteredServices, setFilteredServices] = useState<ServiceProps[]>([])
   const [loading, setLoading] = useState(false)
-
+  const [searchQuery, setSearchQuery] = useState('')
+  const { state } = useLocation()
   const params = useParams()
+  const { isLaptop } = useViewports()
 
   const getAllEvents = async () => {
     try {
@@ -47,18 +50,30 @@ const ServiceList = () => {
       const response = await API.getQueryServices(params.id)
       const services = response.data.services.results
       setServices(services)
+      setFilteredServices(services) // Initialize filteredServices with all services
     } catch (error) {
-      // console.log('error', error)
+      // Handle error
     }
     setLoading(false)
   }
 
-  const { isLaptop } = useViewports()
-
   useEffect(() => {
     getAllEvents()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [params])
+
+  useEffect(() => {
+    if (services.length > 0) {
+      console.log(services)
+      const filtered = services.filter((item: any) =>
+        item.name.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+      setFilteredServices(filtered)
+    }
+  }, [searchQuery, services])
+
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(event.target.value)
+  }
 
   return (
     <Container maxWidth='lg'>
@@ -66,7 +81,7 @@ const ServiceList = () => {
         <Grid item xs={12} md={6}>
           <StyledBox isLaptop={isLaptop}>
             <Breadcrumbs aria-label='breadcrumb'>
-              <Typography variant='body2' fontWeight='bold'>
+              <Typography variant='body2' fontWeight='00'>
                 Weddings
               </Typography>
               <Typography variant='body2' fontWeight='bold'>
@@ -74,7 +89,7 @@ const ServiceList = () => {
               </Typography>
             </Breadcrumbs>
             <Typography variant='h3' fontWeight='bold' pt={2}>
-              Greece Wedding Venues
+              {state.name || ''}
             </Typography>
 
             <TextField
@@ -83,6 +98,8 @@ const ServiceList = () => {
               }}
               variant='outlined'
               label='Search here.'
+              value={searchQuery}
+              onChange={handleSearchChange}
               InputProps={{
                 endAdornment: (
                   <IconButton size='large'>
@@ -94,40 +111,23 @@ const ServiceList = () => {
           </StyledBox>
         </Grid>
         <Grid item xs={12} md={6}>
-          <ImageBackground isLaptop={isLaptop} />
+          <ImageBackground src={state.img} isLaptop={isLaptop} />
         </Grid>
       </Grid>
       {/* <BorderBox /> */}
       <Box mb={5}>
-        <Grid container alignItems='center' mt={3}>
-          <Grid item xs={12} md={6}>
-            <Typography variant='subtitle1' fontWeight='600'>
-              My Services
-            </Typography>
-          </Grid>
-          <Grid item xs={12} md={6} alignItems='center'>
-            <Flex justifyContent='flex-end'>
-              <TextField
-                variant='outlined'
-                label='Search Services here.'
-                InputProps={{
-                  endAdornment: (
-                    <IconButton size='large'>
-                      <SearchIcon />
-                    </IconButton>
-                  )
-                }}
-              />
-            </Flex>
-          </Grid>
-        </Grid>
         {loading ? (
           <Centered mt={5}>
             <CircularProgress />
           </Centered>
         ) : (
           <Grid container spacing={3} mt={1}>
-            {services.map(item => {
+            {filteredServices.length === 0 && (
+              <Typography variant='h5' fontWeight='bold' textAlign='center' color='#666'>
+                No Services yet
+              </Typography>
+            )}
+            {filteredServices.map(item => {
               return <ItemCard category={item} />
             })}
           </Grid>

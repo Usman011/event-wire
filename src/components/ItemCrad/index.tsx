@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router'
 import LocalFireDepartmentIcon from '@mui/icons-material/LocalFireDepartment'
 import { ServiceProps } from 'components/PopularServices'
 
-const ItemCard = ({ category }: { category: ServiceProps }) => {
+const ItemCard = ({ category }: { category: any }) => {
   const initialLimit = 30
   const [isFav, setIsFav] = useState(false)
   const navigate = useNavigate()
@@ -49,9 +49,7 @@ const ItemCard = ({ category }: { category: ServiceProps }) => {
 
         <Typography variant='body2' fontWeight='400' py={2}>
           {getContentPreview(category.description)}
-          <Button color='primary' size='small' onClick={handleToggleContent}>
-            {limit === initialLimit ? 'Read More' : 'Read Less'}
-          </Button>
+        
         </Typography>
 
         <Button variant='outlined' color='primary' fullWidth onClick={() => handleClick(category)}>
