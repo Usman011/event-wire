@@ -62,12 +62,13 @@ const ServiceList = () => {
   }, [params])
 
   useEffect(() => {
-    if (services.length > 0) {
-      console.log(services)
-      const filtered = services.filter((item: any) =>
-        item.name.toLowerCase().includes(searchQuery.toLowerCase())
+    if (services.length !== 0 && searchQuery.length !== 0) {
+      const filtered = services.filter(
+        (item: any) => item?.name?.toLowerCase()?.includes(searchQuery?.toLowerCase())
       )
       setFilteredServices(filtered)
+    } else {
+      setFilteredServices(services)
     }
   }, [searchQuery, services])
 
@@ -89,7 +90,7 @@ const ServiceList = () => {
               </Typography>
             </Breadcrumbs>
             <Typography variant='h3' fontWeight='bold' pt={2}>
-              {state.name || ''}
+              {state?.name || ''}
             </Typography>
 
             <TextField
@@ -111,7 +112,7 @@ const ServiceList = () => {
           </StyledBox>
         </Grid>
         <Grid item xs={12} md={6}>
-          <ImageBackground src={state.img} isLaptop={isLaptop} />
+          <ImageBackground src={state?.img} isLaptop={isLaptop} />
         </Grid>
       </Grid>
       {/* <BorderBox /> */}
