@@ -236,15 +236,7 @@ export const Navbar = () => {
                         Dresses
                       </StyledTypography>
 
-                      <StyledTypography
-                        variant='body1'
-                        fontWeight={500}
-                        onClick={() => {
-                          navigate('/forums')
-                        }}
-                      >
-                        Forums
-                      </StyledTypography>
+                    
 
                       <StyledTypography
                         variant='body1'
