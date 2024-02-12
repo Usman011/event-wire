@@ -32,21 +32,40 @@ const ViewService = () => {
   const handleClose = () => setOpen(false)
   const [loading, setLoading] = useState(false)
   const params = useParams()
-  const [services, setServices] = useState<any>({})
+  const [services, setServices] = useState<any>({
+    name: '',
+    description: '',
+    images: [],
+    category: {
+      name: '',
+      description: '',
+      icon: '',
+      slug: '',
+      parent: '',
+      id: ''
+    },
+    faqs: [
+      {
+        question: 'How many seats does your venue accommodate?',
+        answer:
+          ': Our versatile space is perfect for a variety of events, including weddings, anniversaries, corporate gatherings, parties, and more. We cater to your specific needs to ensure your event is a success.'
+      },
+      {
+        question: 'What types of events can be hosted at your venue?',
+        answer:
+          ': Our versatile space is perfect for a variety of events, including weddings, anniversaries, corporate gatherings, parties, and more. We cater to your specific needs to ensure your event is a success.'
+      }
+    ],
+    rating: 0
+  })
 
   const getServiceDetail = async () => {
     setLoading(true)
     try {
       const response = await API.getServiceDetail(params.id)
       const service = response.data.service
-      setServices((prev: any) => ({
-        ...prev,
-        id: service.id,
-        name: service.name,
-        location: service.location,
-        description: service.description,
-        images: service.images
-      }))
+      console.log(service)
+      setServices(response.data.service)
     } catch (error) {
       // console.log(error)
     }
@@ -98,24 +117,24 @@ const ViewService = () => {
             <Grid item xs={12} md={8}>
               <Grid container spacing={2}>
                 <Grid item xs={12} md={6}>
-                  <StyledImg src={services.images[0]} height={!isLaptop ? 350 : 500} />
+                  <StyledImg src={services.images[0] || ''} height={!isLaptop ? 350 : 500} />
                 </Grid>
                 <Grid item xs={12} md={6}>
                   <Grid container columnSpacing={2} rowSpacing={1}>
-                    <Grid item xs={12} md={services.images[4] || services.images[3] ? 6 : 12}>
-                      <StyledImg src={services.images[1]} height={!isLaptop ? 350 : 243} />
+                    <Grid item xs={12} md={services?.images[4] || services?.images[3] ? 6 : 12}>
+                      <StyledImg src={services?.images[1]} height={!isLaptop ? 350 : 243} />
                     </Grid>
-                    <Grid item xs={12} md={services.images[4] || services.images[3] ? 6 : 12}>
-                      <StyledImg src={services.images[2]} height={!isLaptop ? 350 : 243} />
+                    <Grid item xs={12} md={services?.images[4] || services?.images[3] ? 6 : 12}>
+                      <StyledImg src={services?.images[2]} height={!isLaptop ? 350 : 243} />
                     </Grid>
                     {services?.images[3] && (
-                      <Grid item xs={12} md={services.images[4] ? 6 : 12}>
-                        <StyledImg src={services.images[3]} height={!isLaptop ? 350 : 243} />
+                      <Grid item xs={12} md={services?.images[4] ? 6 : 12}>
+                        <StyledImg src={services?.images[3]} height={!isLaptop ? 350 : 243} />
                       </Grid>
                     )}
-                    {services.images[4] && (
-                      <Grid item xs={12} md={services.images[3] ? 6 : 12}>
-                        <StyledImg src={services.images[4]} height={!isLaptop ? 350 : 243} />
+                    {services?.images[4] && (
+                      <Grid item xs={12} md={services?.images[3] ? 6 : 12}>
+                        <StyledImg src={services?.images[4]} height={!isLaptop ? 350 : 243} />
                       </Grid>
                     )}
                   </Grid>
@@ -125,7 +144,7 @@ const ViewService = () => {
             <Grid item xs={12} md={4} flex={1}>
               <StyledBox>
                 <Typography variant='h4' py={1} fontWeight='bold' color='#00458c'>
-                  {services.title}
+                  {services?.name}
                 </Typography>
 
                 {/* <Rating
@@ -144,7 +163,7 @@ const ViewService = () => {
                   </Typography>
 
                   <Typography variant='body1' fontWeight='400'>
-                    {services.phone}
+                    {services?.createdBy?.phone || 'No Number provided yet'}
                   </Typography>
                 </Centered>
                 <Centered justifyContent='space-between' py={1}>
@@ -153,7 +172,7 @@ const ViewService = () => {
                   </Typography>
 
                   <Typography variant='body1' fontWeight='400'>
-                    {services.email}
+                    {services?.createdBy?.email}
                   </Typography>
                 </Centered>
 
@@ -186,14 +205,14 @@ const ViewService = () => {
           <Grid container spacing={4} my={1}>
             <Grid item xs={12} md={8}>
               <Typography variant='h3' py={1} fontWeight='bold' color='#00458c'>
-                {services.title}
+                {services?.name}
               </Typography>
 
               <Typography variant='body1' fontWeight='400' pb={3}>
-                {services.description}
+                {services?.description}
               </Typography>
               <Typography variant='body2' color='#999' fontWeight='400' pb={2}>
-                {` ${services.title} is a stunning mansion event space located in Santorini,
+                {` ${services?.name} is a stunning mansion event space located in Santorini,
                 Greece. This property provides couples with the opportunity to wed in a dreamy
                 seaside setting. With panoramic views of Santorini's mysterious caldera, the
                 stunning volcano, and the dazzling blue Aegean Sea, this property is the ideal venue
@@ -203,7 +222,7 @@ const ViewService = () => {
                 Facilities
               </Typography>
               <Typography variant='body2' color='#999' fontWeight='400' pb={2}>
-                {` ${services.title}  provides guests with a number of picture-perfect gathering
+                {` ${services?.name}  provides guests with a number of picture-perfect gathering
                 spaces. You will be welcome to exchange your vows in front of your loved ones under
                 a beautiful arch surrounded by candles and flowers as the sun sets on the beach. The
                 seaside event space can accommodate up to 100 guests seated for your ceremony and
@@ -219,7 +238,7 @@ const ViewService = () => {
                 Capacity
               </Typography>
               <Typography variant='body2' color='#999' fontWeight='400' pb={2}>
-                {` ${services.title}  provides guests with a number of picture-perfect gathering
+                {` ${services?.name}  provides guests with a number of picture-perfect gathering
                 spaces. You will be welcome to exchange your vows in front of your loved ones under
                 a beautiful arch surrounded by candles and flowers as the sun sets on the beach. The
                 seaside event space can accommodate up to 100 guests seated for your ceremony and
@@ -233,9 +252,20 @@ const ViewService = () => {
               </Typography>
             </Grid>
             <Grid item xs={12} md={4}>
-              <LocationTab />
+              {services?.location && <LocationTab location={services.location} />}
             </Grid>
           </Grid>
+          {services?.faqs &&
+            services.faqs.map((item: any) => {
+              return (
+                <Box>
+                  <Typography variant={'body1'} fontWeight='bold' py={2}>
+                    {item.question}
+                  </Typography>
+                  <Typography variant={'body2'}>{item.answer}</Typography>
+                </Box>
+              )
+            })}
         </Container>
       )}
 
