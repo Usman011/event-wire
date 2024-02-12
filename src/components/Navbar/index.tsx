@@ -129,12 +129,6 @@ export const Navbar = () => {
                       <Typography textAlign='center'>Dresses</Typography>
                     </StyledLink>
                   </MenuItem>
-
-                  <MenuItem onClick={handleCloseNavMenu}>
-                    <StyledLink to='/forums'>
-                      <Typography textAlign='center'>Forums</Typography>
-                    </StyledLink>
-                  </MenuItem>
                   <MenuItem onClick={handleCloseNavMenu}>
                     <StyledLink to='/view-jobs'>
                       <Typography textAlign='center'>Jobs</Typography>
