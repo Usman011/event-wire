@@ -24,29 +24,6 @@ import { InputField } from 'components/InputField'
 import * as Yup from 'yup'
 import LocationTab from 'components/Location'
 
-const locationData = [
-  {
-    long_name: 'Lahore',
-    short_name: 'Lahore',
-    types: ['locality', 'political']
-  },
-  {
-    long_name: 'Lahore',
-    short_name: 'Lahore',
-    types: ['administrative_area_level_2', 'political']
-  },
-  {
-    long_name: 'Punjab',
-    short_name: 'Punjab',
-    types: ['administrative_area_level_1', 'political']
-  },
-  {
-    long_name: 'Pakistan',
-    short_name: 'PK',
-    types: ['country', 'political']
-  }
-]
-
 const demoServiceData: ServiceProps = {
   id: 1,
   title: 'Tech Conference',
@@ -64,13 +41,12 @@ const demoServiceData: ServiceProps = {
 }
 const ViewService = () => {
   const auth = useSelector<RootState, AuthState>(state => state.auth)
-  const [value, setValue] = useState<number | null>(2)
   const { isLaptop } = useViewports()
   const [open, setOpen] = useState(false)
   const handleOpen = () => setOpen(true)
   const handleClose = () => setOpen(false)
   const [loading, setLoading] = useState(false)
-  const { id } = useParams()
+  const params = useParams()
   const [services, setServices] = useState<ServiceProps>({
     id: '',
     title: '',
@@ -92,7 +68,7 @@ const ViewService = () => {
       // setProperty(response.data)
       setServices(demoServiceData)
     } catch (error) {
-      console.log(error)
+      // console.log(error)
     }
     setLoading(false)
   }

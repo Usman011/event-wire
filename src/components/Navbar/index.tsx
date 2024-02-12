@@ -108,32 +108,39 @@ export const Navbar = () => {
                   display: { xs: 'block', md: 'none' }
                 }}
               >
-                {categories.map(item => {
-                  return (
-                    <MenuItem>
-                      <SimpleMenu
-                        name={item.category.name}
-                        subcategories={item.subcategories}
-                        img={item.category.icon}
-                      />
-                    </MenuItem>
-                  )
-                })}
-                <MenuItem onClick={handleCloseNavMenu}>
-                  <StyledLink to='/forums'>
-                    <Typography textAlign='center'>Forums</Typography>
-                  </StyledLink>
-                </MenuItem>
-                <MenuItem onClick={handleCloseNavMenu}>
-                  <StyledLink to='/view-jobs'>
-                    <Typography textAlign='center'>Jobs</Typography>
-                  </StyledLink>
-                </MenuItem>
-                <MenuItem onClick={handleCloseNavMenu}>
-                  <StyledLink to='/contact'>
-                    <Typography textAlign='center'>Contact</Typography>
-                  </StyledLink>
-                </MenuItem>
+                <Box
+                  sx={{
+                    width: '100vw'
+                  }}
+                >
+                  {categories.map(item => {
+                    return (
+                      <MenuItem>
+                        <SimpleMenu
+                          name={item.category.name}
+                          subcategories={item.subcategories}
+                          img={item.category.icon}
+                        />
+                      </MenuItem>
+                    )
+                  })}
+
+                  <MenuItem onClick={handleCloseNavMenu}>
+                    <StyledLink to='/forums'>
+                      <Typography textAlign='center'>Forums</Typography>
+                    </StyledLink>
+                  </MenuItem>
+                  <MenuItem onClick={handleCloseNavMenu}>
+                    <StyledLink to='/view-jobs'>
+                      <Typography textAlign='center'>Jobs</Typography>
+                    </StyledLink>
+                  </MenuItem>
+                  <MenuItem onClick={handleCloseNavMenu}>
+                    <StyledLink to='/contact'>
+                      <Typography textAlign='center'>Contact</Typography>
+                    </StyledLink>
+                  </MenuItem>
+                </Box>
               </Menu>
             </Box>
             <Flex
@@ -220,6 +227,7 @@ export const Navbar = () => {
                           />
                         )
                       })}
+
                       <StyledTypography
                         variant='body1'
                         fontWeight={500}

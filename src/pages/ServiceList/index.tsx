@@ -57,7 +57,8 @@ const ServiceList = () => {
 
   useEffect(() => {
     getAllEvents()
-  }, [])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [params])
 
   return (
     <Container maxWidth='lg'>
