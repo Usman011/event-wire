@@ -1,27 +1,24 @@
-import { useState } from 'react'
-import { Box, Typography, CircularProgress } from '@mui/material'
-import { useLocation } from 'react-router'
-import { useViewports } from 'helpers/viewports'
+import { useState, useEffect } from 'react';
+import { Box, Typography, CircularProgress } from '@mui/material';
+import { useViewports } from 'helpers/viewports';
 
-const LocationTab = () => {
-  const [isMapLoaded, setIsMapLoaded] = useState(false)
-  const { isMobile } = useViewports()
-  const street = {
-    number: 9492,
-    name: 'Slobodana Aligrudića'
-  }
-  const city = 'Alibunar'
-  const state = 'Zaječar'
-  const country = 'Serbia'
-  const embedUrl = `https://www.google.com/maps/embed/v1/place?q=${
-    street.number
-  }+${encodeURIComponent(street.name)},${city},${state},${country}&key=${
-    import.meta.env.VITE_GOOGLE_MAP_API_KEY
-  }`
+const LocationTab = ({ location }: {location: any}) => {
+  const [isMapLoaded, setIsMapLoaded] = useState(false);
+  const { isMobile } = useViewports();
+
+  const { address, lat, lng } = location;
+
+  const embedUrl = `https://www.google.com/maps/embed/v1/place?q=${encodeURIComponent(
+    address
+  )}&center=${lat},${lng}&key=${import.meta.env.VITE_GOOGLE_MAP_API_KEY}`;
 
   const handleMapLoad = () => {
-    setIsMapLoaded(true)
-  }
+    setIsMapLoaded(true);
+  };
+
+  useEffect(() => {
+    setIsMapLoaded(false); // Reset map loaded state when location prop changes
+  }, [location]);
 
   return (
     <Box mt={1}>
@@ -55,7 +52,7 @@ const LocationTab = () => {
         ></iframe>
       </Box>
     </Box>
-  )
-}
+  );
+};
 
-export default LocationTab
+export default LocationTab;
