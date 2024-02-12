@@ -8,7 +8,7 @@ import { Form } from 'react-router-dom'
 import { InputField } from './InputField'
 import * as Yup from 'yup'
 
-const BuyerRequest = () => {
+const BuyerRequest = props => {
   const initialLimit = 30
   const [open, setOpen] = useState(false)
   const handleOpen = () => setOpen(true)
@@ -67,29 +67,27 @@ const BuyerRequest = () => {
           />
           <Box>
             <Typography variant='subtitle2' color='#555' fontWeight='600'>
-              Usman Nasir
+              {props.createdBy.name}
             </Typography>
             <Typography variant='caption' color='#555' fontWeight='400'>
-              20 April 2000
+              {props.createdAt}
             </Typography>
           </Box>
         </Flex>
         <Flex flexDirection='column'>
           <Typography variant='body1' fontWeight='bold' color='#666' textAlign='center'>
-            UI & UX
+            {props.category.name}
           </Typography>
           <Typography variant='caption' fontWeight='500' color='#666' textAlign='end'>
-            Lahore
+            {props.address}
           </Typography>
         </Flex>
       </Flex>
       <Typography variant='subtitle2' color='#444' fontWeight='700' mt={2}>
-        Create new website Design
+        {props.title}
       </Typography>
       <Typography variant='body2' color='#777' pb={2} pt={1}>
-        {getContentPreview(
-          '@mui/icons-material includes the 2,100+ official Material Icons converted to SvgIcon components. It depends on @mui/material, which requires Emotion packages. Use one of the following commands to install it:  @mui/icons-material includes the 2,100+ official Material Icons converted to SvgIcon components. It depends on @mui/material, which requires Emotion packages. Use one of the following commands to install it: @mui/icons-material includes the 2,100+ official Material Icons converted to SvgIcon components. It depends on @mui/material, which requires Emotion packages. Use one of the following commands to install it: @mui/icons-material includes the 2,100+ official Material Icons converted to SvgIcon components. It depends on @mui/material, which requires Emotion packages. Use one of the following commands to install it:'
-        )}
+        {getContentPreview(props.description)}
         <Button color='primary' size='small' onClick={handleToggleContent}>
           {limit === initialLimit ? 'Read More' : 'Read Less'}
         </Button>
@@ -144,7 +142,7 @@ const BuyerRequest = () => {
                     </Flex>
                     <Box mt={4}>
                       <Box pb={2}>
-                        <Typography variant={'caption'} fontWeight='400' >
+                        <Typography variant={'caption'} fontWeight='400'>
                           By clicking 'Send', I agree to WeddingWire’s Privacy Policy and Terms of
                           use
                         </Typography>

@@ -34,6 +34,7 @@ export const Navbar = () => {
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null)
   const [profileAnchorEl, setProfileAnchorEl] = useState<null | HTMLElement>(null)
   const open = Boolean(profileAnchorEl)
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [activeTab, setActiveTab] = useState(-1)
   const [categories, setCategories] = useState([])
 
@@ -62,7 +63,7 @@ export const Navbar = () => {
     try {
       const response = await getAllCategoriesWithSubApi()
       setCategories(response.data.categories)
-      console.log('response', response)
+      //console.log('response', response)
     } catch (error) {
       /* empty */
     }
@@ -118,6 +119,11 @@ export const Navbar = () => {
                     </MenuItem>
                   )
                 })}
+                <MenuItem onClick={handleCloseNavMenu}>
+                  <StyledLink to='/forums'>
+                    <Typography textAlign='center'>Forums</Typography>
+                  </StyledLink>
+                </MenuItem>
                 <MenuItem onClick={handleCloseNavMenu}>
                   <StyledLink to='/view-jobs'>
                     <Typography textAlign='center'>Jobs</Typography>
@@ -214,6 +220,15 @@ export const Navbar = () => {
                           />
                         )
                       })}
+                      <StyledTypography
+                        variant='body1'
+                        fontWeight={500}
+                        onClick={() => {
+                          navigate('/forums')
+                        }}
+                      >
+                        Forums
+                      </StyledTypography>
 
                       <StyledTypography
                         variant='body1'
@@ -306,7 +321,7 @@ const StyledLogo = styled('img')(() => ({
   height: '100%'
 }))
 
-const StyledTypography = styled(Typography)(({ theme }) => ({
+const StyledTypography = styled(Typography)(() => ({
   '&:hover': {
     color: '#19b5bc'
   }

@@ -1,5 +1,5 @@
 import styled from '@emotion/styled'
-import { Box, Button, Container, Divider, Grid, Menu, Stack, Typography } from '@mui/material'
+import { Box, Grid, Menu, Typography } from '@mui/material'
 import { useViewports } from 'helpers/viewports'
 import React from 'react'
 import { Centered, Flex } from './design'
@@ -18,7 +18,7 @@ interface SimpleMenuProps {
 function SimpleMenu({ name, subcategories, img }: SimpleMenuProps) {
   const [anchorEl, setAnchorEl] = React.useState(null)
   const { isMobile } = useViewports()
-  const handleClick =( event: React.MouseEvent<HTMLElement>) => {
+  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget)
   }
   const handleClose = () => {
@@ -48,7 +48,7 @@ function SimpleMenu({ name, subcategories, img }: SimpleMenuProps) {
             padding: isMobile ? '1rem' : '2rem 1.5rem'
           }}
         >
-          <Container maxWidth='lg'>
+          <Centered>
             <Grid container spacing={2}>
               <Grid item sm={12} md={4}>
                 <Grid container spacing={2}>
@@ -68,7 +68,7 @@ function SimpleMenu({ name, subcategories, img }: SimpleMenuProps) {
                             }}
                           />
                           <StyledLink to={`services/${item.slug}`} onClick={handleClose}>
-                            <StyledTypography variant='caption'>{item.name}</StyledTypography>
+                            <StyledTypography variant='body2'>{item.name}</StyledTypography>
                           </StyledLink>
                         </Flex>
                       </Grid>
@@ -114,7 +114,7 @@ function SimpleMenu({ name, subcategories, img }: SimpleMenuProps) {
                 </Grid>
               )}
             </Grid>
-          </Container>
+          </Centered>
         </Box>
       </Menu>
     </div>
@@ -127,7 +127,7 @@ const StyledImg = styled('img')(() => ({
   borderRadius: '5px',
   borderTopRightRadius: '5px',
   height: '200px',
-  width: '100%'
+  width: '50%'
 }))
 
 const StyledIcon = styled('img')(() => ({
@@ -144,7 +144,7 @@ const StyledBox = styled(Box)(() => ({
   borderRadius: '5px'
 }))
 
-const StyledTypography = styled(Typography)(({ theme }) => ({
+const StyledTypography = styled(Typography)(() => ({
   '&:hover': {
     color: '#19b5bc'
   }

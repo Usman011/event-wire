@@ -2,6 +2,7 @@ import axiosInstance from 'api'
 import { LoginProps } from 'pages/Login'
 import { SignupProps } from 'pages/Signup'
 import { store } from 'store'
+import { IContactUsMessage } from 'utils/interfaces'
 
 export const URL = {
   LOGIN: '/auth/login',
@@ -10,8 +11,14 @@ export const URL = {
   GET_CATEGORIES: '/categories',
   POST_SERVICE: '/marketplace/service',
   GET_SERVICES: '/marketplace/services',
+  GET_SERVICE_MY_SERVICES: '/marketplace/services/my',
   GET_POPULAR_SERVICES: '/marketplace/services/popular',
-  POST_JOB: '/jobs'
+  GET_QUERY_SERVICES: '/marketplace/services/query',
+  POST_JOB: '/jobs',
+  GET_JOBS: '/jobs',
+  POPULAR_JOBS: '/jobs/latest',
+  QUERY_JOBS: '/jobs/query',
+  CONTACT_US: '/email/contact-us'
 }
 
 export const loginUserApi = (userData: LoginProps) => {
@@ -67,6 +74,7 @@ export const getAllCategoriesWithSubApi = () => {
   return axiosInstance(axiosConfig)
 }
 
+// services
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const createNewServiceApi = (data: any) => {
   let axiosConfig = {
@@ -77,11 +85,69 @@ export const createNewServiceApi = (data: any) => {
   return axiosInstance(axiosConfig)
 }
 
+export const getMyServices = () => {
+  let axiosConfig = {
+    method: 'get',
+    url: URL.GET_SERVICE_MY_SERVICES
+  }
+  return axiosInstance(axiosConfig)
+}
+
+export const getPopularServices = () => {
+  let axiosConfig = {
+    method: 'get',
+    url: URL.GET_POPULAR_SERVICES
+  }
+  return axiosInstance(axiosConfig)
+}
+
+export const getQueryServices = (subcategorySlug: unknown) => {
+  let axiosConfig = {
+    method: 'get',
+    url: `${URL.GET_QUERY_SERVICES}?subcategory=${subcategorySlug}`
+  }
+  return axiosInstance(axiosConfig)
+}
+
 export const createJobApi = (data: unknown) => {
   const config = {
     method: 'post',
     url: URL.POST_JOB,
     data
+  }
+  return axiosInstance(config)
+}
+
+export const getMyJobs = () => {
+  const config = {
+    mathod: 'get',
+    url: URL.GET_JOBS
+  }
+  return axiosInstance(config)
+}
+
+export const getPopularJobs = () => {
+  const config = {
+    method: 'get',
+    url: URL.POPULAR_JOBS
+  }
+  return axiosInstance(config)
+}
+
+export const queryJobs = () => {
+  const config = {
+    method: 'get',
+    url: URL.QUERY_JOBS
+  }
+  return axiosInstance(config)
+}
+
+// contact us
+export const contactUs = (data: IContactUsMessage) => {
+  const config = {
+    method: 'post',
+    url: URL.CONTACT_US,
+    data: data
   }
   return axiosInstance(config)
 }

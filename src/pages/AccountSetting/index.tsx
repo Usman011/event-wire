@@ -108,7 +108,7 @@ const AccountSetting = () => {
                         />
                         <Box>
                           <Typography variant='subtitle1' color='#555' fontWeight='800'>
-                            Usman Nasir
+                            Usama
                           </Typography>
                           <Typography variant='caption' color='#555' fontWeight='400'>
                             20 April 2000

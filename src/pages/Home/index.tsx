@@ -19,6 +19,8 @@ import Carousel from 'react-material-ui-carousel'
 import SearchIcon from '@mui/icons-material/Search'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle'
 
+import * as API from 'api/userApi'
+
 interface Category {
   name: string
   description: string
@@ -29,8 +31,8 @@ interface Category {
 }
 const Home = () => {
   const [categories, setCategories] = useState<Category[]>([])
+  const [jobs, setJobs] = useState([])
   const [loading, setLoading] = useState(false)
-  const { isMobile } = useViewports()
   const getCategories = async () => {
     setLoading(true)
     try {
@@ -45,6 +47,17 @@ const Home = () => {
 
   useEffect(() => {
     getCategories()
+    API.getPopularJobs()
+      .then(response => {
+        const jobs = response.data.jobs?.results || []
+        const crousalJobs = []
+        for (let i = 0; i < jobs.length / 2; i++) {
+          crousalJobs.push([jobs[i], jobs[i + 1]])
+        }
+
+        setJobs(crousalJobs)
+      })
+      .catch(() => {})
   }, [])
 
   const Forums = [
@@ -164,7 +177,7 @@ const Home = () => {
           }}
           zIndex={999}
         >
-          {isMobile ? (
+          {/* {isMobile ? (
             <Carousel
               autoPlay
               interval={3000}
@@ -173,57 +186,41 @@ const Home = () => {
               duration={800}
               indicators={false}
             >
-              <Box p={2}>
-                <BuyerRequest />
-              </Box>
-              <Box p={2}>
-                <BuyerRequest />
-              </Box>
-              <Box p={2}>
-                <BuyerRequest />
-              </Box>
+              
             </Carousel>
-          ) : (
-            <Carousel
-              autoPlay
-              interval={3000}
-              stopAutoPlayOnHover
-              animation='slide'
-              duration={800}
-              indicators={false}
-            >
-              <Box p={2}>
-                <Grid container spacing={2} mt={2}>
-                  <Grid item xs={6} md={6}>
-                    <BuyerRequest />
-                  </Grid>
-                  <Grid item xs={6} md={6}>
-                    <BuyerRequest />
-                  </Grid>
-                </Grid>
-              </Box>
-              <Box p={2}>
-                <Grid container spacing={2} mt={2}>
-                  <Grid item xs={6} md={6}>
-                    <BuyerRequest />
-                  </Grid>
-                  <Grid item xs={6} md={6}>
-                    <BuyerRequest />
-                  </Grid>
-                </Grid>
-              </Box>
-              <Box p={2}>
-                <Grid container spacing={2} mt={2}>
-                  <Grid item xs={6} md={6}>
-                    <BuyerRequest />
-                  </Grid>
-                  <Grid item xs={6} md={6}>
-                    <BuyerRequest />
-                  </Grid>
-                </Grid>
-              </Box>
-            </Carousel>
-          )}
+          ) : ( */}
+          <Carousel
+            autoPlay
+            interval={3000}
+            stopAutoPlayOnHover
+            animation='slide'
+            duration={800}
+            indicators={false}
+          >
+            {loading ? (
+              <>
+                <Centered mt={5}>
+                  <CircularProgress />
+                </Centered>
+              </>
+            ) : (
+              jobs.map(jobs => {
+                return (
+                  <Box p={2}>
+                    <Grid container spacing={2} mt={2}>
+                      <Grid item xs={12} md={6}>
+                        <BuyerRequest {...jobs[0]} />
+                      </Grid>
+                      <Grid item xs={12} md={6}>
+                        <BuyerRequest {...jobs[1]} />
+                      </Grid>
+                    </Grid>
+                  </Box>
+                )
+              })
+            )}
+          </Carousel>
+          {/* // )} */}
 
           <Box>
             <Typography variant='h4' fontWeight='bold' mt={4}>

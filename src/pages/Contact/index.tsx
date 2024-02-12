@@ -1,26 +1,52 @@
+import { useState } from 'react'
+
+import { useDispatch } from 'react-redux'
+import { Form } from 'react-router-dom'
 import styled from '@emotion/styled'
-import { Box, Button, CircularProgress, Container, TextField, Typography } from '@mui/material'
+import { Formik } from 'formik'
+import * as Yup from 'yup'
+
+import { IContactUsMessage } from 'utils/interfaces'
+import { Box, Button, CircularProgress, Container, Typography } from '@mui/material'
 import { InputField } from 'components/InputField'
 import { Centered, Flex } from 'components/design'
-import { Formik } from 'formik'
-import { useState } from 'react'
-import { Form } from 'react-router-dom'
-import * as Yup from 'yup'
+import { openToaster } from 'store/toast'
+import * as API from 'api/userApi'
 
 const Contact = () => {
   const [loading, setLoading] = useState(false)
-
+  const dispatch = useDispatch()
   const initialValues = {
-    name: '',
+    subject: '',
+    username: '',
     email: '',
     message: ''
   }
 
-  const handleSubmit = () => {}
+  const handleSubmit = async (values: IContactUsMessage, { resetForm }) => {
+    setLoading(true)
+    try {
+      await API.contactUs(values)
+      resetForm()
+      dispatch(
+        openToaster({
+          type: 'success',
+          message: 'Conact email sent successfully'
+        })
+      )
+    } catch (err) {
+      /* error */
+      openToaster({
+        type: 'error',
+        message: err.message
+      })
+    }
+    setLoading(false)
+  }
   const loginValidationSchema = Yup.object().shape({
-    name: Yup.string().required('Name is required'),
+    subject: Yup.string().required('Subject is required'),
+    username: Yup.string().required('Name is required'),
     email: Yup.string().email().required('Email is required'),
-
     message: Yup.string().required('Message is required')
   })
   return (
@@ -45,7 +71,8 @@ const Contact = () => {
               return (
                 <Form>
                   <Flex flexDirection='column' gap={2}>
-                    <InputField name='name' label={'Full Name'} />
+                    <InputField name='subject' label={'Subject'} />
+                    <InputField name='username' label={'Full Name'} />
 
                     <InputField name='email' label={'Email'} />
 

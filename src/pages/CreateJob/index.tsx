@@ -19,7 +19,6 @@ import * as Yup from 'yup'
 import { createJobApi } from 'api/userApi'
 import { usePlacesWidget } from 'react-google-autocomplete'
 import { useViewports } from 'helpers/viewports'
-import JobImage from 'assets/createJob.png'
 
 export interface CreateJobProps {
   title: string
@@ -28,6 +27,8 @@ export interface CreateJobProps {
   priceTo: number
   category: string
   address: string
+  lat: number
+  lng: number
 }
 
 const CreateJob = () => {
@@ -35,19 +36,16 @@ const CreateJob = () => {
   const [loading, setLoading] = useState(false)
   const [categories, setCategories] = useState([])
   const navigate = useNavigate()
-  const { ref: materialRef } = usePlacesWidget({
-    apiKey: 'AIzaSyBL4JbKL4SotWhSAnoYflXy9fnHrmT52Lg',
-    onPlaceSelected: place => console.log(place),
 
-    inputAutocompleteValue: 'country'
-  })
   const initialValues: CreateJobProps = {
     title: '',
     description: '',
     priceFrom: 0,
     priceTo: 0,
     category: '',
-    address: ''
+    address: '',
+    lat: 0,
+    lng: 0
   }
 
   const jobValidationSchema = Yup.object().shape({
@@ -62,13 +60,15 @@ const CreateJob = () => {
   const handleSubmit = async (values: CreateJobProps) => {
     setLoading(true)
     try {
-      const response = await createJobApi({
+      await createJobApi({
         title: values.title,
         description: values.description,
         category: values.category,
         minPrice: values.priceFrom,
         maxPrice: values.priceTo,
-        address: values.address
+        address: values.address,
+        lat: values.lat,
+        lng: values.lng
       })
       navigate('/my-jobs')
     } catch (err) {
@@ -127,7 +127,20 @@ const CreateJob = () => {
                     onSubmit={handleSubmit}
                     validationSchema={jobValidationSchema}
                   >
-                    {({ submitForm }) => {
+                    {({ submitForm, setFieldValue }) => {
+                      // eslint-disable-next-line react-hooks/rules-of-hooks
+                      const { ref: materialRef } = usePlacesWidget({
+                        apiKey: 'AIzaSyBL4JbKL4SotWhSAnoYflXy9fnHrmT52Lg',
+                        onPlaceSelected: place => {
+                          const address = place.formatted_address
+                          const lat = place.geometry.location.lat()
+                          const lng = place.geometry.location.lng()
+                          setFieldValue('address', address)
+                          setFieldValue('lat', lat)
+                          setFieldValue('lng', lng)
+                        },
+                        inputAutocompleteValue: 'country'
+                      })
                       return (
                         <Form>
                           <Flex flexDirection='column' gap={2}>
@@ -258,7 +271,8 @@ const StyledBox = styled(Box)(() => ({
 }))
 
 const ImageBackground = styled('img')(() => ({
-  backgroundImage: 'url(https://freepixels.com/wp-content/uploads/Architecture/090223a6449-wood-house-construction-yard-new.jpg)',
+  backgroundImage:
+    'url(https://freepixels.com/wp-content/uploads/Architecture/090223a6449-wood-house-construction-yard-new.jpg)',
   height: '100%',
   minHeight: '70vh',
   width: '100%',

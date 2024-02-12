@@ -9,7 +9,8 @@ import {
   Grid,
   List,
   ListItem,
-  Typography
+  Typography,
+  TextField
 } from '@mui/material'
 import { styled } from '@mui/system'
 import uploadToCloudinary from 'api/cloudnairy'
@@ -20,8 +21,9 @@ import { Centered, Flex } from 'components/design'
 import { Formik } from 'formik'
 import { ChangeEvent, useEffect, useMemo, useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { Form } from 'react-router-dom'
+import { Form, useNavigate } from 'react-router-dom'
 import { openToaster } from 'store/toast'
+import { usePlacesWidget } from 'react-google-autocomplete'
 
 export interface CreateServiceProps {
   name: string
@@ -32,6 +34,9 @@ export interface CreateServiceProps {
   faqAnswer1: string
   faq2: string
   faqAnswer2: string
+  address: string
+  lat: number
+  lng: number
 }
 
 const CreateService = () => {
@@ -42,6 +47,7 @@ const CreateService = () => {
   const [catLoading, setCatLoading] = useState(false)
   const dispatch = useDispatch()
   const [selectedFiles, setSelectedFiles] = useState([])
+  const navigate = useNavigate()
 
   const initialValues: CreateServiceProps = {
     name: '',
@@ -51,7 +57,10 @@ const CreateService = () => {
     faq1: '',
     faqAnswer1: '',
     faq2: '',
-    faqAnswer2: ''
+    faqAnswer2: '',
+    address: '',
+    lat: 0,
+    lng: 0
   }
 
   // const CreateServiceValidationSchema = Yup.object().shape({
@@ -110,6 +119,11 @@ const CreateService = () => {
           images: metaData,
           category: values.category,
           subcategory: values.subCategory,
+          location: {
+            address: values.address,
+            lat: values.lat,
+            lng: values.lng
+          },
           faqs: [
             {
               question: values.faq1,
@@ -121,9 +135,8 @@ const CreateService = () => {
             }
           ]
         }
-        console.log(metaData)
-        const response = await createNewServiceApi(formData)
-        console.log('response', response)
+        await createNewServiceApi(formData)
+        navigate('/vendor-services')
       } catch (error) {
         console.log(error)
       }
@@ -201,7 +214,20 @@ const CreateService = () => {
                   onSubmit={handleSubmit}
                   // validationSchema={CreateServiceValidationSchema}
                 >
-                  {({ submitForm, errors, handleChange }) => {
+                  {({ submitForm, errors, handleChange, setFieldValue }) => {
+                    // eslint-disable-next-line react-hooks/rules-of-hooks
+                    const { ref: materialRef } = usePlacesWidget({
+                      apiKey: 'AIzaSyBL4JbKL4SotWhSAnoYflXy9fnHrmT52Lg',
+                      onPlaceSelected: place => {
+                        const address = place.formatted_address
+                        const lat = place.geometry.location.lat()
+                        const lng = place.geometry.location.lng()
+                        setFieldValue('address', address)
+                        setFieldValue('lat', lat)
+                        setFieldValue('lng', lng)
+                      },
+                      inputAutocompleteValue: 'country'
+                    })
                     console.log('errors', errors)
                     return (
                       <Form>
@@ -267,6 +293,13 @@ const CreateService = () => {
                               />
                             )}
                           </Box>
+                          <TextField
+                            label='Location'
+                            fullWidth
+                            color='secondary'
+                            variant='outlined'
+                            inputRef={materialRef}
+                          />
                           <InputField name='faq1' label={'Frequently Asked Question 1'} />
                           <InputField name='faqAnswer1' label={'Answer'} multiline rows={3} />
                           <InputField name='faq2' label={'Frequently Asked Question 2'} />

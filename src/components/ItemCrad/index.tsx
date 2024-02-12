@@ -1,6 +1,5 @@
 import styled from '@emotion/styled'
 import { Box, Button, Grid, Typography } from '@mui/material'
-import { Flex } from 'components/design'
 import { useState } from 'react'
 import FavoriteIcon from '@mui/icons-material/Favorite'
 import { useNavigate } from 'react-router'
@@ -8,18 +7,28 @@ import LocalFireDepartmentIcon from '@mui/icons-material/LocalFireDepartment'
 import { ServiceProps } from 'components/PopularServices'
 
 const ItemCard = ({ category }: { category: ServiceProps }) => {
+  const initialLimit = 30
   const [isFav, setIsFav] = useState(false)
   const navigate = useNavigate()
+  const [limit, setLimit] = useState(initialLimit)
 
   const handleClick = (item: ServiceProps) => {
     navigate(`/view-service/${item.id}`)
+  }
+
+  const handleToggleContent = () => {
+    setLimit(prevLimit => (prevLimit === initialLimit ? Infinity : initialLimit))
+  }
+  const getContentPreview = (text: string) => {
+    const words = text.split(' ')
+    return words.slice(0, limit).join(' ') + (words.length > limit ? '...' : '')
   }
 
   return (
     <Grid item xs={12} sm={6} md={4} lg={3} key={category.id} flex={1}>
       <CardBox>
         <Box position='relative'>
-          <StyledImg src={category.images.img1} alt='profile img' />
+          <StyledImg src={category.images[0]} alt='profile img' />
           <Box position='absolute' top={10} right={10} onClick={() => setIsFav(!isFav)}>
             <FavoriteIcon
               sx={{ color: isFav ? 'red' : 'grey', fontSize: '35px', cursor: 'pointer' }}
@@ -31,15 +40,18 @@ const ItemCard = ({ category }: { category: ServiceProps }) => {
         </Box>
 
         <Typography variant='subtitle1' pt={1} fontWeight='bold'>
-          {category.title}
+          {category.name}
         </Typography>
 
         <Typography variant='body2' fontWeight='400' color='primary'>
-          {category.location}
+          {category.location.address}
         </Typography>
 
         <Typography variant='body2' fontWeight='400' py={2}>
-          {category.description}
+          {getContentPreview(category.description)}
+          <Button color='primary' size='small' onClick={handleToggleContent}>
+            {limit === initialLimit ? 'Read More' : 'Read Less'}
+          </Button>
         </Typography>
 
         <Button variant='outlined' color='primary' fullWidth onClick={() => handleClick(category)}>
