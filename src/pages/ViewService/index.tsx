@@ -6,6 +6,7 @@ import {
   Grid,
   Modal,
   Rating,
+  TextField,
   Typography,
   styled
 } from '@mui/material'
@@ -23,13 +24,19 @@ import { InputField } from 'components/InputField'
 import * as Yup from 'yup'
 import LocationTab from 'components/Location'
 import * as API from 'api/userApi'
+import AccountCircleIcon from '@mui/icons-material/AccountCircle'
 
 const ViewService = () => {
   const auth = useSelector<RootState, AuthState>(state => state.auth)
   const { isLaptop } = useViewports()
   const [open, setOpen] = useState(false)
+  const [openReview, setOpenReview] = useState(false)
+
   const handleOpen = () => setOpen(true)
-  const handleClose = () => setOpen(false)
+  const handleClose = () => {
+    setOpen(false)
+    setOpenReview(false)
+  }
   const [loading, setLoading] = useState(false)
   const params = useParams()
   const [services, setServices] = useState<any>({
@@ -89,6 +96,21 @@ const ViewService = () => {
     borderRadius: '5px'
   }
 
+  const reviewStyle = {
+    width: '100%',
+    bgcolor: 'background.paper',
+    boxShadow: 'rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px',
+    p: 4,
+    borderRadius: '5px'
+  }
+
+  const reviews = [
+    'Hey there! We love your work and are interested in learning more about your services for our wedding',
+    'Hey there! We love your work and are interested in learning more about your services for our wedding',
+    'Hey there! We love your work and are interested in learning more about your services for our wedding',
+    'Hey there! We love your work and are interested in learning more about your services for our wedding'
+  ]
+
   const initialValues = {
     message:
       'Hey there! We love your work and are interested in learning more about your services for our wedding.',
@@ -98,13 +120,16 @@ const ViewService = () => {
     phoneNumber: ''
   }
 
+  const [comment, setComment] = useState('')
+  const [reviewValue, setReviewValue] = useState(0)
+
   const loginValidationSchema = Yup.object().shape({
     email: Yup.string().email().required('Email is required'),
     password: Yup.string().required('Password is required.')
   })
 
   const handleSubmit = async () => {}
-
+  const submitReview = () => {}
   return (
     <Box minHeight='calc(100vh - 280px)'>
       {loading ? (
@@ -147,15 +172,23 @@ const ViewService = () => {
                   {services?.name}
                 </Typography>
 
-                {/* <Rating
-                    name='simple-controlled'
-                    value={value}
-                    onChange={(event, newValue) => {
-                      setValue(newValue)
-                    }}
-                  /> */}
-
-                <Rating name='read-only' value={3} readOnly />
+                <Flex justifyContent='space-between' alignItems='center'>
+                  <Flex alignItems='center' gap={1}>
+                    <Rating name='read-only' value={3} readOnly />
+                    <Typography variant='subtitle1' fontWeight='bold' color='#666'>
+                      ( 50 )
+                    </Typography>
+                  </Flex>
+                  <Typography
+                    sx={{ cursor: 'pointer' }}
+                    variant='body2'
+                    color='primary'
+                    fontWeight='600'
+                    onClick={() => setOpenReview(true)}
+                  >
+                    Add Review
+                  </Typography>
+                </Flex>
 
                 <Centered justifyContent='space-between' pt={4}>
                   <Typography variant='body1' fontWeight='600'>
@@ -266,6 +299,46 @@ const ViewService = () => {
                 </Box>
               )
             })}
+
+          <Grid container spacing={2} mt={4}>
+            {reviews.map((item, index) => {
+              return (
+                <Grid item xs={12} md={6}>
+                  <Box sx={reviewStyle} alignItems='center' justifyContent='space-between' gap={2}>
+                    <Flex gap={2} alignItems='center'>
+                      <AccountCircleIcon
+                        sx={{
+                          fontSize: '55px',
+                          color: '#666666'
+                        }}
+                      />
+                      <Box>
+                        <Typography variant='subtitle2' color='#555' fontWeight='600'>
+                          Usman Nasir
+                        </Typography>
+                        <Typography variant='caption' color='#555' fontWeight='400'>
+                          20 Dec 2024, 11:56
+                        </Typography>
+                      </Box>
+                    </Flex>
+                    <Box>
+                      <Rating
+                        name='read-only'
+                        value={index + 2}
+                        readOnly
+                        sx={{
+                          padding: '1rem 0rem'
+                        }}
+                      />
+                    </Box>
+                    <Typography variant='body1' fontWeight='500' color='#666' textAlign='left'>
+                      {item}
+                    </Typography>
+                  </Box>
+                </Grid>
+              )
+            })}
+          </Grid>
         </Container>
       )}
 
@@ -330,6 +403,65 @@ const ViewService = () => {
                 )
               }}
             </Formik>
+          </Box>
+        </Modal>
+      </div>
+      <div>
+        <Modal
+          open={openReview}
+          onClose={handleClose}
+          aria-labelledby='modal-modal-title'
+          aria-describedby='modal-modal-description'
+        >
+          <Box sx={style}>
+            <Typography variant={'subtitle1'} fontWeight='700' my={1}>
+              Add Review
+            </Typography>
+            <Typography variant={'body2'} fontWeight='400' mt={1} pb={3}>
+              Fill out the form below to add review.
+            </Typography>
+            <Flex pb={3} alignItems='center' gap={2}>
+              <Rating
+                name='simple-controlled'
+                value={reviewValue}
+                onChange={(event, newValue) => {
+                  setReviewValue(newValue)
+                }}
+              />
+              <Typography variant='subtitle1' fontWeight='bold' color='#666'>
+                {`( ${reviewValue} )`}
+              </Typography>
+            </Flex>
+            <Flex flexDirection='column' gap={2}>
+              <TextField
+                name='comment'
+                multiline={true}
+                rows={5}
+                label={'comment'}
+                onChange={e => setComment(e.target.value)}
+              />
+            </Flex>
+            <Box mt={4}>
+              <Box pb={2}>
+                <Typography variant={'caption'} fontWeight='400'>
+                  By clicking 'Send', I agree to WeddingWire’s Privacy Policy and Terms of use
+                </Typography>
+              </Box>
+              <Button fullWidth size='large' variant='contained' onClick={submitReview}>
+                {loading ? (
+                  <CircularProgress sx={{ color: '#fff' }} />
+                ) : (
+                  <Typography
+                    variant={'subtitle2'}
+                    color='#fff'
+                    textTransform='capitalize'
+                    fontWeight='bold'
+                  >
+                    Send
+                  </Typography>
+                )}
+              </Button>
+            </Box>
           </Box>
         </Modal>
       </div>
