@@ -1,8 +1,42 @@
+import {
+  useState,
+  useEffect,
+  JSXElementConstructor,
+  Key,
+  ReactElement,
+  ReactNode,
+  ReactPortal
+} from 'react'
+
 import styled from '@emotion/styled'
 import { Box, Breadcrumbs, Container, Divider, Grid, Typography } from '@mui/material'
-import React from 'react'
+
+import * as API from 'api/userApi'
+import { Link } from 'react-router-dom'
+import { StyledLink } from 'components/Navbar'
 
 const Wedding = () => {
+  const [category, setCategory] = useState(null)
+
+  const getCategories = async () => {
+    try {
+      const response = await API.getAllCategoriesWithSubApi()
+      const categories = response.data.categories
+
+      const category = categories
+        .filter((item: { category: { name: string } }) => item.category.name === 'Dresses')
+        .shift()
+      setCategory(category)
+      //console.log('response', response)
+    } catch (error) {
+      /* empty */
+    }
+  }
+
+  useEffect(() => {
+    getCategories()
+  }, [])
+
   const data = ['a', 'b', 'c', 'd', 'e', 'f']
   return (
     <Box>
@@ -14,7 +48,6 @@ const Wedding = () => {
         <Breadcrumbs aria-label='breadcrumb'>
           <Typography variant='body2'>Weddings</Typography>
           <Typography variant='body2'>Wedding Dresses</Typography>
-          <Typography variant='body2'>Wedding Dress Photos</Typography>
         </Breadcrumbs>
       </Container>
       <Divider />
@@ -31,34 +64,62 @@ const Wedding = () => {
           strapless, WeddingWire has over 8,000 wedding dresses to choose from. You can search for
           styles in every silhouette, including mermaid, ball gown, a-line and more. Search for
           beach or vintage-inspired wedding dresses and beyond. WeddingWire lists wedding dresses
-          from more than 100 designers and wedding dress prices ranging from less than $700 to over
-          $5,000.
+          from more than 100 designers and wedding dress prices ranging from less than PKR7000 to
+          over PKR50,000.
         </Typography>
         <Divider>WEDDING DRESSES BY DESIGNER</Divider>
         <Grid container spacing={4} mt={1}>
-          {data.map(item => {
-            return (
-              <Grid item xs={12} sm={6} md={4} lg={2.2} xl={2} key={item} flex={1}>
-                <Box position='relative'>
-                  <ImageBackground height='150px' />
-                  <OverLay height='150px' />
-                  <Container maxWidth='lg'>
-                    <StyledBox height='150px'>
-                      <Typography
-                        variant='body2'
-                        color='#fff'
-                        textAlign='center'
-                        fontWeight='600'
-                        zIndex={9}
-                      >
-                        Let's find your wedding team
-                      </Typography>
-                    </StyledBox>
-                  </Container>
-                </Box>
-              </Grid>
-            )
-          })}
+          {category
+            ? category.subcategories.map(
+                (
+                  subcategory: {
+                    icon: string
+                    name:
+                      | string
+                      | number
+                      | boolean
+                      | ReactElement<any, string | JSXElementConstructor<any>>
+                      | Iterable<ReactNode>
+                      | ReactPortal
+                    slug: string
+                  },
+                  index: { toString: () => Key }
+                ) => {
+                  return (
+                    <Grid
+                      item
+                      xs={12}
+                      sm={6}
+                      md={4}
+                      lg={2.2}
+                      xl={2}
+                      key={index.toString()}
+                      flex={1}
+                    >
+                      <StyledLink to={subcategory.slug}>
+                        <Box position='relative'>
+                          <ImageBackground height='210px' src={subcategory.icon} />
+                          <OverLay height='210px' />
+                          <Container maxWidth='lg'>
+                            <StyledBox height='210px'>
+                              <Typography
+                                variant='body2'
+                                color='#fff'
+                                textAlign='center'
+                                fontWeight='600'
+                                zIndex={9}
+                              >
+                                {subcategory.name}
+                              </Typography>
+                            </StyledBox>
+                          </Container>
+                        </Box>
+                      </StyledLink>
+                    </Grid>
+                  )
+                }
+              )
+            : null}
         </Grid>
       </Container>
       <Box py={4}>

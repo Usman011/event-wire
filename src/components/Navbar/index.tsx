@@ -113,19 +113,21 @@ export const Navbar = () => {
                     width: '100vw'
                   }}
                 >
-                  {categories.map(item => {
-                    return (
-                      <MenuItem>
-                        <SimpleMenu
-                          name={item.category.name}
-                          subcategories={item.subcategories}
-                          img={item.category.icon}
-                        />
-                      </MenuItem>
-                    )
-                  })}
+                  {categories
+                    .filter(item => item.category.isMenu)
+                    .map(item => {
+                      return (
+                        <MenuItem>
+                          <SimpleMenu
+                            name={item.category.name}
+                            subcategories={item.subcategories}
+                            img={item.category.icon}
+                          />
+                        </MenuItem>
+                      )
+                    })}
                   <MenuItem onClick={handleCloseNavMenu}>
-                    <StyledLink to='/wedding-dresses'>
+                    <StyledLink to='/services'>
                       <Typography textAlign='center'>Dresses</Typography>
                     </StyledLink>
                   </MenuItem>
@@ -216,34 +218,26 @@ export const Navbar = () => {
                   </Menu>
                   <Box sx={{ display: { xs: 'none', md: 'flex', cursor: 'pointer' } }}>
                     <Flex gap={2}>
-                      {categories.map(item => {
-                        return (
-                          <SimpleMenu
-                            name={item.category.name}
-                            subcategories={item.subcategories}
-                            img={item.category.icon}
-                          />
-                        )
-                      })}
+                      {categories
+                        .filter(item => item.category.isMenu)
+                        .map(item => {
+                          return (
+                            <SimpleMenu
+                              name={item.category.name}
+                              subcategories={item.subcategories}
+                              img={item.category.icon}
+                            />
+                          )
+                        })}
 
                       <StyledTypography
                         variant='body1'
                         fontWeight={500}
                         onClick={() => {
-                          navigate('/wedding-dresses')
+                          navigate('/services')
                         }}
                       >
                         Dresses
-                      </StyledTypography>
-
-                      <StyledTypography
-                        variant='body1'
-                        fontWeight={500}
-                        onClick={() => {
-                          navigate('/forums')
-                        }}
-                      >
-                        Forums
                       </StyledTypography>
 
                       <StyledTypography
