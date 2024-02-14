@@ -13,10 +13,18 @@ import {
 import { Centered, Flex } from 'components/design'
 import { useViewports } from 'helpers/viewports'
 import { useParams } from 'react-router'
-import { useEffect, useState } from 'react'
+import {
+  JSXElementConstructor,
+  ReactElement,
+  ReactNode,
+  ReactPortal,
+  useEffect,
+  useMemo,
+  useState
+} from 'react'
 import { AuthState } from 'store/auth'
 import { RootState } from 'store'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import BoltIcon from '@mui/icons-material/Bolt'
 import { Form } from 'react-router-dom'
 import { Formik } from 'formik'
@@ -25,12 +33,14 @@ import * as Yup from 'yup'
 import LocationTab from 'components/Location'
 import * as API from 'api/userApi'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle'
+import { openToaster } from 'store/toast'
 
 const ViewService = () => {
   const auth = useSelector<RootState, AuthState>(state => state.auth)
   const { isLaptop } = useViewports()
   const [open, setOpen] = useState(false)
   const [openReview, setOpenReview] = useState(false)
+  const dispatch = useDispatch()
 
   const handleOpen = () => setOpen(true)
   const handleClose = () => {
@@ -38,6 +48,8 @@ const ViewService = () => {
     setOpenReview(false)
   }
   const [loading, setLoading] = useState(false)
+  const [reviewLoading, setReviewLoading] = useState(false)
+  const [pricingLoading, setPricingLoading] = useState(false)
   const params = useParams()
   const [services, setServices] = useState<any>({
     name: '',
@@ -124,12 +136,64 @@ const ViewService = () => {
   const [reviewValue, setReviewValue] = useState(0)
 
   const loginValidationSchema = Yup.object().shape({
-    email: Yup.string().email().required('Email is required'),
-    password: Yup.string().required('Password is required.')
+    message: Yup.string().required(),
+    firstName: Yup.string(),
+    lastName: Yup.string(),
+    email: Yup.string().email().required(),
+    phoneNumber: Yup.string().required()
   })
 
-  const handleSubmit = async () => {}
-  const submitReview = () => {}
+  const handleSubmit = async (data: any, resetForm: any) => {
+    setPricingLoading(true)
+    const email = {
+      ...data,
+      serviceId: services.id
+    }
+    try {
+      await API.contactRequestPricing(email)
+      setOpen(false)
+      resetForm()
+      dispatch(
+        openToaster({
+          type: 'success',
+          message: 'Pricing request email sent successfully'
+        })
+      )
+    } catch (err) {
+      /* error */
+      dispatch(
+        openToaster({
+          type: 'error',
+          message: 'Proposal email sent Fail'
+        })
+      )
+    }
+    setPricingLoading(false)
+  }
+  const submitReview = async () => {
+    setReviewLoading(true)
+    const review = {
+      rating: reviewValue,
+      comment: comment
+    }
+    try {
+      await API.addServiceReview(review, services.id)
+      setOpenReview(false)
+      window.location.reload()
+    } catch (err) {
+      /* error */
+    }
+    setReviewLoading(false)
+  }
+
+  const averageRating = useMemo(() => {
+    let rating = 0
+    const reviews = services?.reviews || []
+    reviews.forEach((review: any) => {
+      rating += review.rating ?? 0
+    })
+    return Number(rating / reviews.length)
+  }, [services])
   return (
     <Box minHeight='calc(100vh - 280px)'>
       {loading ? (
@@ -174,9 +238,9 @@ const ViewService = () => {
 
                 <Flex justifyContent='space-between' alignItems='center'>
                   <Flex alignItems='center' gap={1}>
-                    <Rating name='read-only' value={3} readOnly />
+                    <Rating name='read-only' value={averageRating} readOnly />
                     <Typography variant='subtitle1' fontWeight='bold' color='#666'>
-                      ( 50 )
+                      ( {services?.reviews?.length} )
                     </Typography>
                   </Flex>
                   <Typography
@@ -240,54 +304,26 @@ const ViewService = () => {
               <Typography variant='h3' py={1} fontWeight='bold' color='#00458c'>
                 {services?.name}
               </Typography>
-
+              <Typography variant='h5' fontWeight='700' pb={3}>
+                Description
+              </Typography>
+              <Typography variant='body1' fontWeight='400' pb={3}>
+                {services?.description}
+              </Typography>
               <Typography variant='body1' fontWeight='400' pb={3}>
                 {services?.description}
               </Typography>
               <Typography variant='body2' color='#999' fontWeight='400' pb={2}>
-                {` ${services?.name} is a stunning mansion event space located in Santorini,
-                Greece. This property provides couples with the opportunity to wed in a dreamy
-                seaside setting. With panoramic views of Santorini's mysterious caldera, the
-                stunning volcano, and the dazzling blue Aegean Sea, this property is the ideal venue
-                for an unforgettable destination wedding.`}
-              </Typography>
-              <Typography variant='body1' color='#000' fontWeight='700' pb={2}>
-                Facilities
-              </Typography>
-              <Typography variant='body2' color='#999' fontWeight='400' pb={2}>
-                {` ${services?.name}  provides guests with a number of picture-perfect gathering
-                spaces. You will be welcome to exchange your vows in front of your loved ones under
-                a beautiful arch surrounded by candles and flowers as the sun sets on the beach. The
-                seaside event space can accommodate up to 100 guests seated for your ceremony and
-                for your reception. The space also features a large dance floor, perfect for those
-                looking to dance the night away. Situated right next to the venue, the Diamond Rock
-                Villa is waiting to host the newlyweds and some guests for an overnight stay. Its
-                stylish and contemporary interiors include three elegantly appointed bedrooms, two
-                luxurious bathrooms, a fully-equipped colorful kitchen, and tastefully furnished
-                living and dining rooms. Here, you can enjoy the marvelous view from the terrace or
-                relax with a cocktail in the heated jacuzzi or by the pool.`}
-              </Typography>
-              <Typography variant='body1' color='#000' fontWeight='700' pb={2}>
-                Capacity
-              </Typography>
-              <Typography variant='body2' color='#999' fontWeight='400' pb={2}>
-                {` ${services?.name}  provides guests with a number of picture-perfect gathering
-                spaces. You will be welcome to exchange your vows in front of your loved ones under
-                a beautiful arch surrounded by candles and flowers as the sun sets on the beach. The
-                seaside event space can accommodate up to 100 guests seated for your ceremony and
-                for your reception. The space also features a large dance floor, perfect for those
-                looking to dance the night away. Situated right next to the venue, the Diamond Rock
-                Villa is waiting to host the newlyweds and some guests for an overnight stay. Its
-                stylish and contemporary interiors include three elegantly appointed bedrooms, two
-                luxurious bathrooms, a fully-equipped colorful kitchen, and tastefully furnished
-                living and dining rooms. Here, you can enjoy the marvelous view from the terrace or
-                relax with a cocktail in the heated jacuzzi or by the pool.`}
+                {` ${services?.name} `}
               </Typography>
             </Grid>
             <Grid item xs={12} md={4}>
               {services?.location && <LocationTab location={services.location} />}
             </Grid>
           </Grid>
+          <Typography variant='h5' fontWeight='700' pb={3}>
+            Frequently Asked Questions:
+          </Typography>
           {services?.faqs &&
             services.faqs.map((item: any) => {
               return (
@@ -299,9 +335,11 @@ const ViewService = () => {
                 </Box>
               )
             })}
-
+          <Typography variant='h5' fontWeight='700' mt={4}>
+            Reviews:
+          </Typography>
           <Grid container spacing={2} mt={4}>
-            {reviews.map((item, index) => {
+            {services?.reviews?.map((item: any, index: any) => {
               return (
                 <Grid item xs={12} md={6}>
                   <Box sx={reviewStyle} alignItems='center' justifyContent='space-between' gap={2}>
@@ -314,17 +352,17 @@ const ViewService = () => {
                       />
                       <Box>
                         <Typography variant='subtitle2' color='#555' fontWeight='600'>
-                          Usman Nasir
+                          {item?.createdBy?.name}
                         </Typography>
                         <Typography variant='caption' color='#555' fontWeight='400'>
-                          20 Dec 2024, 11:56
+                          {item?.createdAt}
                         </Typography>
                       </Box>
                     </Flex>
                     <Box>
                       <Rating
                         name='read-only'
-                        value={index + 2}
+                        value={Number(item?.rating || 0)}
                         readOnly
                         sx={{
                           padding: '1rem 0rem'
@@ -332,7 +370,7 @@ const ViewService = () => {
                       />
                     </Box>
                     <Typography variant='body1' fontWeight='500' color='#666' textAlign='left'>
-                      {item}
+                      {item?.comment}
                     </Typography>
                   </Box>
                 </Grid>
@@ -352,7 +390,7 @@ const ViewService = () => {
           <Box sx={style}>
             <Formik
               initialValues={initialValues}
-              onSubmit={handleSubmit}
+              onSubmit={(values, { resetForm }) => handleSubmit(values, resetForm)}
               validationSchema={loginValidationSchema}
             >
               {({ submitForm }) => {
@@ -368,7 +406,7 @@ const ViewService = () => {
                       <InputField name='message' multiline={true} rows={5} label={'Message'} />
                       <Grid container spacing={2}>
                         <Grid item xs={12} md={6}>
-                          <InputField name='firstNamMessagee' label={'First Name'} />
+                          <InputField name='firstName' label={'First Name'} />
                         </Grid>
                         <Grid item xs={12} md={6}>
                           <InputField name='lastName' label={'Last Name'} />
@@ -384,7 +422,7 @@ const ViewService = () => {
                         </Typography>
                       </Box>
                       <Button fullWidth size='large' variant='contained' onClick={submitForm}>
-                        {loading ? (
+                        {pricingLoading ? (
                           <CircularProgress sx={{ color: '#fff' }} />
                         ) : (
                           <Typography
@@ -433,6 +471,7 @@ const ViewService = () => {
             </Flex>
             <Flex flexDirection='column' gap={2}>
               <TextField
+                value={comment}
                 name='comment'
                 multiline={true}
                 rows={5}
@@ -447,7 +486,7 @@ const ViewService = () => {
                 </Typography>
               </Box>
               <Button fullWidth size='large' variant='contained' onClick={submitReview}>
-                {loading ? (
+                {reviewLoading ? (
                   <CircularProgress sx={{ color: '#fff' }} />
                 ) : (
                   <Typography

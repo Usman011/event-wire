@@ -15,12 +15,14 @@ export const URL = {
   GET_POPULAR_SERVICES: '/marketplace/services/popular',
   GET_QUERY_SERVICES: '/marketplace/services/query',
   GET_SERVICE_DETAIL: '/marketplace/services',
+  ADD_SERVICE_REVIEW: '/marketplace/services',
   POST_JOB: '/jobs',
   GET_JOBS: '/jobs',
   POPULAR_JOBS: '/jobs/latest',
   QUERY_JOBS: '/jobs/query',
   CONTACT_US: '/email/contact-us',
-  SUBMIT_JOB_PROPOSAL: '/email/job-proposal'
+  SUBMIT_JOB_PROPOSAL: '/email/job-proposal',
+  SUBMIT_REQUEST_PRICING: '/email/request-pricing'
 }
 
 export const loginUserApi = (userData: LoginProps) => {
@@ -111,6 +113,22 @@ export const getQueryServices = (subcategorySlug: string) => {
   return axiosInstance(axiosConfig)
 }
 
+export const getQueryServicesByCategory = (categorySlug: string) => {
+  let axiosConfig = {
+    method: 'get',
+    url: `${URL.GET_QUERY_SERVICES}?category=${categorySlug}`
+  }
+  return axiosInstance(axiosConfig)
+}
+export const addServiceReview = (review: any, serviceId: string) => {
+  let axiosConfig = {
+    method: 'post',
+    url: `${URL.ADD_SERVICE_REVIEW}/${serviceId}/review`,
+    data: review
+  }
+  return axiosInstance(axiosConfig)
+}
+
 export const getServiceDetail = (serviceId: string) => {
   let axiosConfig = {
     method: 'get',
@@ -166,6 +184,15 @@ export const contactJobProposal = (data: any) => {
   const config = {
     method: 'post',
     url: URL.SUBMIT_JOB_PROPOSAL,
+    data
+  }
+  return axiosInstance(config)
+}
+
+export const contactRequestPricing = (data: any) => {
+  const config = {
+    method: 'post',
+    url: URL.SUBMIT_REQUEST_PRICING,
     data
   }
   return axiosInstance(config)

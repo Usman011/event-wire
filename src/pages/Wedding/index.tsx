@@ -17,6 +17,7 @@ import { StyledLink } from 'components/Navbar'
 
 const Wedding = () => {
   const [category, setCategory] = useState(null)
+  const [services, setServices] = useState([])
 
   const getCategories = async () => {
     try {
@@ -33,9 +34,25 @@ const Wedding = () => {
     }
   }
 
+  const getServices = async () => {
+    try {
+      const response = await API.getQueryServicesByCategory(category.category.slug)
+      const data = response.data.services.results
+      setServices(data)
+    } catch (err) {
+      /* ERROR */
+    }
+  }
+
   useEffect(() => {
     getCategories()
   }, [])
+
+  useEffect(() => {
+    if (category) {
+      getServices()
+    }
+  }, [category])
 
   const data = ['a', 'b', 'c', 'd', 'e', 'f']
   return (
@@ -127,11 +144,12 @@ const Wedding = () => {
       </Box>
       <Container>
         <Grid container spacing={4} mt={1}>
-          {data.map(item => {
+          {services.map(item => {
+            console.log(item.name)
             return (
               <Grid item xs={12} sm={6} md={4} lg={3} xl={2} key={item} flex={1}>
                 <Box position='relative'>
-                  <ImageBackground height='300px' />
+                  <ImageBackground height='300px' src={item.images[0]} />
                   <OverLay height='300px' />
                   <Container maxWidth='lg'>
                     <StyledBox height='300px'>
@@ -142,7 +160,7 @@ const Wedding = () => {
                         fontWeight='600'
                         zIndex={9}
                       >
-                        Let's find your wedding team
+                        {item.name}
                       </Typography>
                     </StyledBox>
                   </Container>

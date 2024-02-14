@@ -191,13 +191,13 @@ export const Navbar = () => {
                       </MenuItem>
                     </StyledLink>
 
-                    {auth.isAuthenticated && (
+                    {/* {auth.isAuthenticated && (
                       <StyledLink to='/fav-services'>
                         <MenuItem onClick={handleClose}>
                           <Typography textAlign='center'>Favorite</Typography>
                         </MenuItem>
                       </StyledLink>
-                    )}
+                    )} */}
                     {auth.role === 'vendor' && (
                       <StyledLink to='/vendor-services'>
                         <MenuItem onClick={handleClose}>

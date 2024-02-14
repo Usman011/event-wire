@@ -126,7 +126,7 @@ const BuyerRequest = (props: any) => {
       <Flex mt={2} gap={3} justifyContent='space-between'>
         <Box>
           <Typography variant='subtitle2' fontWeight='700' color='#666'>
-            ${props.minPrice} - ${props.maxPrice}
+            PKR {props.minPrice} - PKR {props.maxPrice}
           </Typography>
         </Box>
         <Button variant='contained' color='primary' onClick={handleOpen}>
