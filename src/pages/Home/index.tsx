@@ -148,7 +148,7 @@ const Home = () => {
             >
               Search over 250,000 local professionals with reviews, pricing, availability, and more
             </Typography>
-            <TextField
+            {/* <TextField
               sx={{
                 marginTop: '1rem',
                 zIndex: 9,
@@ -167,7 +167,7 @@ const Home = () => {
                   </IconButton>
                 )
               }}
-            />
+            /> */}
           </StyledBox>
         </Container>
       </Box>
@@ -341,24 +341,23 @@ const Home = () => {
             Why us?
           </Typography>
           <Typography variant='body2' fontWeight='400' mt={2}>
-            With the largest network of local wedding vendors, WeddingWire offers the most
-            comprehensive wedding site out there. You will be able to find the best vendor for your
-            budget and plan your wedding exactly the way you envisioned it. We make it simple to get
-            the pricing, availability, and answers you need from wedding venues and wedding vendors
+            With the largest network of local wedding vendors, Evetify offers the most comprehensive
+            wedding site out there. You will be able to find the best vendor for your budget and
+            plan your wedding exactly the way you envisioned it. We make it simple to get the
+            pricing, availability, and answers you need from wedding venues and wedding vendors
             across every town.
           </Typography>
           <Typography variant='body2' fontWeight='400' mt={2}>
-            In addition to the wedding industry’s best and brightest wedding vendors, WeddingWire
-            offers free, easy-to-use wedding planning tools like customizable wedding checklists to
-            keep your tasks in order, wedding websites with designs made just for you and a
-            comprehensive wedding registry for all your guests. You can stay on top of all the
-            details while on-the-go with the WeddingWire app, which features a wedding countdown to
-            your big day.
+            In addition to the wedding industry’s best and brightest wedding vendors, Evetify offers
+            free, easy-to-use wedding planning tools like customizable wedding checklists to keep
+            your tasks in order, wedding websites with designs made just for you and a comprehensive
+            wedding registry for all your guests. You can stay on top of all the details while
+            on-the-go with the Evetify app, which features a wedding countdown to your big day.
           </Typography>
           <Typography variant='body2' fontWeight='400' mt={2}>
             Meanwhile, our dedicated team of editors provides you with the very best wedding ideas
             and curated wedding photos filled with inspiration to help you choose between florists,
-            cakes, photographers and wedding venues when you start planning the details. WeddingWire
+            cakes, photographers and wedding venues when you start planning the details. Evetify
             will help turn your vision into a reality!
           </Typography>
         </Container>

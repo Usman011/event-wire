@@ -61,11 +61,11 @@ const Wedding = () => {
         </Typography>
         <Typography py={4} textAlign='center' variant='body1' color='#666'>
           Whether you’re looking for lace or satin, floor-length or short, off-the-shoulder or
-          strapless, WeddingWire has over 8,000 wedding dresses to choose from. You can search for
+          strapless, Evetify has over 8,000 wedding dresses to choose from. You can search for
           styles in every silhouette, including mermaid, ball gown, a-line and more. Search for
-          beach or vintage-inspired wedding dresses and beyond. WeddingWire lists wedding dresses
-          from more than 100 designers and wedding dress prices ranging from less than PKR7000 to
-          over PKR50,000.
+          beach or vintage-inspired wedding dresses and beyond. Evetify lists wedding dresses from
+          more than 100 designers and wedding dress prices ranging from less than PKR7000 to over
+          PKR50,000.
         </Typography>
         <Divider>WEDDING DRESSES BY DESIGNER</Divider>
         <Grid container spacing={4} mt={1}>

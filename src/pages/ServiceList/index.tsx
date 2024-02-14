@@ -142,7 +142,7 @@ export default ServiceList
 
 const ImageBackground = styled('img')(({ isLaptop }: { isLaptop: boolean }) => ({
   backgroundImage:
-    'url(https://cdn0.weddingwire.com/vendor/125394/original/960/jpeg/image_51_493521-168087040726835.webp)',
+    'url(https://cdn0.WeddingWire.com/vendor/125394/original/960/jpeg/image_51_493521-168087040726835.webp)',
   height: !isLaptop ? '200px' : '300px',
   position: 'relative',
   width: !isLaptop ? '100%' : '49.5vw',

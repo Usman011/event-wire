@@ -174,8 +174,7 @@ const BuyerRequest = (props: any) => {
                     <Box mt={4}>
                       <Box pb={2}>
                         <Typography variant={'caption'} fontWeight='400'>
-                          By clicking 'Send', I agree to WeddingWire’s Privacy Policy and Terms of
-                          use
+                          By clicking 'Send', I agree to Evetify Privacy Policy and Terms of use
                         </Typography>
                       </Box>
                       <Button fullWidth size='large' variant='contained' onClick={submitForm}>

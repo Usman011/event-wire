@@ -113,20 +113,20 @@ function SimpleMenu({ name, subcategories, img }: SimpleMenuProps) {
                             Easily plan your international wedding.
                           </Typography>
                         </Box>
-                        <StyledIcon src='https://www.weddingwire.com/assets/img/logos/square-icon-guest.svg' />
+                        <StyledIcon src='https://www.WeddingWire.com/assets/img/logos/square-icon-guest.svg' />
                       </Flex>
                     </StyledBox>
                     <StyledBox mt={4}>
                       <Flex alignItems='center' justifyContent='space-between'>
                         <Box pr={2}>
                           <Typography variant='body2' fontWeight='600'>
-                            WeddingWire for Guests
+                            Evetify for Guests
                           </Typography>
                           <Typography variant='caption' mt={1}>
                             Share with your guests to collect your wedding photos{' '}
                           </Typography>
                         </Box>
-                        <StyledIcon src='https://www.weddingwire.com/assets/img/logos/square-icon-guest.svg' />
+                        <StyledIcon src='https://www.WeddingWire.com/assets/img/logos/square-icon-guest.svg' />
                       </Flex>
                     </StyledBox>
                   </Grid>

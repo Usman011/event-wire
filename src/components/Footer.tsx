@@ -32,7 +32,7 @@ const Footer = () => {
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
               <Typography variant='h3' textAlign={isMobile ? 'center' : 'left'} fontWeight='bold'>
-                WeddingWire
+                Evetify
               </Typography>
             </Grid>
             <Grid item xs={12} sm={6} textAlign='right' justifyContent='space-between'>
@@ -55,11 +55,11 @@ const Footer = () => {
           <Box py={5}>
             <Grid container spacing={2}>
               <Grid item xs={12} sm={4}>
-              <Centered flexDirection='column'>
+                <Centered flexDirection='column'>
                   <Box>
-                  <Typography variant='h6' fontWeight='bold'>
-                    Vendor
-                  </Typography>
+                    <Typography variant='h6' fontWeight='bold'>
+                      Vendor
+                    </Typography>
                     {data1.map(item => {
                       return (
                         <Typography variant='body2' my={1}>
@@ -73,9 +73,9 @@ const Footer = () => {
               <Grid item xs={12} sm={4}>
                 <Centered flexDirection='column'>
                   <Box>
-                  <Typography variant='h6' fontWeight='bold'>
-                    Shops
-                  </Typography>
+                    <Typography variant='h6' fontWeight='bold'>
+                      Shops
+                    </Typography>
                     {data1.map(item => {
                       return (
                         <Typography variant='body2' my={1}>
