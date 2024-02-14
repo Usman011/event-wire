@@ -150,7 +150,14 @@ export const Navbar = () => {
               sx={{ display: { xs: 'none', md: 'block', height: '100%' } }}
             >
               <Centered onClick={() => setActiveTab(-1)}>
-                <Link to='/'>{<StyledLogo src={Logo} />}</Link>
+                <StyledLink to='/'>
+                  {
+                    // <StyledLogo src={Logo} />
+                  }
+                  <Typography variant='h4' fontWeight={'700'} color='#19B5BC'>
+                    Eventify
+                  </Typography>
+                </StyledLink>
               </Centered>
             </Flex>
             <Box
